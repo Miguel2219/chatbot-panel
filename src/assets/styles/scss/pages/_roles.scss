@@ -1,0 +1,714 @@
+// ─── Color palette for role accents ──────────────────────────
+$role-colors: (
+  'violet': ($primary,        $primary-light),
+  'blue':   ($secondary,      $info-light),
+  'green':  ($success,        $success-light),
+  'amber':  ($warning,        $warning-light),
+  'cyan':   ($info,           $info-light),
+);
+
+@mixin role-color($key) {
+  $pair: map-get($role-colors, $key);
+  --role-color:       #{nth($pair, 1)};
+  --role-color-light: #{nth($pair, 2)};
+}
+
+[data-color='violet'] { @include role-color('violet'); }
+[data-color='blue']   { @include role-color('blue');   }
+[data-color='green']  { @include role-color('green');  }
+[data-color='amber']  { @include role-color('amber');  }
+[data-color='cyan']   { @include role-color('cyan');   }
+
+// ─── Page root ───────────────────────────────────────────────
+.roles-page {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+  height: calc(100vh - #{$header-height} - #{$spacing-lg * 2});
+  min-height: 0;
+}
+
+// ─── Page header ─────────────────────────────────────────────
+.roles-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+  }
+
+  &__icon {
+    width: 48px;
+    height: 48px;
+    background: $primary-light;
+    border-radius: $border-radius;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    mat-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+      color: $primary;
+    }
+  }
+
+  &__title {
+    font-size: $font-size-xl;
+    font-weight: 700;
+    color: $text-primary;
+    line-height: 1.2;
+  }
+
+  &__subtitle {
+    font-size: $font-size-sm;
+    color: $text-secondary;
+    margin-top: 2px;
+  }
+}
+
+// ─── Split layout ─────────────────────────────────────────────
+.roles-split {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: $spacing-lg;
+  flex: 1;
+  min-height: 0;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 280px 1fr;
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// LEFT PANEL — Roles List
+// ══════════════════════════════════════════════════════════════
+.roles-list-panel {
+  display: flex;
+  flex-direction: column;
+  background: $bg-surface;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-lg;
+  overflow: hidden;
+
+  &__header {
+    padding: $spacing-md $spacing-lg;
+    border-bottom: 1px solid $border-color;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    min-height: 52px;
+  }
+
+  &__count {
+    font-size: $font-size-sm;
+    font-weight: 600;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+  }
+
+  &__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: $spacing-sm;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+// ─── Role card ───────────────────────────────────────────────
+.role-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: $spacing-sm $spacing-sm $spacing-sm 0;
+  border-radius: $border-radius;
+  cursor: pointer;
+  transition: background $transition-fast, border-color $transition-fast;
+  border: 1px solid transparent;
+  overflow: hidden;
+
+  &:hover {
+    background: $bg-elevated;
+
+    .role-card__actions {
+      opacity: 1;
+    }
+  }
+
+  &--active {
+    background: $bg-elevated;
+    border-color: rgba(var(--role-color, #{$primary}), 0.25);
+    border-color: color-mix(in srgb, var(--role-color, #{$primary}) 25%, transparent);
+
+    .role-card__name {
+      color: var(--role-color, #{$primary});
+    }
+
+    .role-card__indicator {
+      display: flex;
+    }
+  }
+
+  &__accent {
+    width: 3px;
+    align-self: stretch;
+    background: var(--role-color, #{$primary});
+    border-radius: 0 2px 2px 0;
+    flex-shrink: 0;
+    margin-right: 2px;
+  }
+
+  &__avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: $border-radius-sm;
+    background: var(--role-color-light, #{$primary-light});
+    color: var(--role-color, #{$primary});
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $font-size-sm;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  &__info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__name {
+    font-size: $font-size-base;
+    font-weight: 600;
+    color: $text-primary;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color $transition-fast;
+  }
+
+  &__desc {
+    font-size: $font-size-xs;
+    color: $text-muted;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    opacity: 0;
+    transition: opacity $transition-fast;
+    flex-shrink: 0;
+  }
+
+  &__indicator {
+    display: none;
+    align-items: center;
+    color: var(--role-color, #{$primary});
+    flex-shrink: 0;
+    margin-right: 2px;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+// ─── Role action buttons ─────────────────────────────────────
+.role-action-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: $border-radius-sm;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $text-muted;
+  transition: background $transition-fast, color $transition-fast;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+
+  &:hover {
+    background: $bg-hover;
+    color: $text-primary;
+  }
+
+  &--danger:hover {
+    background: $danger-light;
+    color: $danger;
+  }
+}
+
+// ─── Role card skeleton ───────────────────────────────────────
+.role-card-skeleton {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: 10px $spacing-sm 10px 0;
+  border-radius: $border-radius;
+
+  .skeleton-accent {
+    width: 3px;
+    height: 40px;
+    border-radius: 2px;
+    background: $bg-hover;
+    margin-right: 2px;
+    flex-shrink: 0;
+    @include skeleton-pulse;
+  }
+
+  .skeleton-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+}
+
+// ─── Roles empty state ────────────────────────────────────────
+.roles-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-md;
+  padding: $spacing-xl;
+  text-align: center;
+
+  mat-icon {
+    font-size: 40px;
+    width: 40px;
+    height: 40px;
+    color: $text-muted;
+    opacity: 0.4;
+  }
+
+  p {
+    font-size: $font-size-sm;
+    color: $text-muted;
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// RIGHT PANEL — Permissions
+// ══════════════════════════════════════════════════════════════
+.permissions-panel {
+  background: $bg-surface;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-lg;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+// ─── Permissions empty state ──────────────────────────────────
+.permissions-empty-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-lg;
+  padding: $spacing-xl;
+  text-align: center;
+
+  &__rings {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__title {
+    font-size: $font-size-lg;
+    font-weight: 700;
+    color: $text-primary;
+  }
+
+  &__text {
+    font-size: $font-size-sm;
+    color: $text-secondary;
+    max-width: 320px;
+    line-height: 1.6;
+  }
+}
+
+.ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid $border-color;
+
+  &--outer {
+    width: 120px;
+    height: 120px;
+    border-color: rgba(124, 110, 255, 0.08);
+    animation: ring-pulse 3s ease-in-out infinite;
+  }
+
+  &--mid {
+    width: 90px;
+    height: 90px;
+    border-color: rgba(124, 110, 255, 0.12);
+    animation: ring-pulse 3s ease-in-out infinite 0.4s;
+  }
+
+  &--inner {
+    width: 60px;
+    height: 60px;
+    border-color: rgba(124, 110, 255, 0.2);
+    animation: ring-pulse 3s ease-in-out infinite 0.8s;
+  }
+
+  &--center {
+    width: 48px;
+    height: 48px;
+    background: $primary-light;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+
+    mat-icon {
+      font-size: 22px;
+      width: 22px;
+      height: 22px;
+      color: $primary;
+    }
+  }
+}
+
+@keyframes ring-pulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.04); }
+}
+
+// ─── Permissions content ──────────────────────────────────────
+.permissions-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $spacing-md;
+    padding: $spacing-md $spacing-lg;
+    border-bottom: 1px solid $border-color;
+    flex-shrink: 0;
+  }
+
+  &__role-info {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+  }
+
+  &__role-badge {
+    width: 44px;
+    height: 44px;
+    border-radius: $border-radius;
+    background: var(--role-color-light, #{$primary-light});
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    mat-icon {
+      font-size: 22px;
+      width: 22px;
+      height: 22px;
+      color: var(--role-color, #{$primary});
+    }
+  }
+
+  &__role-name {
+    font-size: $font-size-md;
+    font-weight: 700;
+    color: $text-primary;
+    line-height: 1.2;
+  }
+
+  &__role-desc {
+    font-size: $font-size-xs;
+    color: $text-muted;
+    margin-top: 2px;
+  }
+}
+
+// ─── Permissions matrix wrapper ───────────────────────────────
+.permissions-matrix {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+
+  &__head {
+    display: grid;
+    grid-template-columns: 1fr repeat(4, 80px);
+    gap: 0;
+    padding: $spacing-sm $spacing-lg;
+    background: $bg-elevated;
+    border-bottom: 1px solid $border-color;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    flex-shrink: 0;
+  }
+
+  &__body {
+    flex: 1;
+  }
+}
+
+// ─── Matrix column helpers ────────────────────────────────────
+.pm-col-module {
+  display: flex;
+  align-items: center;
+}
+
+.pm-col-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+}
+
+// ─── Matrix head labels ───────────────────────────────────────
+.permissions-matrix__head {
+  .pm-col-module {
+    font-size: $font-size-xs;
+    font-weight: 600;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+  }
+
+  .pm-col-action {
+    font-size: $font-size-xs;
+    font-weight: 600;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+  }
+}
+
+// ─── Matrix row ───────────────────────────────────────────────
+.pm-row {
+  display: grid;
+  grid-template-columns: 1fr repeat(4, 80px);
+  gap: 0;
+  padding: $spacing-sm $spacing-lg;
+  border-bottom: 1px solid $border-color;
+  transition: background $transition-fast;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: $bg-elevated;
+  }
+}
+
+// ─── Module info cell ─────────────────────────────────────────
+.pm-module-info {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.pm-module-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: $border-radius-sm;
+  background: $bg-hover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    color: $text-secondary;
+  }
+}
+
+.pm-module-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.pm-module-name {
+  font-size: $font-size-base;
+  font-weight: 500;
+  color: $text-primary;
+}
+
+.pm-module-granted {
+  font-size: $font-size-xs;
+  color: $text-muted;
+}
+
+// ─── Permission chip (toggle) ─────────────────────────────────
+.perm-chip {
+  width: 32px;
+  height: 32px;
+  border-radius: $border-radius-sm;
+  background: $bg-hover;
+  border: 1px solid $border-color;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background $transition-fast, border-color $transition-fast, transform $transition-fast;
+  color: $text-muted;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+
+  &:hover {
+    border-color: $border-color-light;
+    color: $text-secondary;
+    transform: scale(1.08);
+  }
+
+  // ── Active states per action ──
+  &--active {
+    &[data-action='view'] {
+      background: $info-light;
+      border-color: rgba($info, 0.3);
+      color: $info;
+    }
+
+    &[data-action='create'] {
+      background: $success-light;
+      border-color: rgba($success, 0.3);
+      color: $success;
+    }
+
+    &[data-action='edit'] {
+      background: $warning-light;
+      border-color: rgba($warning, 0.3);
+      color: $warning;
+    }
+
+    &[data-action='delete'] {
+      background: $danger-light;
+      border-color: rgba($danger, 0.3);
+      color: $danger;
+    }
+
+    &:hover {
+      opacity: 0.8;
+      transform: scale(1.08);
+    }
+  }
+}
+
+// ─── N/A cell ─────────────────────────────────────────────────
+.perm-na {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-size-sm;
+  color: $text-muted;
+  opacity: 0.35;
+  user-select: none;
+}
+
+// ─── Permissions skeleton ─────────────────────────────────────
+.permissions-skeleton {
+  padding: $spacing-sm $spacing-lg;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $spacing-sm 0;
+    border-bottom: 1px solid $border-color;
+
+    .skeleton-chips {
+      display: flex;
+      gap: $spacing-sm;
+    }
+
+    .skeleton-chip {
+      width: 32px;
+      height: 32px;
+      border-radius: $border-radius-sm;
+      background: $bg-hover;
+      @include skeleton-pulse;
+    }
+  }
+}
+
+// ─── Shared skeleton helpers ──────────────────────────────────
+@mixin skeleton-pulse {
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+.skeleton-line {
+  height: 12px;
+  border-radius: 6px;
+  background: $bg-hover;
+  @include skeleton-pulse;
+
+  &.wide   { width: 70%; }
+  &.narrow { width: 40%; }
+}
+
+@keyframes skeleton-shimmer {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1; }
+}
+
+// ─── Spin animation ───────────────────────────────────────────
+.spin-icon {
+  animation: icon-spin 1s linear infinite;
+}
+
+@keyframes icon-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}

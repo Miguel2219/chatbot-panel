@@ -1,0 +1,37 @@
+// ─── 1. Abstracts (first — makes variables available to all partials) ────────
+@import 'abstracts/variables';
+
+// ─── 2. Base ─────────────────────────────────────────────────────────────────
+@import 'base/typography';
+@import 'base/base';
+
+// ─── 3. Themes ───────────────────────────────────────────────────────────────
+@import 'themes/theme';
+
+// ─── 4. Components ───────────────────────────────────────────────────────────
+@import 'components/buttons';
+@import 'components/badges';
+@import 'components/cards';
+
+// ─── 5. Layout ───────────────────────────────────────────────────────────────
+@import 'layout/forms';
+@import 'layout/tables';
+
+// ─── 6. Pages ────────────────────────────────────────────────────────────────
+@import 'pages/login';
+@import 'pages/main';
+@import 'pages/dashboard';
+@import 'pages/bots';
+@import 'pages/conversations';
+@import 'pages/leads';
+@import 'pages/documents';
+@import 'pages/users';
+@import 'pages/whatsapp-config';
+@import 'pages/roles';
+
+// ─── 7. Modals ───────────────────────────────────────────────────────────────
+@import 'modals/create-bot';
+@import 'modals/upload-document';
+@import 'modals/create-user';
+@import 'modals/delete-confirm';
+@import 'modals/create-role';
