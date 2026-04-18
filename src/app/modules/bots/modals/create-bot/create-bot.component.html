@@ -1,0 +1,56 @@
+<div class="wrapper-create-bot">
+
+  <div class="modal-header">
+    <h3 class="modal-title">Nuevo Bot</h3>
+    <button class="btn-icon" (click)="close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <form class="modal-body" [formGroup]="form" (ngSubmit)="submit()" autocomplete="off">
+
+    <div class="input-group">
+      <label class="input-label">Nombre del bot *</label>
+      <input type="text" formControlName="bot_name" placeholder="Ej: Bot de ventas" />
+      @if (nameCtrl.invalid && nameCtrl.touched) {
+        <span class="input-error">
+          @if (nameCtrl.errors?.['required']) { El nombre es requerido }
+          @else if (nameCtrl.errors?.['minlength']) { Mínimo 3 caracteres }
+        </span>
+      }
+    </div>
+
+    <div class="input-group" *ngIf="isAdmin">
+      <label class="input-label">Nuevo estado</label>
+      <ng-select
+        class="ng-select-modal"
+        [items]="tenants"
+        bindValue="value"
+        bindLabel="label"
+        formControlName="tenant_id"
+        [clearable]="false"
+        placeholder="Selecciona un tenant">
+      </ng-select>
+    </div>
+
+    <div class="input-group">
+      <label class="input-label">Descripción *</label>
+      <textarea formControlName="bot_description" placeholder="Describe el propósito de este bot..."></textarea>
+      @if (descCtrl.invalid && descCtrl.touched) {
+        <span class="input-error">
+          @if (descCtrl.errors?.['required']) { La descripción es requerida }
+          @else if (descCtrl.errors?.['minlength']) { Mínimo 5 caracteres }
+        </span>
+      }
+    </div>
+
+  </form>
+
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="close()">Cancelar</button>
+    <button class="btn btn-primary" [disabled]="isLoading" (click)="submit()">
+      @if (isLoading) { Creando... } @else { Crear Bot }
+    </button>
+  </div>
+
+</div>

@@ -1,0 +1,55 @@
+.wrapper-create-role {
+  padding: $spacing-lg;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .modal-title-group {
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+    }
+
+    .modal-role-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: $border-radius-sm;
+      background: $primary-light;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        color: $primary;
+      }
+    }
+
+    .modal-title {
+      font-size: $font-size-lg;
+      font-weight: 700;
+      color: $text-primary;
+    }
+  }
+
+  .modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: $spacing-sm;
+    padding-top: $spacing-md;
+    border-top: 1px solid $border-color;
+  }
+}

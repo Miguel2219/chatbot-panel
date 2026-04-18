@@ -1,0 +1,106 @@
+<div class="wrapper-whatsapp-config">
+
+  <div class="module-header">
+    <div class="module-title-group">
+      <h3 class="title-page">WhatsApp Config</h3>
+      <p class="subtitle-page">Configura la integración de WhatsApp para cada bot</p>
+    </div>
+  </div>
+
+  <!-- Bot selector -->
+  <div class="config-filter">
+    <div class="filter-item">
+      <label class="select-label">Selecciona un bot</label>
+      <ng-select
+        class="ng-select-module"
+        [items]="bots"
+        bindValue="value"
+        bindLabel="label"
+        [(ngModel)]="selectedBotId"
+        (change)="onBotChange()"
+        [clearable]="false"
+        placeholder="Selecciona un bot">
+      </ng-select>
+    </div>
+  </div>
+
+  @if (bots.length === 0) {
+    <div class="empty-state">
+      <mat-icon class="empty-icon">smartphone</mat-icon>
+      <div class="empty-title">No hay bots disponibles</div>
+      <div class="empty-subtitle">Crea un bot primero para configurar WhatsApp</div>
+    </div>
+  } @else {
+    <div class="config-card">
+
+      <!-- Status -->
+      <div class="config-status">
+        <div class="config-status-icon" [class.connected]="config" [class.disconnected]="!config">
+          <mat-icon>{{ config ? 'check_circle' : 'warning_amber' }}</mat-icon>
+        </div>
+        <div class="config-status-info">
+          <div class="config-status-title">
+            {{ config ? 'WhatsApp configurado' : 'Sin configuración' }}
+          </div>
+          <div class="config-status-desc">
+            {{ config ? 'Este bot recibe mensajes de WhatsApp' : 'Agrega las credenciales para conectar WhatsApp' }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Existing config (read mode) -->
+      @if (config && !isEditing) {
+        <div class="form-wrapper">
+          <div class="input-group">
+            <label class="input-label">Phone Number ID</label>
+            <input type="text" [value]="config.phone_number_id" disabled />
+          </div>
+          <div class="input-group">
+            <label class="input-label">API Key</label>
+            <input type="password" value="••••••••••••••••" disabled />
+          </div>
+        </div>
+        <div class="config-actions">
+          <button class="btn btn-secondary" (click)="startEditing()">
+            <mat-icon style="font-size:18px;width:18px;height:18px;">edit</mat-icon>
+            Editar
+          </button>
+          <button class="btn btn-danger" (click)="deleteConfig()">
+            <mat-icon style="font-size:18px;width:18px;height:18px;">delete_outline</mat-icon>
+            Eliminar
+          </button>
+        </div>
+      }
+
+      <!-- Form (create or edit mode) -->
+      @if (!config || isEditing) {
+        <form class="config-form" [formGroup]="form" (ngSubmit)="submit()" autocomplete="off">
+          <div class="input-group">
+            <label class="input-label">Phone Number ID *</label>
+            <input type="text" formControlName="phone_number_id" placeholder="Ej: 123456789012345" />
+            @if (form.get('phone_number_id')!.invalid && form.get('phone_number_id')!.touched) {
+              <span class="input-error">Requerido</span>
+            }
+          </div>
+          <div class="input-group">
+            <label class="input-label">API Key *</label>
+            <input type="text" formControlName="api_key" placeholder="Token de acceso de Meta" />
+            @if (form.get('api_key')!.invalid && form.get('api_key')!.touched) {
+              <span class="input-error">Requerido</span>
+            }
+          </div>
+          <div class="config-actions">
+            @if (isEditing) {
+              <button type="button" class="btn btn-secondary" (click)="cancelEditing()">Cancelar</button>
+            }
+            <button type="submit" class="btn btn-primary">
+              {{ config ? 'Actualizar' : 'Guardar configuración' }}
+            </button>
+          </div>
+        </form>
+      }
+
+    </div>
+  }
+
+</div>

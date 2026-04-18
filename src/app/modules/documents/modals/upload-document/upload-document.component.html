@@ -1,0 +1,49 @@
+<div class="wrapper-upload-document">
+
+  <div class="modal-header">
+    <h3 class="modal-title">Subir Documentos</h3>
+    <button class="btn-icon" (click)="close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Drop zone -->
+  <label class="drop-zone" for="fileInput">
+    <mat-icon class="drop-icon">cloud_upload</mat-icon>
+    <div class="drop-title">Haz clic para seleccionar archivos</div>
+    <div class="drop-subtitle">PDF, DOCX, TXT — Máx. 10 MB por archivo</div>
+    <input
+      id="fileInput"
+      type="file"
+      multiple
+      accept=".pdf,.docx,.txt,.doc"
+      (change)="onFileSelected($event)"
+      style="display:none;">
+  </label>
+
+  <!-- Selected files list -->
+  @if (selectedFiles.length > 0) {
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      @for (file of selectedFiles; track file.name; let i = $index) {
+        <div class="selected-file">
+          <mat-icon class="file-icon">description</mat-icon>
+          <div class="file-info">
+            <div class="file-name">{{ file.name }}</div>
+            <div class="file-size">{{ formatFileSize(file.size) }}</div>
+          </div>
+          <button class="btn-icon btn-icon-danger" (click)="removeFile(i)">
+            <mat-icon style="font-size:16px;width:16px;height:16px;">close</mat-icon>
+          </button>
+        </div>
+      }
+    </div>
+  }
+
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="close()">Cancelar</button>
+    <button class="btn btn-primary" [disabled]="isLoading || selectedFiles.length === 0" (click)="submit()">
+      @if (isLoading) { Subiendo... } @else { Subir ({{ selectedFiles.length }}) }
+    </button>
+  </div>
+
+</div>

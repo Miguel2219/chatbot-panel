@@ -1,0 +1,16 @@
+.wrapper-conversations {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+  height: 100%;
+
+  .conversations-filter {
+    display: flex;
+    align-items: flex-end;
+    gap: $spacing-md;
+
+    .filter-item {
+      min-width: 280px;
+    }
+  }
+}

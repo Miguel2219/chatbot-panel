@@ -1,0 +1,184 @@
+// ─── Table Host Element ──────────────────────────────────────
+app-table {
+  display: block;
+  flex: 1;
+  min-height: 0;
+}
+
+// ─── Table Wrapper ───────────────────────────────────────────
+.table-wrapper {
+  display: flex;
+  flex-direction: column;
+  background: $bg-surface;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  overflow: hidden;
+  height: 100%;
+}
+
+// ─── Table Header ────────────────────────────────────────────
+.table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-md $spacing-lg;
+  border-bottom: 1px solid $border-color;
+  gap: $spacing-md;
+  flex-wrap: wrap;
+
+  .table-title {
+    font-size: $font-size-md;
+    font-weight: 600;
+    color: $text-primary;
+  }
+
+  .table-controls {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    flex-wrap: wrap;
+  }
+}
+
+// ─── Search Input ────────────────────────────────────────────
+.table-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  .search-icon {
+    position: absolute;
+    left: $spacing-sm;
+    color: $text-muted;
+    font-size: 16px;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+  }
+
+  input {
+    background: $bg-elevated;
+    border: 1px solid $border-color;
+    border-radius: $border-radius-sm;
+    color: $text-primary;
+    font-family: $font-family;
+    font-size: $font-size-sm;
+    padding: 0 $spacing-md 0 36px;
+    height: 36px;
+    width: 240px;
+    outline: none;
+    transition: border-color $transition-fast;
+
+    &::placeholder {
+      color: $text-muted;
+    }
+
+    &:focus {
+      border-color: $primary;
+    }
+  }
+}
+
+// ─── Table Content ───────────────────────────────────────────
+.table-content {
+  flex: 1;
+  overflow: auto;
+}
+
+.mat-column-actions {
+  width: 100px;
+  text-align: right !important;
+}
+
+// ─── Action Buttons ──────────────────────────────────────────
+.table-actions-cell {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: $spacing-xs;
+}
+
+// ─── Skeleton loader ─────────────────────────────────────────
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+.table-skeleton {
+  display: flex;
+  flex-direction: column;
+}
+
+.skeleton-row {
+  display: flex;
+  align-items: center;
+  gap: $spacing-lg;
+  padding: $spacing-md $spacing-lg;
+  border-bottom: 1px solid $border-color;
+
+  &:last-child { border-bottom: none; }
+}
+
+.skeleton-cell {
+  height: 13px;
+  border-radius: 6px;
+  flex: 1;
+  min-width: 40px;
+  background: linear-gradient(
+    90deg,
+    $bg-elevated 0%,
+    $bg-hover 50%,
+    $bg-elevated 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+
+  &:nth-child(odd)  { max-width: 180px; }
+  &:nth-child(even) { max-width: 120px; }
+
+  &--action {
+    flex: 0 0 56px;
+    max-width: 56px;
+    border-radius: 8px;
+  }
+}
+
+// ─── No Data ─────────────────────────────────────────────────
+.table-no-data {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-xl * 2;
+  gap: $spacing-md;
+
+  .no-data-icon {
+    font-size: 40px;
+    color: $text-muted;
+    opacity: 0.4;
+    width: auto;
+    height: auto;
+  }
+
+  .no-data-text {
+    font-size: $font-size-base;
+    color: $text-muted;
+  }
+}
+
+// ─── Mobile responsive ───────────────────────────────────────
+@media (max-width: 576px) {
+  .table-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .table-search input {
+    width: 100%;
+  }
+
+  .table-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

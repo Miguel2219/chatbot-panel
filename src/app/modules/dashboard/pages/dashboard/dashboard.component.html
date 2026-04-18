@@ -1,0 +1,118 @@
+<div class="wrapper-dashboard">
+
+  <!-- ─── Page Header ──────────────────────────────────────── -->
+  <div class="module-header">
+    <div class="module-title-group">
+      <h3 class="title-page">Dashboard</h3>
+      <p class="subtitle-page">Resumen general de tu plataforma de chatbots</p>
+    </div>
+  </div>
+
+  <!-- ─── Stats Grid ───────────────────────────────────────── -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-header">
+        <span class="stat-label">Total Bots</span>
+        <div class="stat-icon icon-primary">
+          <mat-icon>smart_toy</mat-icon>
+        </div>
+      </div>
+      <div class="stat-value">{{ totalBots }}</div>
+      <div class="stat-footer">Bots configurados</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-header">
+        <span class="stat-label">Total Leads</span>
+        <div class="stat-icon icon-success">
+          <mat-icon>person_search</mat-icon>
+        </div>
+      </div>
+      <div class="stat-value">{{ totalLeads }}</div>
+      <div class="stat-footer">Leads capturados</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-header">
+        <span class="stat-label">Leads Pendientes</span>
+        <div class="stat-icon icon-warning">
+          <mat-icon>pending_actions</mat-icon>
+        </div>
+      </div>
+      <div class="stat-value">{{ pendingLeads }}</div>
+      <div class="stat-footer">Sin atender</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-header">
+        <span class="stat-label">Bots Activos</span>
+        <div class="stat-icon icon-info">
+          <mat-icon>check_circle_outline</mat-icon>
+        </div>
+      </div>
+      <div class="stat-value">{{ recentBots.length }}</div>
+      <div class="stat-footer">En operación</div>
+    </div>
+  </div>
+
+  <!-- ─── Bottom sections ──────────────────────────────────── -->
+  <div class="dashboard-bottom">
+
+    <!-- Recent Bots -->
+    <div class="recent-section">
+      <div class="section-header">
+        <span class="section-title">Bots recientes</span>
+        <a routerLink="/administration/bots">Ver todos</a>
+      </div>
+      <div class="recent-list">
+        @if (recentBots.length === 0) {
+          <div style="padding: 24px; text-align: center; color: #475569; font-size: 14px;">
+            Sin bots creados aún
+          </div>
+        }
+        @for (bot of recentBots; track bot.bot_id) {
+          <div class="recent-item">
+            <div class="item-avatar">
+              <mat-icon>smart_toy</mat-icon>
+            </div>
+            <div class="item-info">
+              <div class="item-title">{{ bot.name }}</div>
+              <div class="item-subtitle">{{ bot.description }}</div>
+            </div>
+            <span [class]="bot.is_active ? 'badge badge-success' : 'badge badge-danger'">
+              {{ bot.is_active ? 'Activo' : 'Inactivo' }}
+            </span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Recent Leads -->
+    <div class="recent-section">
+      <div class="section-header">
+        <span class="section-title">Leads recientes</span>
+        <a routerLink="/administration/leads">Ver todos</a>
+      </div>
+      <div class="recent-list">
+        @if (recentLeads.length === 0) {
+          <div style="padding: 24px; text-align: center; color: #475569; font-size: 14px;">
+            Sin leads capturados aún
+          </div>
+        }
+        @for (lead of recentLeads; track lead.leadId) {
+          <div class="recent-item">
+            <div class="item-avatar">
+              <mat-icon>person</mat-icon>
+            </div>
+            <div class="item-info">
+              <div class="item-title">{{ lead.name }}</div>
+              <div class="item-subtitle">{{ lead.email || lead.phone || 'Sin contacto' }}</div>
+            </div>
+            <span class="badge badge-pending">{{ lead.status }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+  </div>
+</div>

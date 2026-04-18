@@ -1,0 +1,355 @@
+// ─── Main Administration Layout ──────────────────────────────
+.wrapper-administration {
+  display: grid;
+  grid-template-columns: $sidebar-width 1fr;
+  grid-template-rows: $header-height 1fr;
+  grid-template-areas:
+    "sidebar header"
+    "sidebar content";
+  height: 100vh;
+  background: $bg-base;
+  overflow: hidden;
+}
+
+// ─── Sidebar ─────────────────────────────────────────────────
+.sidebar-administration {
+  grid-area: sidebar;
+  background: $sidebar-bg;
+  border-right: 1px solid $border-color;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  z-index: $z-sidebar;
+
+  .sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: 0 $spacing-md;
+    height: $header-height;
+    border-bottom: 1px solid $border-color;
+    flex-shrink: 0;
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: $primary;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+        color: #fff;
+      }
+    }
+
+    .logo-text {
+      font-size: $font-size-base;
+      font-weight: 700;
+      color: $text-primary;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: $spacing-md 0;
+  }
+
+  .nav-section-label {
+    font-size: $font-size-xs;
+    font-weight: 600;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 0 $spacing-md;
+    margin-bottom: $spacing-xs;
+    margin-top: $spacing-md;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-sm $spacing-md;
+    margin: 2px $spacing-sm;
+    border-radius: $border-radius-sm;
+    cursor: pointer;
+    transition: background $transition-fast, color $transition-fast;
+    text-decoration: none;
+
+    .nav-icon {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: $border-radius-sm;
+      flex-shrink: 0;
+
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+        color: $text-secondary;
+        transition: color $transition-fast;
+      }
+    }
+
+    .nav-label {
+      font-size: $font-size-sm;
+      font-weight: 500;
+      color: $text-secondary;
+      transition: color $transition-fast;
+      white-space: nowrap;
+    }
+
+    &:hover {
+      background: $bg-hover;
+
+      .nav-icon mat-icon,
+      .nav-label {
+        color: $text-primary;
+      }
+    }
+
+    &.active {
+      background: $primary-light;
+
+      .nav-icon {
+        background: $primary;
+
+        mat-icon {
+          color: #fff;
+        }
+      }
+
+      .nav-label {
+        color: $primary;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .sidebar-footer {
+    padding: $spacing-md;
+    border-top: 1px solid $border-color;
+    flex-shrink: 0;
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+      padding: $spacing-sm;
+      border-radius: $border-radius-sm;
+      cursor: pointer;
+      transition: background $transition-fast;
+
+      &:hover {
+        background: $bg-hover;
+      }
+
+      .user-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: $primary;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: $font-size-sm;
+        font-weight: 700;
+        color: #fff;
+        flex-shrink: 0;
+      }
+
+      .user-details {
+        flex: 1;
+        overflow: hidden;
+
+        .user-name {
+          font-size: $font-size-sm;
+          font-weight: 600;
+          color: $text-primary;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .user-email {
+          font-size: $font-size-xs;
+          color: $text-muted;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+
+    .logout-btn {
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+      width: 100%;
+      padding: $spacing-sm $spacing-sm;
+      border-radius: $border-radius-sm;
+      margin-top: $spacing-xs;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: background $transition-fast;
+      color: $text-muted;
+      font-size: $font-size-sm;
+
+      &:hover {
+        background: $danger-light;
+        color: $danger;
+
+        mat-icon {
+          color: $danger;
+        }
+      }
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+}
+
+// ─── Header ──────────────────────────────────────────────────
+.header-administration {
+  grid-area: header;
+  background: $sidebar-bg;
+  border-bottom: 1px solid $border-color;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 $spacing-lg;
+  z-index: $z-header;
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+
+    .hamburger {
+      display: none;
+      color: $text-secondary;
+      cursor: pointer;
+    }
+
+    .page-title {
+      font-size: $font-size-md;
+      font-weight: 600;
+      color: $text-primary;
+    }
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+
+    .header-user {
+      display: flex;
+      align-items: center;
+      gap: $spacing-sm;
+
+      .header-user-name {
+        font-size: $font-size-sm;
+        color: $text-secondary;
+      }
+
+      .header-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: $primary;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: $font-size-sm;
+        font-weight: 700;
+        color: #fff;
+      }
+    }
+  }
+}
+
+// ─── Content Area ────────────────────────────────────────────
+.content-administration {
+  grid-area: content;
+  overflow: auto;
+  padding: $spacing-lg;
+  background: $bg-base;
+}
+
+// ─── Module Wrapper (inside each page) ───────────────────────
+.module-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+  height: 100%;
+}
+
+.module-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: $spacing-md;
+
+  .module-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+}
+
+// ─── Mobile ──────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .wrapper-administration {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "header"
+      "content";
+  }
+
+  .sidebar-administration {
+    position: fixed;
+    left: -#{$sidebar-width};
+    top: 0;
+    height: 100vh;
+    transition: left $transition-base;
+    z-index: $z-modal;
+
+    &.open {
+      left: 0;
+      box-shadow: $shadow-lg;
+    }
+  }
+
+  .header-administration .header-left .hamburger {
+    display: block;
+  }
+
+  .content-administration {
+    padding: $spacing-md;
+  }
+}

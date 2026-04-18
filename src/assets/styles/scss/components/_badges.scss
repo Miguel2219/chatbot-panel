@@ -1,0 +1,60 @@
+// ─── Base Badge ──────────────────────────────────────────────
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: $font-size-xs;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  white-space: nowrap;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+}
+
+.badge-success {
+  background: $success-light;
+  color: $success;
+}
+
+.badge-warning {
+  background: $warning-light;
+  color: $warning;
+}
+
+.badge-danger {
+  background: $danger-light;
+  color: $danger;
+}
+
+.badge-info {
+  background: $info-light;
+  color: $info;
+}
+
+.badge-pending {
+  background: rgba(148, 163, 184, 0.12);
+  color: $text-secondary;
+}
+
+.badge-primary {
+  background: $primary-light;
+  color: $primary;
+}
+
+// ─── Status variants ─────────────────────────────────────────
+.status-active   { @extend .badge-success; }
+.status-inactive { @extend .badge-danger; }
+.status-pending  { @extend .badge-pending; }
+.status-contacted { @extend .badge-info; }
+.status-closed   { @extend .badge-success; }
+.status-bot      { @extend .badge-primary; }
+.status-human    { @extend .badge-warning; }

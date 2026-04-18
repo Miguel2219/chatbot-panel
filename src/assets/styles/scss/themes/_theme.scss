@@ -1,0 +1,208 @@
+// Angular Material dark theme overrides
+
+// ─── Dialog ──────────────────────────────────────────────────
+.mat-mdc-dialog-container {
+  --mdc-dialog-container-color: #{$bg-surface};
+  border-radius: $border-radius !important;
+  border: 1px solid $border-color-light;
+}
+
+.mat-mdc-dialog-surface {
+  background-color: $bg-surface !important;
+  border-radius: $border-radius !important;
+}
+
+// ─── Form Fields ─────────────────────────────────────────────
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+// ─── Paginator ───────────────────────────────────────────────
+.mat-mdc-paginator {
+  background: transparent !important;
+  color: $text-secondary !important;
+  border-top: 1px solid $border-color;
+  margin-top: $spacing-sm;
+  font-family: $font-family !important;
+}
+
+.mat-mdc-paginator-page-size-label,
+.mat-mdc-paginator-range-label {
+  color: $text-secondary !important;
+  font-size: $font-size-sm !important;
+}
+
+// ─── Paginator page-size selector (mat-select) ───────────────
+.mat-mdc-paginator-page-size-select {
+  .mat-mdc-select-trigger {
+    background: $bg-elevated;
+    border: 1px solid $border-color-light;
+    border-radius: $border-radius-sm;
+    padding: 0 $spacing-sm;
+    height: 32px;
+    min-width: 64px;
+    font-size: $font-size-sm !important;
+    color: $text-primary !important;
+    font-family: $font-family;
+    transition: border-color $transition-fast;
+
+    &:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+  }
+
+  .mat-mdc-select-value {
+    color: $text-primary !important;
+    font-size: $font-size-sm !important;
+    padding-right: 4px;
+  }
+
+  .mat-mdc-select-arrow {
+    color: $text-secondary !important;
+  }
+}
+
+// Panel dropdown del selector de página
+.mat-mdc-select-panel {
+  background: $bg-elevated !important;
+  border: 1px solid $border-color-light !important;
+  border-radius: $border-radius-sm !important;
+  box-shadow: $shadow-lg !important;
+}
+
+.mat-mdc-option {
+  color: $text-primary !important;
+  font-family: $font-family !important;
+  font-size: $font-size-sm !important;
+  min-height: 36px !important;
+
+  &:hover,
+  &.mat-mdc-option-active {
+    background: $bg-hover !important;
+  }
+
+  &.mdc-list-item--selected {
+    background: $primary-light !important;
+    color: $primary !important;
+  }
+}
+
+.mat-mdc-icon-button {
+  color: $text-secondary !important;
+
+  &:disabled {
+    color: $text-muted !important;
+    opacity: 0.4;
+  }
+}
+
+// ─── Table ───────────────────────────────────────────────────
+.mat-mdc-table {
+  background: transparent !important;
+}
+
+.mat-mdc-header-row {
+  background: $bg-elevated !important;
+}
+
+.mat-mdc-header-cell {
+  color: $text-secondary !important;
+  font-size: $font-size-sm !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  border-bottom: 1px solid $border-color !important;
+}
+
+.mat-mdc-row {
+  background: transparent !important;
+  border-bottom: 1px solid $border-color !important;
+  transition: background $transition-fast;
+
+  &:hover {
+    background: $bg-hover !important;
+  }
+}
+
+.mat-mdc-cell {
+  color: $text-primary !important;
+  font-size: $font-size-base !important;
+  border-bottom: none !important;
+}
+
+// ─── Sort ────────────────────────────────────────────────────
+.mat-sort-header-arrow {
+  color: $primary !important;
+}
+
+// ─── Spinner ─────────────────────────────────────────────────
+.mat-mdc-progress-spinner circle {
+  stroke: $primary !important;
+}
+
+// ─── Select (native) ─────────────────────────────────────────
+.mat-mdc-select-panel {
+  background: $bg-elevated !important;
+  border: 1px solid $border-color-light !important;
+  border-radius: $border-radius-sm !important;
+}
+
+.mat-mdc-option {
+  color: $text-primary !important;
+
+  &:hover,
+  &.mat-mdc-option-active {
+    background: $bg-hover !important;
+  }
+
+  &.mdc-list-item--selected {
+    background: $primary-light !important;
+    color: $primary !important;
+  }
+}
+
+// ─── Tooltip ─────────────────────────────────────────────────
+.mat-mdc-tooltip {
+  background-color: $bg-elevated !important;
+  color: $text-primary !important;
+  font-size: $font-size-sm !important;
+  border: 1px solid $border-color-light;
+}
+
+// ─── Snackbar / Toastr ───────────────────────────────────────
+.toast-container {
+  .ngx-toastr {
+    background-color: $bg-elevated !important;
+    border: 1px solid $border-color-light;
+    border-radius: $border-radius-sm !important;
+    box-shadow: $shadow-md !important;
+    color: $text-primary !important;
+    font-family: $font-family !important;
+    font-size: $font-size-sm !important;
+
+    &.toast-success {
+      border-left: 3px solid $success !important;
+    }
+
+    &.toast-error {
+      border-left: 3px solid $danger !important;
+    }
+
+    &.toast-warning {
+      border-left: 3px solid $warning !important;
+    }
+
+    &.toast-info {
+      border-left: 3px solid $info !important;
+    }
+
+    .toast-title {
+      font-weight: 600;
+      font-size: $font-size-base !important;
+    }
+
+    .toast-message {
+      color: $text-secondary !important;
+    }
+  }
+}

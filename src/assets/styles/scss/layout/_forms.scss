@@ -1,0 +1,210 @@
+// ─── Input Group ─────────────────────────────────────────────
+.input-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+
+  .input-label {
+    font-size: $font-size-sm;
+    font-weight: 500;
+    color: $text-secondary;
+  }
+
+  input,
+  textarea {
+    background: $bg-elevated;
+    border: 1px solid $border-color-light;
+    border-radius: $border-radius-sm;
+    color: $text-primary;
+    font-family: $font-family;
+    font-size: $font-size-base;
+    padding: 0 $spacing-md;
+    height: 44px;
+    width: 100%;
+    outline: none;
+    transition: border-color $transition-fast, box-shadow $transition-fast;
+
+    &::placeholder {
+      color: $text-muted;
+    }
+
+    &:focus {
+      border-color: $primary;
+      box-shadow: 0 0 0 3px $primary-light;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  textarea {
+    height: auto;
+    min-height: 100px;
+    padding: $spacing-md;
+    resize: vertical;
+  }
+
+  .input-error {
+    font-size: $font-size-xs;
+    color: $danger;
+    margin-top: 2px;
+  }
+}
+
+// ─── Form Row ────────────────────────────────────────────────
+.form-row {
+  display: flex;
+  gap: $spacing-md;
+
+  .input-group {
+    flex: 1;
+  }
+
+  @media (max-width: 576px) {
+    flex-direction: column;
+  }
+}
+
+// ─── Form ────────────────────────────────────────────────────
+.form-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+// ─── ng-select base (dark theme) ─────────────────────────────
+// Aplica a todos los ng-select del proyecto
+.ng-select {
+  font-family: $font-family;
+
+  .ng-select-container {
+    background-color: $bg-elevated !important;
+    border: 1px solid $border-color-light !important;
+    border-radius: $border-radius-sm !important;
+    color: $text-primary !important;
+    min-height: 44px !important;
+    cursor: pointer;
+    transition: border-color $transition-fast, box-shadow $transition-fast;
+
+    &:hover {
+      border-color: rgba(255, 255, 255, 0.2) !important;
+    }
+
+    .ng-value-label {
+      color: $text-primary !important;
+      font-size: $font-size-base;
+    }
+
+    .ng-placeholder {
+      color: $text-muted !important;
+      font-size: $font-size-base;
+    }
+
+    .ng-input input {
+      color: $text-primary !important;
+      font-family: $font-family;
+    }
+
+    .ng-arrow-wrapper .ng-arrow {
+      border-top-color: $text-secondary !important;
+    }
+
+    .ng-clear-wrapper {
+      color: $text-secondary !important;
+    }
+  }
+
+  &.ng-select-focused:not(.ng-select-opened) > .ng-select-container {
+    border-color: $primary !important;
+    box-shadow: 0 0 0 3px $primary-light !important;
+  }
+
+  .ng-dropdown-panel {
+    background: $bg-elevated !important;
+    border: 1px solid $border-color-light !important;
+    border-radius: $border-radius-sm !important;
+    box-shadow: $shadow-lg !important;
+    z-index: 9999 !important;
+
+    .ng-option {
+      background: transparent !important;
+      color: $text-primary !important;
+      font-family: $font-family;
+      font-size: $font-size-base;
+      padding: 10px $spacing-md;
+      transition: background $transition-fast;
+
+      &:hover,
+      &.ng-option-marked {
+        background: $bg-hover !important;
+      }
+
+      &.ng-option-selected {
+        background: $primary-light !important;
+        color: $primary !important;
+        font-weight: 500;
+      }
+
+      &.ng-option-disabled {
+        color: $text-muted !important;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+// ─── ng-select variante: módulo ───────────────────────────────
+// Bot selectors en páginas de módulo (conversations, leads, docs, whatsapp)
+.ng-select.ng-select-module {
+  .ng-select-container {
+    min-height: 44px !important;
+    border-radius: $border-radius-sm !important;
+    padding-left: 2px;
+
+    .ng-value-container {
+      padding-left: $spacing-sm;
+    }
+  }
+
+  .ng-dropdown-panel {
+    margin-top: 4px;
+  }
+}
+
+// ─── ng-select variante: modal ────────────────────────────────
+// Selects dentro de modales — alineados con los inputs del formulario
+.ng-select.ng-select-modal {
+  .ng-select-container {
+    min-height: 44px !important;
+    border-radius: $border-radius-sm !important;
+    background-color: $bg-elevated !important;
+
+    .ng-value-container {
+      padding-left: $spacing-sm;
+    }
+
+    .ng-value-label {
+      font-size: $font-size-base;
+    }
+  }
+
+  .ng-dropdown-panel {
+    margin-top: 4px;
+
+    .ng-option {
+      padding: 10px $spacing-md;
+      font-size: $font-size-base;
+    }
+  }
+}
+
+.select-label {
+  font-size: $font-size-sm;
+  font-weight: 500;
+  color: $text-secondary;
+  margin-bottom: $spacing-xs;
+  display: block;
+}

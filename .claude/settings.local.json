@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p \"C:/Users/PC/Documents/proyectos/chatbot-saas/chatbot-panel/src/environments\")",
+      "Bash(mkdir -p \"C:/Users/PC/Documents/proyectos/chatbot-saas/chatbot-panel/src/assets/styles/scss/abstracts\")",
+      "Bash(mkdir -p \"C:/Users/PC/Documents/proyectos/chatbot-saas/chatbot-panel/src/assets/styles/scss/base\")",
+      "Bash(mkdir -p \"C:/Users/PC/Documents/proyectos/chatbot-saas/chatbot-panel/src/assets/styles/scss/components\")",
+      "Bash(mkdir -p \"C:/Users/PC/Documents/proyectos/chatbot-saas/chatbot-panel/src/assets/styles/scss/layout\")"
+    ]
+  }
+}

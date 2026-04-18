@@ -1,0 +1,21 @@
+<div class="wrapper-users">
+
+  <div class="module-header">
+    <div class="module-title-group">
+      <h3 class="title-page">Usuarios</h3>
+      <p class="subtitle-page">Gestiona los asesores y usuarios de tu organización</p>
+    </div>
+  </div>
+
+  <app-table
+    titleTable="Lista de Usuarios"
+    addActionName="Nuevo Usuario"
+    [tableColumns]="tableColumns"
+    [tableData]="users"
+    [totalElements]="users.length"
+    [actions]="actions"
+    (add)="openCreateUser()"
+    (delete)="deleteUser($event)">
+  </app-table>
+
+</div>

@@ -1,0 +1,77 @@
+<div class="wrapper-create-user">
+
+  <div class="modal-header">
+    <h3 class="modal-title">Nuevo Usuario</h3>
+    <button class="btn-icon" (click)="close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <form class="modal-body" [formGroup]="form" (ngSubmit)="submit()" autocomplete="off">
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="input-group">
+        <label class="input-label">Nombre *</label>
+        <input type="text" formControlName="name" placeholder="Juan" />
+        @if (f['name'].invalid && f['name'].touched) {
+          <span class="input-error">Requerido</span>
+        }
+      </div>
+      <div class="input-group">
+        <label class="input-label">Apellido *</label>
+        <input type="text" formControlName="lastname" placeholder="Pérez" />
+        @if (f['lastname'].invalid && f['lastname'].touched) {
+          <span class="input-error">Requerido</span>
+        }
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label class="input-label">Correo electrónico *</label>
+      <input type="email" formControlName="email" placeholder="juan@empresa.com" />
+      @if (f['email'].invalid && f['email'].touched) {
+        <span class="input-error">
+          @if (f['email'].errors?.['required']) { Requerido }
+          @else { Correo inválido }
+        </span>
+      }
+    </div>
+
+    <div class="input-group">
+      <label class="input-label">Contraseña *</label>
+      <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="Mínimo 6 caracteres" />
+      @if (f['password'].invalid && f['password'].touched) {
+        <span class="input-error">
+          @if (f['password'].errors?.['required']) { Requerido }
+          @else { Mínimo 6 caracteres }
+        </span>
+      }
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="input-group">
+        <label class="input-label">Teléfono *</label>
+        <input type="tel" formControlName="phone" placeholder="+57 300 000 0000" />
+        @if (f['phone'].invalid && f['phone'].touched) {
+          <span class="input-error">Requerido</span>
+        }
+      </div>
+      <div class="input-group">
+        <label class="input-label">Documento *</label>
+        <input type="text" formControlName="numberDocument" placeholder="1234567890" />
+        @if (f['numberDocument'].invalid && f['numberDocument'].touched) {
+          <span class="input-error">Requerido</span>
+        }
+      </div>
+    </div>
+
+  </form>
+
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="close()">Cancelar</button>
+    <button class="btn btn-primary" [disabled]="isLoading" (click)="submit()">
+      @if (isLoading) { Creando... } @else { Crear Usuario }
+    </button>
+  </div>
+
+</div>

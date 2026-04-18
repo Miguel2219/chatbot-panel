@@ -1,0 +1,18 @@
+<div class="wrapper-delete-confirm">
+  <div class="delete-icon-wrapper">
+    <mat-icon>warning_amber</mat-icon>
+  </div>
+
+  <div class="delete-content">
+    <h3 class="delete-title">{{ data.title || 'Confirmar eliminación' }}</h3>
+    <p class="delete-legend">{{ data.legend }}</p>
+    @if (data.message) {
+      <p class="delete-message">{{ data.message }}</p>
+    }
+  </div>
+
+  <div class="delete-actions">
+    <button class="btn btn-secondary" (click)="cancel()">Cancelar</button>
+    <button class="btn btn-danger" (click)="confirm()">Eliminar</button>
+  </div>
+</div>

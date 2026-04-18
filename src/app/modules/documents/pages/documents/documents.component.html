@@ -1,0 +1,56 @@
+<div class="wrapper-documents">
+
+  <div class="module-header">
+    <div class="module-title-group">
+      <h3 class="title-page">Documentos</h3>
+      <p class="subtitle-page">Base de conocimiento de tus chatbots</p>
+    </div>
+  </div>
+
+  @if (isInitializing) {
+    <div class="module-loading">
+      <div class="loader-ring"></div>
+    </div>
+  } @else {
+    <div class="documents-filter">
+      <div class="filter-item">
+        <label class="select-label">Selecciona un bot</label>
+        <ng-select
+          class="ng-select-module"
+          [items]="bots"
+          bindValue="value"
+          bindLabel="label"
+          [(ngModel)]="selectedBotId"
+          (change)="onBotChange()"
+          [clearable]="false"
+          placeholder="Selecciona un bot">
+        </ng-select>
+      </div>
+    </div>
+
+    @if (bots.length === 0) {
+      <div class="empty-state">
+        <mat-icon class="empty-icon">description</mat-icon>
+        <div class="empty-title">No hay bots disponibles</div>
+        <div class="empty-subtitle">Crea un bot primero para subir documentos</div>
+      </div>
+    } @else {
+      <app-table
+        titleTable="Documentos"
+        addActionName="Subir documento"
+        [tableColumns]="tableColumns"
+        [tableData]="documents"
+        [totalElements]="documents.length"
+        [isLoading]="isLoading"
+        [actions]="actions"
+        [isPageable]="isPageable"
+        [pageIndex]="pageIndex"
+        [pageSize]="size"
+        (filter)="loadDocuments($event)"
+        (add)="openUpload()"
+        (delete)="deleteDocument($event)">
+      </app-table>
+    }
+  }
+
+</div>

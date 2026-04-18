@@ -1,0 +1,77 @@
+.wrapper-whatsapp-config {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+
+  .config-filter {
+    display: flex;
+    align-items: flex-end;
+    gap: $spacing-md;
+
+    .filter-item {
+      min-width: 280px;
+    }
+  }
+
+  .config-card {
+    background: $bg-surface;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    padding: $spacing-xl;
+    max-width: 600px;
+
+    .config-status {
+      display: flex;
+      align-items: center;
+      gap: $spacing-md;
+      margin-bottom: $spacing-lg;
+      padding-bottom: $spacing-lg;
+      border-bottom: 1px solid $border-color;
+
+      .config-status-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: $border-radius-sm;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+
+        &.connected {
+          background: $success-light;
+          color: $success;
+        }
+
+        &.disconnected {
+          background: $warning-light;
+          color: $warning;
+        }
+      }
+
+      .config-status-info {
+        .config-status-title {
+          font-size: $font-size-md;
+          font-weight: 600;
+          color: $text-primary;
+        }
+
+        .config-status-desc {
+          font-size: $font-size-sm;
+          color: $text-secondary;
+        }
+      }
+    }
+
+    .config-form {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-md;
+    }
+
+    .config-actions {
+      display: flex;
+      gap: $spacing-sm;
+      margin-top: $spacing-md;
+    }
+  }
+}

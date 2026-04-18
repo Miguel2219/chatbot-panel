@@ -1,0 +1,103 @@
+// ─── Base Card ───────────────────────────────────────────────
+.card {
+  background: $bg-surface;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  padding: $spacing-lg;
+}
+
+.card-elevated {
+  background: $bg-elevated;
+  border: 1px solid $border-color-light;
+  border-radius: $border-radius;
+  padding: $spacing-lg;
+  box-shadow: $shadow-sm;
+}
+
+// ─── Stat Cards (Dashboard) ──────────────────────────────────
+.stat-card {
+  background: $bg-surface;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  padding: $spacing-lg;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+
+  &:hover {
+    border-color: $border-color-light;
+    box-shadow: $shadow-sm;
+  }
+
+  .stat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .stat-label {
+      font-size: $font-size-sm;
+      color: $text-secondary;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .stat-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: $border-radius-sm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+
+      &.icon-primary { background: $primary-light; color: $primary; }
+      &.icon-success { background: $success-light; color: $success; }
+      &.icon-warning { background: $warning-light; color: $warning; }
+      &.icon-info    { background: $info-light; color: $info; }
+      &.icon-danger  { background: $danger-light; color: $danger; }
+    }
+  }
+
+  .stat-value {
+    font-size: $font-size-3xl;
+    font-weight: 700;
+    color: $text-primary;
+    line-height: 1;
+  }
+
+  .stat-footer {
+    font-size: $font-size-sm;
+    color: $text-muted;
+  }
+}
+
+// ─── Empty State ─────────────────────────────────────────────
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-md;
+  padding: $spacing-xl * 2;
+  text-align: center;
+
+  .empty-icon {
+    font-size: 48px;
+    color: $text-muted;
+    opacity: 0.5;
+  }
+
+  .empty-title {
+    font-size: $font-size-md;
+    font-weight: 600;
+    color: $text-secondary;
+  }
+
+  .empty-subtitle {
+    font-size: $font-size-sm;
+    color: $text-muted;
+    max-width: 300px;
+  }
+}

@@ -1,0 +1,84 @@
+<div class="wrapper-administration">
+
+  <!-- ─── Sidebar ─────────────────────────────────────────── -->
+  <aside class="sidebar-administration" [class.open]="sidebarOpen">
+
+    <!-- Logo -->
+    <div class="sidebar-logo">
+      <div class="logo-icon">
+        <mat-icon>smart_toy</mat-icon>
+      </div>
+      <span class="logo-text">Chatbot Panel</span>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sidebar-nav">
+      <span class="nav-section-label">Menú principal</span>
+
+      @for (item of navItems; track item.route) {
+        <a
+          class="nav-item"
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          (click)="closeSidebar()">
+          <div class="nav-icon">
+            <mat-icon>{{ item.icon }}</mat-icon>
+          </div>
+          <span class="nav-label">{{ item.name }}</span>
+        </a>
+      }
+    </nav>
+
+    <!-- Footer: user + logout -->
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar">{{ userInitials }}</div>
+        <div class="user-details">
+          <div class="user-name">{{ userName }}</div>
+          <div class="user-email">{{ userEmail }}</div>
+        </div>
+      </div>
+
+      <button class="logout-btn" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Cerrar sesión
+      </button>
+    </div>
+  </aside>
+
+  <!-- Overlay for mobile -->
+  @if (isSmallScreen && sidebarOpen) {
+    <div
+      style="position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99;"
+      (click)="closeSidebar()">
+    </div>
+  }
+
+  <!-- ─── Header ──────────────────────────────────────────── -->
+  <header class="header-administration">
+    <div class="header-left">
+      @if (isSmallScreen) {
+        <button class="btn-icon hamburger" (click)="toggleSidebar()">
+          <mat-icon>menu</mat-icon>
+        </button>
+      }
+      <span class="page-title">{{ getCurrentPageTitle() }}</span>
+    </div>
+
+    <div class="header-right">
+      <div class="header-user">
+        <span class="header-user-name">{{ userName }}</span>
+        <div class="header-avatar">{{ userInitials }}</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ─── Content ─────────────────────────────────────────── -->
+  <main class="content-administration">
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- ─── Global Loader ────────────────────────────────────── -->
+  <app-loading-overlay />
+
+</div>

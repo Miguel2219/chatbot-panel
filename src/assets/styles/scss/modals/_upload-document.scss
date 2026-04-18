@@ -1,0 +1,88 @@
+.wrapper-upload-document {
+  padding: $spacing-lg;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .modal-title {
+      font-size: $font-size-lg;
+      font-weight: 700;
+      color: $text-primary;
+    }
+  }
+
+  .drop-zone {
+    border: 2px dashed $border-color-light;
+    border-radius: $border-radius;
+    padding: $spacing-xl;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color $transition-fast, background $transition-fast;
+
+    &:hover {
+      border-color: $primary;
+      background: $primary-light;
+    }
+
+    .drop-icon {
+      font-size: 40px;
+      color: $text-muted;
+      margin-bottom: $spacing-sm;
+    }
+
+    .drop-title {
+      font-size: $font-size-base;
+      font-weight: 500;
+      color: $text-secondary;
+      margin-bottom: 4px;
+    }
+
+    .drop-subtitle {
+      font-size: $font-size-sm;
+      color: $text-muted;
+    }
+  }
+
+  .selected-file {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    background: $bg-elevated;
+    border: 1px solid $border-color;
+    border-radius: $border-radius-sm;
+    padding: $spacing-md;
+
+    .file-icon {
+      font-size: 24px;
+      color: $primary;
+    }
+
+    .file-info {
+      flex: 1;
+
+      .file-name {
+        font-size: $font-size-sm;
+        font-weight: 500;
+        color: $text-primary;
+      }
+
+      .file-size {
+        font-size: $font-size-xs;
+        color: $text-muted;
+      }
+    }
+  }
+
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: $spacing-sm;
+    padding-top: $spacing-md;
+    border-top: 1px solid $border-color;
+  }
+}

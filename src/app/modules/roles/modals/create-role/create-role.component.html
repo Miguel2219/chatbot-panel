@@ -1,0 +1,42 @@
+<div class="wrapper-create-role">
+
+  <div class="modal-header">
+    <div class="modal-title-group">
+      <div class="modal-role-icon">
+        <mat-icon>shield</mat-icon>
+      </div>
+      <h3 class="modal-title">{{ isEdit ? 'Editar Rol' : 'Nuevo Rol' }}</h3>
+    </div>
+    <button class="btn-icon" (click)="close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <form class="modal-body" [formGroup]="form" (ngSubmit)="submit()" autocomplete="off">
+
+    <div class="input-group">
+      <label class="input-label">Nombre del rol *</label>
+      <input type="text" formControlName="name" placeholder="Ej: Supervisor" />
+      @if (nameCtrl.invalid && nameCtrl.touched) {
+        <span class="input-error">
+          @if (nameCtrl.errors?.['required']) { El nombre es requerido }
+          @else if (nameCtrl.errors?.['minlength']) { Mínimo 2 caracteres }
+        </span>
+      }
+    </div>
+
+    <div class="input-group">
+      <label class="input-label">Descripción</label>
+      <textarea formControlName="description" placeholder="¿Qué puede hacer este rol?"></textarea>
+    </div>
+
+  </form>
+
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="close()">Cancelar</button>
+    <button class="btn btn-primary" [disabled]="isLoading" (click)="submit()">
+      @if (isLoading) { Guardando... } @else { {{ isEdit ? 'Actualizar' : 'Crear Rol' }} }
+    </button>
+  </div>
+
+</div>

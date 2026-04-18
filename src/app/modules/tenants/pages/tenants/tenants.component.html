@@ -1,0 +1,24 @@
+<div class="wrapper-bots">
+
+  <div class="module-header">
+    <div class="module-title-group">
+      <h3 class="title-page">Negocios</h3>
+      <p class="subtitle-page">Gestión de empresas y configuración de planes</p>
+    </div>
+  </div>
+
+  <app-table
+    titleTable="Lista de negocios"
+    addActionName="Nuevo tenant"
+    [tableColumns]="tableColumns"
+    [tableData]="tenants"
+    [totalElements]="totalElements"
+    [isPageable]="isPageable"
+    [pageIndex]="pageIndex"
+    [pageSize]="size"
+    [isLoading]="isLoading"
+    [actions]="actions"
+    (filter)="getTenants($event)">
+  </app-table>
+
+</div>

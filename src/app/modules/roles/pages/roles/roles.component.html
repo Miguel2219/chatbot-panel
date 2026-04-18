@@ -1,0 +1,229 @@
+<div class="roles-page">
+
+  <!-- ══════════════════════════════════════════
+       PAGE HEADER
+  ══════════════════════════════════════════ -->
+  <div class="roles-page-header">
+    <div class="roles-page-header__left">
+      <div class="roles-page-header__icon">
+        <mat-icon>shield</mat-icon>
+      </div>
+      <div>
+        <h1 class="roles-page-header__title">Roles y Permisos</h1>
+        <p class="roles-page-header__subtitle">Gestiona los roles y configura sus permisos por módulo</p>
+      </div>
+    </div>
+    <button class="btn btn-primary" (click)="openCreateRole()">
+      <mat-icon>add</mat-icon>
+      Nuevo Rol
+    </button>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       MAIN SPLIT LAYOUT
+  ══════════════════════════════════════════ -->
+  <div class="roles-split">
+
+    <!-- ── LEFT: Roles list ── -->
+    <div class="roles-list-panel">
+
+      <div class="roles-list-panel__header">
+        <span class="roles-list-panel__count">
+          @if (!isLoadingRoles) {
+            {{ roles.length }} {{ roles.length === 1 ? 'rol' : 'roles' }}
+          }
+        </span>
+      </div>
+
+      <div class="roles-list-panel__body">
+
+        @if (isLoadingRoles) {
+          @for (i of [1, 2, 3, 4]; track i) {
+            <div class="role-card-skeleton">
+              <div class="skeleton-accent"></div>
+              <div class="skeleton-body">
+                <div class="skeleton-line wide"></div>
+                <div class="skeleton-line narrow"></div>
+              </div>
+            </div>
+          }
+        } @else if (roles.length === 0) {
+          <div class="roles-empty">
+            <mat-icon>shield_lock</mat-icon>
+            <p>Sin roles configurados</p>
+            <button class="btn btn-primary btn-sm" (click)="openCreateRole()">Crear primero</button>
+          </div>
+        } @else {
+          @for (role of roles; track role.role_id) {
+            <div
+              class="role-card"
+              [class.role-card--active]="selectedRole?.role_id === role.role_id"
+              [attr.data-color]="getRoleColor(role.role_id)"
+              (click)="selectRole(role)"
+            >
+              <div class="role-card__accent"></div>
+
+              <div class="role-card__avatar" [attr.data-color]="getRoleColor(role.role_id)">
+                {{ role.name.charAt(0).toUpperCase() }}
+              </div>
+
+              <div class="role-card__info">
+                <span class="role-card__name">{{ role.name }}</span>
+                <span class="role-card__desc">{{ role.description || 'Sin descripción' }}</span>
+              </div>
+
+              <div class="role-card__actions">
+                <button class="role-action-btn" (click)="openEditRole(role, $event)" title="Editar">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button class="role-action-btn role-action-btn--danger" (click)="deleteRole(role, $event)" title="Eliminar">
+                  <mat-icon>delete_outline</mat-icon>
+                </button>
+              </div>
+
+              @if (selectedRole?.role_id === role.role_id) {
+                <div class="role-card__indicator">
+                  <mat-icon>chevron_right</mat-icon>
+                </div>
+              }
+            </div>
+          }
+        }
+
+      </div>
+    </div>
+
+    <!-- ── RIGHT: Permissions matrix ── -->
+    <div class="permissions-panel">
+
+      @if (!selectedRole) {
+        <!-- Empty state -->
+        <div class="permissions-empty-state">
+          <div class="permissions-empty-state__rings">
+            <div class="ring ring--outer"></div>
+            <div class="ring ring--mid"></div>
+            <div class="ring ring--inner"></div>
+            <div class="ring ring--center">
+              <mat-icon>lock_open</mat-icon>
+            </div>
+          </div>
+          <h3 class="permissions-empty-state__title">Selecciona un rol</h3>
+          <p class="permissions-empty-state__text">
+            Haz clic en cualquier rol para ver y configurar sus permisos de acceso por módulo
+          </p>
+        </div>
+
+      } @else {
+        <!-- Permissions content -->
+        <div class="permissions-content">
+
+          <!-- Header -->
+          <div class="permissions-content__header">
+            <div class="permissions-content__role-info">
+              <div
+                class="permissions-content__role-badge"
+                [attr.data-color]="getRoleColor(selectedRole.role_id)"
+              >
+                <mat-icon>shield</mat-icon>
+              </div>
+              <div>
+                <h3 class="permissions-content__role-name">{{ selectedRole.name }}</h3>
+                <p class="permissions-content__role-desc">
+                  @if (!isLoadingPermissions) {
+                    {{ getTotalGranted() }} de {{ getTotalPermissions() }} permisos activos
+                  } @else {
+                    Cargando permisos...
+                  }
+                </p>
+              </div>
+            </div>
+
+            <button
+              class="btn btn-primary"
+              [disabled]="isSaving || isLoadingPermissions"
+              (click)="savePermissions()"
+            >
+              @if (isSaving) {
+                <mat-icon class="spin-icon">sync</mat-icon>
+                Guardando...
+              } @else {
+                <mat-icon>save</mat-icon>
+                Guardar cambios
+              }
+            </button>
+          </div>
+
+          <!-- Matrix -->
+          @if (isLoadingPermissions) {
+            <div class="permissions-skeleton">
+              @for (i of [1, 2, 3, 4, 5, 6]; track i) {
+                <div class="permissions-skeleton__row">
+                  <div class="skeleton-line wide"></div>
+                  <div class="skeleton-chips">
+                    @for (j of [1, 2, 3, 4]; track j) {
+                      <div class="skeleton-chip"></div>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="permissions-matrix">
+
+              <!-- Column headers -->
+              <div class="permissions-matrix__head">
+                <div class="pm-col-module">Módulo</div>
+                @for (action of ACTIONS; track action) {
+                  <div class="pm-col-action">{{ action }}</div>
+                }
+              </div>
+
+              <!-- Module rows -->
+              <div class="permissions-matrix__body">
+                @for (module of modulePermissions; track module.module_id) {
+                  <div class="pm-row">
+
+                    <div class="pm-col-module">
+                      <div class="pm-module-info">
+                        <div class="pm-module-icon">
+                          <mat-icon>{{ getModuleIcon(module.module_name) }}</mat-icon>
+                        </div>
+                        <div class="pm-module-labels">
+                          <span class="pm-module-name">{{ getModuleLabel(module.module_name) }}</span>
+                          <span class="pm-module-granted">{{ getGrantedCount(module) }}/{{ module.permissions.length }}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    @for (action of ACTIONS; track action) {
+                      <div class="pm-col-action">
+                        @if (getPermission(module, action); as perm) {
+                          <div
+                            class="perm-chip"
+                            [class.perm-chip--active]="perm.granted"
+                            [attr.data-action]="action.toLowerCase()"
+                            (click)="togglePermission(perm)"
+                            [title]="perm.granted ? 'Quitar permiso' : 'Otorgar permiso'"
+                          >
+                            <mat-icon>{{ perm.granted ? 'check' : 'remove' }}</mat-icon>
+                          </div>
+                        } @else {
+                          <div class="perm-na">—</div>
+                        }
+                      </div>
+                    }
+
+                  </div>
+                }
+              </div>
+
+            </div>
+          }
+
+        </div>
+      }
+
+    </div>
+
+  </div>
+</div>

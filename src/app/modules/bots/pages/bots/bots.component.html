@@ -1,0 +1,26 @@
+<div class="wrapper-bots">
+
+  <div class="module-header">
+    <div class="module-title-group">
+      <h3 class="title-page">Bots</h3>
+      <p class="subtitle-page">Gestiona los chatbots de tu organización</p>
+    </div>
+  </div>
+
+  <app-table
+    titleTable="Lista de Bots"
+    addActionName="Nuevo Bot"
+    [tableColumns]="tableColumns"
+    [tableData]="bots"
+    [totalElements]="totalElements"
+    [isPageable]="isPageable"
+    [pageIndex]="pageIndex"
+    [pageSize]="size"
+    [isLoading]="isLoading"
+    [actions]="actions"
+    (add)="openCreateBot()"
+    (delete)="deleteBot($event)"
+    (filter)="getBots($event)">
+  </app-table>
+
+</div>

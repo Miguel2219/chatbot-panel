@@ -1,0 +1,17 @@
+.wrapper-leads {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+  height: 100%;
+
+  .leads-filter {
+    display: flex;
+    align-items: flex-end;
+    gap: $spacing-md;
+    flex-wrap: wrap;
+
+    .filter-item {
+      min-width: 240px;
+    }
+  }
+}

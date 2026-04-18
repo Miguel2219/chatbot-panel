@@ -1,0 +1,103 @@
+.wrapper-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: $spacing-md;
+
+    @media (max-width: 1200px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 576px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .dashboard-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-md;
+
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .recent-section {
+    background: $bg-surface;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    overflow: hidden;
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: $spacing-md $spacing-lg;
+      border-bottom: 1px solid $border-color;
+
+      .section-title {
+        font-size: $font-size-md;
+        font-weight: 600;
+        color: $text-primary;
+      }
+
+      a {
+        font-size: $font-size-sm;
+        color: $primary;
+      }
+    }
+
+    .recent-list {
+      padding: $spacing-sm 0;
+
+      .recent-item {
+        display: flex;
+        align-items: center;
+        gap: $spacing-md;
+        padding: $spacing-sm $spacing-lg;
+        transition: background $transition-fast;
+
+        &:hover {
+          background: $bg-hover;
+        }
+
+        .item-avatar {
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          background: $primary-light;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: $primary;
+          font-size: 16px;
+          flex-shrink: 0;
+        }
+
+        .item-info {
+          flex: 1;
+          overflow: hidden;
+
+          .item-title {
+            font-size: $font-size-sm;
+            font-weight: 500;
+            color: $text-primary;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          .item-subtitle {
+            font-size: $font-size-xs;
+            color: $text-muted;
+          }
+        }
+      }
+    }
+  }
+}
