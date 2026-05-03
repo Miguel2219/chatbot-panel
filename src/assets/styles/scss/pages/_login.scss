@@ -154,18 +154,112 @@
         display: flex;
         flex-direction: column;
         gap: $spacing-md;
+      }
 
-        .forgot-link {
-          display: block;
-          text-align: right;
-          font-size: $font-size-sm;
-          color: $primary;
-          margin-top: -$spacing-xs;
+      // Link "olvidé mi contraseña" / "volver al login". Vive tanto dentro
+      // del <form> (después del submit) como fuera (pantallas de estado de
+      // reset). Por eso la regla está al nivel del contenedor, no anidada
+      // bajo .login-form.
+      .login-extra {
+        margin-top: $spacing-xs;
+        text-align: center;
+      }
 
-          &:hover {
-            color: $primary-hover;
-          }
+      .forgot-link {
+        display: inline-block;
+        font-size: $font-size-sm;
+        color: $primary;
+        text-decoration: none;
+
+        &:hover {
+          color: $primary-hover;
+          text-decoration: underline;
         }
+      }
+
+      // Medidor de fuerza de password (reset-password). 3 barritas que se
+      // iluminan progresivamente. Colores tomados del palette global.
+      .strength-meter {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: $spacing-xs;
+        margin-top: $spacing-xs;
+      }
+
+      .strength-bar {
+        height: 4px;
+        border-radius: 2px;
+        background: $border-color;
+        transition: background 150ms ease;
+
+        &.active.weak    { background: $danger; }
+        &.active.medium  { background: $warning; }
+        &.active.strong  { background: $success; }
+      }
+
+      .reset-password-hint {
+        margin-top: $spacing-xs;
+        font-size: $font-size-sm;
+        color: $text-muted;
+        line-height: 1.4;
+      }
+
+      // Bloques centrados para los estados validating / invalid / success
+      // de reset-password y la confirmación de forgot-password.
+      .reset-centered,
+      .forgot-confirmation {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: $spacing-sm;
+
+        .login-title,
+        .login-subtitle {
+          text-align: center;
+        }
+
+        .btn-full {
+          margin-top: $spacing-md;
+        }
+      }
+
+      .reset-icon,
+      .confirmation-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: $spacing-sm;
+
+        mat-icon {
+          font-size: 32px;
+          width: 32px;
+          height: 32px;
+        }
+      }
+
+      .confirmation-icon {
+        background: $primary-light;
+        color: $primary;
+      }
+
+      .reset-icon--success {
+        background: rgba(34, 197, 94, 0.12);
+        color: $success;
+      }
+
+      .reset-icon--error {
+        background: $danger-light;
+        color: $danger;
+      }
+
+      .reset-countdown {
+        margin-top: $spacing-md;
+        font-size: $font-size-sm;
+        color: $text-muted;
       }
 
       .login-error {

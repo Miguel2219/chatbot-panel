@@ -1,28 +1,29 @@
 import {Injectable} from '@angular/core';
-import {map, Observable} from 'rxjs';
-import {BotService} from '../../bots/services/bot.service';
-import {LeadService} from '../../leads/services/lead.service';
+import {HttpParams} from '@angular/common/http';
+import {Observable} from 'rxjs';
 
-export interface DashboardStats {
-  totalBots: number;
-  totalLeads: number;
-  pendingLeads: number;
-}
+import {HttpService} from '../../../core/services/http.service';
+import {EndPoints} from '../../../core/utils/endpoints';
+import {DashboardSummaryDto} from '../interfaces/dashboard-summary.interface';
 
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
-  constructor(
-    private _botService: BotService,
-    private _leadService: LeadService,
-  ) {}
 
-  getStats(tenantId: string, botIds: string[]): Observable<DashboardStats> {
-    return this._botService.getBotsByTenant(tenantId).pipe(
-      map(bots => ({
-        totalBots: bots.length,
-        totalLeads: 0,
-        pendingLeads: 0,
-      }))
+  constructor(private _http: HttpService) {}
+
+  /**
+   * @param tenantId  Opcional — sólo tiene efecto cuando el caller es ADMIN.
+   *                  Para USER, el backend ignora este parámetro y usa su propio tenant.
+   */
+  getSummary(tenantId?: string | null): Observable<DashboardSummaryDto> {
+    let params = new HttpParams();
+    if (tenantId) {
+      params = params.set('tenantId', tenantId);
+    }
+    return this._http.get<DashboardSummaryDto>(
+      EndPoints.DASHBOARD_SUMMARY,
+      false,
+      this._http.addParams(params),
     );
   }
 }

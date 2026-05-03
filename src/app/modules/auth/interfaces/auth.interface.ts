@@ -15,9 +15,37 @@ export interface ModulePermissions {
 }
 
 export interface LoginResponse {
-  token: string;
+  access_token: string;
+  refresh_token: string;
+  expires_in: number;       // vida útil del access token en segundos
   type: string;
   user: UserResponse;
   implementation_type: string | null;
   modules: ModulePermissions[];
+}
+
+export interface RefreshTokenRequest {
+  refresh_token: string;
+}
+
+export interface ChangePasswordRequest {
+  current_password: string;
+  new_password: string;
+}
+
+export interface ForgotPasswordRequest {
+  email: string;
+}
+
+export interface ResetPasswordRequest {
+  token: string;
+  new_password: string;
+}
+
+export interface ValidateResetTokenResponse {
+  email_masked: string;
+}
+
+export interface GenericMessageResponse {
+  message: string;
 }

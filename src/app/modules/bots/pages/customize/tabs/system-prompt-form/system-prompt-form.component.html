@@ -1,0 +1,49 @@
+<section
+  class="customize-tabpanel"
+  role="tabpanel"
+  id="panel-prompt"
+  aria-labelledby="tab-prompt"
+  tabindex="0">
+
+  <form class="prompt-form" [formGroup]="form" autocomplete="off">
+
+    @if (isLoadingPrompt) {
+      <div class="module-loading">
+        <div class="loader-ring"></div>
+      </div>
+    } @else {
+      <div class="input-group">
+        <app-input-label
+          label="System prompt"
+          inputId="customize-bot-prompt"
+          [control]="promptCtrl" />
+        <textarea
+          id="customize-bot-prompt"
+          formControlName="system_prompt"
+          rows="14"
+          placeholder="Eres un asistente virtual de la empresa X. Tu rol es ayudar a los clientes...">
+        </textarea>
+        <small
+          class="input-hint"
+          [class.is-warning]="counterState === 'warning'"
+          [class.is-danger]="counterState === 'danger'"
+          aria-live="polite">
+          {{ (promptCtrl.value?.length ?? 0) }} / 20.000
+        </small>
+      </div>
+    }
+
+    <div class="customize-actions">
+      <button class="btn btn-secondary" type="button" (click)="cancel()">Cancelar</button>
+      <button
+        class="btn btn-primary"
+        type="button"
+        [disabled]="isSaving || isLoadingPrompt"
+        (click)="submit()">
+        @if (isSaving) { Guardando... } @else { Guardar cambios }
+      </button>
+    </div>
+
+  </form>
+
+</section>

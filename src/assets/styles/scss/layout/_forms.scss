@@ -11,6 +11,37 @@
     color: $text-secondary;
   }
 
+  // Fila que agrupa label + mensaje de error en una sola línea. Patrón:
+  // el mensaje de error se pinta al mismo nivel del label (no DEBAJO del
+  // input como antes), para que el alto del bloque no cambie entre estado
+  // válido e inválido y la modal no "salte" al aparecer el error.
+  .input-label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $spacing-sm;
+    min-height: 20px; // Estabiliza el alto aunque el mensaje no exista.
+  }
+
+  // Asterisco de required. Hereda el color del label (gris/blanco) — no se
+  // pinta de rojo. Solo es una marca visual de "campo obligatorio", no de
+  // error. El único elemento rojo del formulario es `.input-error-inline`.
+  .input-label-required {
+    color: inherit;
+    margin-left: 2px;
+  }
+
+  // Mensaje de error inline a la derecha del label. Texto rojo plano, sin
+  // fondo ni pill ni padding — solo las letras. Se muestra únicamente cuando
+  // el control es inválido + tocado (típicamente tras un intento de submit).
+  .input-error-inline {
+    color: $danger;
+    font-size: $font-size-xs;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
   input,
   textarea {
     background: $bg-elevated;
@@ -47,6 +78,9 @@
     resize: vertical;
   }
 
+  // DEPRECATED: Reemplazado por `.input-error-inline` dentro de <app-input-label>.
+  // Se mantiene solamente para que formularios que aún no migraron al componente
+  // shared sigan renderizando. Nuevas pantallas no deben usarlo.
   .input-error {
     font-size: $font-size-xs;
     color: $danger;
@@ -87,33 +121,162 @@
     color: $text-primary !important;
     min-height: 44px !important;
     cursor: pointer;
+    align-items: center;
     transition: border-color $transition-fast, box-shadow $transition-fast;
 
     &:hover {
       border-color: rgba(255, 255, 255, 0.2) !important;
     }
 
-    .ng-value-label {
-      color: $text-primary !important;
-      font-size: $font-size-base;
+    .ng-value-container {
+      padding-left: $spacing-md !important;
+      align-items: center;
+
+      // ng-select renderiza el placeholder como flex-child estático, por lo
+      // que el align-items: center del contenedor ya lo centra verticalmente.
+      // No usar top/transform aquí — en static position, top no aplica y el
+      // translateY(-50%) lo desplaza hacia arriba (clipping visible).
+      .ng-placeholder {
+        color: $text-muted !important;
+        font-size: $font-size-base;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        line-height: 1.2;
+      }
+
+      // .ng-input sí es position: absolute (top: 5px por defecto en
+      // single-select), así que aquí sí centramos manualmente.
+      .ng-input {
+        top: 50% !important;
+        transform: translateY(-50%);
+        padding-left: $spacing-md !important;
+        padding-right: $spacing-md !important;
+
+        // Reset completo del <input> interno. Sin este reset, el user-agent
+        // stylesheet del browser deja el borde/fondo por defecto del input
+        // visible, y al estar centrado verticalmente encima del placeholder
+        // genera una línea fina que lo atraviesa (efecto "tachado").
+        > input {
+          color: $text-primary !important;
+          font-family: $font-family;
+          font-size: $font-size-base;
+          background: transparent !important;
+          border: none !important;
+          outline: none !important;
+          box-shadow: none !important;
+          padding: 0 !important;
+          line-height: 1.2;
+        }
+      }
+
+      .ng-value {
+        .ng-value-label {
+          color: $text-primary !important;
+          font-size: $font-size-base;
+          line-height: 1;
+        }
+      }
     }
 
-    .ng-placeholder {
-      color: $text-muted !important;
-      font-size: $font-size-base;
-    }
+    .ng-arrow-wrapper {
+      width: 32px;
+      padding-right: $spacing-sm;
 
-    .ng-input input {
-      color: $text-primary !important;
-      font-family: $font-family;
-    }
-
-    .ng-arrow-wrapper .ng-arrow {
-      border-top-color: $text-secondary !important;
+      .ng-arrow {
+        border-top-color: $text-secondary !important;
+        border-width: 5px 5px 2.5px !important;
+      }
     }
 
     .ng-clear-wrapper {
       color: $text-secondary !important;
+      width: 22px;
+
+      &:hover .ng-clear {
+        color: $danger !important;
+      }
+    }
+  }
+
+  // ─── Single select ─────────────────────────────────────────
+  &.ng-select-single .ng-select-container {
+    height: 44px;
+
+    .ng-value-container .ng-input {
+      padding-left: $spacing-md !important;
+      padding-right: $spacing-md !important;
+    }
+  }
+
+  // ─── Multi select ──────────────────────────────────────────
+  &.ng-select-multiple .ng-select-container {
+    padding: 4px 4px 4px $spacing-xs;
+
+    .ng-value-container {
+      padding-top: 0 !important;
+      padding-left: 4px !important;
+      gap: 4px;
+
+      .ng-value {
+        background: $primary-light !important;
+        border: 1px solid rgba($primary, 0.3) !important;
+        border-radius: $border-radius-sm !important;
+        color: $primary !important;
+        margin: 0 !important;
+        padding: 4px $spacing-sm !important;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: $font-size-sm;
+        line-height: 1.2;
+
+        .ng-value-label {
+          color: $primary !important;
+          font-size: $font-size-sm !important;
+          font-weight: 500;
+          padding: 0 !important;
+        }
+
+        .ng-value-icon {
+          color: $primary !important;
+          padding: 0 !important;
+          border: none !important;
+          font-size: $font-size-base;
+          line-height: 1;
+          order: 2;
+          opacity: 0.7;
+          transition: opacity $transition-fast;
+
+          &:hover {
+            background: transparent !important;
+            opacity: 1;
+          }
+
+          &.left {
+            border-right: none !important;
+          }
+        }
+
+        &.ng-value-disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+      }
+
+      .ng-input {
+        padding: 0 !important;
+        transform: none !important;
+        top: auto !important;
+
+        > input {
+          color: $text-primary !important;
+          font-size: $font-size-base;
+        }
+      }
+
+      .ng-placeholder {
+        padding-left: $spacing-sm !important;
+      }
     }
   }
 
@@ -122,36 +285,53 @@
     box-shadow: 0 0 0 3px $primary-light !important;
   }
 
+  &.ng-select-disabled .ng-select-container {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
   .ng-dropdown-panel {
     background: $bg-elevated !important;
     border: 1px solid $border-color-light !important;
     border-radius: $border-radius-sm !important;
     box-shadow: $shadow-lg !important;
     z-index: 9999 !important;
+    margin-top: 4px;
 
-    .ng-option {
-      background: transparent !important;
-      color: $text-primary !important;
-      font-family: $font-family;
-      font-size: $font-size-base;
-      padding: 10px $spacing-md;
-      transition: background $transition-fast;
+    .ng-dropdown-panel-items {
+      .ng-option {
+        background: transparent !important;
+        color: $text-primary !important;
+        font-family: $font-family;
+        font-size: $font-size-base;
+        padding: 10px $spacing-md !important;
+        transition: background $transition-fast;
 
-      &:hover,
-      &.ng-option-marked {
-        background: $bg-hover !important;
+        &:hover,
+        &.ng-option-marked {
+          background: $bg-hover !important;
+          color: $text-primary !important;
+        }
+
+        &.ng-option-selected,
+        &.ng-option-selected.ng-option-marked {
+          background: $primary-light !important;
+          color: $primary !important;
+          font-weight: 500;
+        }
+
+        &.ng-option-disabled {
+          color: $text-muted !important;
+          cursor: not-allowed;
+        }
       }
+    }
 
-      &.ng-option-selected {
-        background: $primary-light !important;
-        color: $primary !important;
-        font-weight: 500;
-      }
-
-      &.ng-option-disabled {
-        color: $text-muted !important;
-        cursor: not-allowed;
-      }
+    .ng-dropdown-header,
+    .ng-dropdown-footer {
+      border-color: $border-color-light !important;
+      background: $bg-elevated !important;
+      color: $text-secondary !important;
     }
   }
 }
@@ -175,7 +355,11 @@
 }
 
 // ─── ng-select variante: modal ────────────────────────────────
-// Selects dentro de modales — alineados con los inputs del formulario
+// Selects dentro de modales — alineados con los inputs del formulario.
+// Nota: duplicamos el reset del <input> interno aquí porque en el contexto
+// de Angular Material dialog el cascade re-aplica los defaults del browser
+// sobre el <input> (borde/fondo), lo que genera una línea fina encima del
+// placeholder centrado verticalmente (efecto "tachado").
 .ng-select.ng-select-modal {
   .ng-select-container {
     min-height: 44px !important;
@@ -184,10 +368,76 @@
 
     .ng-value-container {
       padding-left: $spacing-sm;
+      align-items: center;
+
+      // Mismo razonamiento que el rule global: en modal el placeholder
+      // sigue siendo flex-child estático, así que align-items: center del
+      // contenedor lo centra. El translateY(-50%) lo desplaza hacia arriba
+      // y produce el "tachado" visible al inicio del input.
+      .ng-placeholder {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        line-height: 1.2;
+      }
+
+      .ng-input {
+        top: 50% !important;
+        transform: translateY(-50%);
+
+        > input {
+          background: transparent !important;
+          border: none !important;
+          outline: none !important;
+          box-shadow: none !important;
+          padding: 0 !important;
+          line-height: 1.2;
+        }
+      }
     }
 
     .ng-value-label {
       font-size: $font-size-base;
+    }
+  }
+
+  // ─── Multi-select dentro de modal ────────────────────────────
+  // El rule global `.ng-select-multiple` agrega padding vertical 4px para dar
+  // espacio a los chips, y el placeholder hereda una opacidad tenue del CSS
+  // propio de ng-select que hace que se vea casi invisible. Aquí forzamos
+  // alto, color y centrado vertical coherentes con el single-select del mismo
+  // modal para que los dos tipos de select se vean como "la misma cosa".
+  &.ng-select-multiple .ng-select-container {
+    min-height: 44px !important;
+    padding: 0 4px 0 $spacing-xs !important;
+    // ng-value-container en multi-select arranca en top por defecto (para
+    // que los chips fluyan desde arriba-izquierda). Al centrar el container
+    // directamente, con el min-height de 44px el placeholder/input queda
+    // verticalmente al medio cuando no hay chips, y los chips se siguen
+    // viendo bien cuando se llena — porque al haber contenido, el min-height
+    // simplemente se supera y el align-items: center pasa a ser irrelevante.
+    align-items: center !important;
+
+    .ng-value-container {
+      padding-top: 0 !important;
+      // Mismo motivo que el padre: cuando solo está el placeholder y el
+      // input vacío, ambos son flex-children; align-items: center los
+      // centra verticalmente dentro del valor-container.
+      align-items: center !important;
+      align-content: center !important;
+
+      // Espejo del color del single-select modal (text-muted). Sin el
+      // override, el placeholder del multi-select queda casi transparente.
+      .ng-placeholder {
+        color: $text-muted !important;
+        font-size: $font-size-base !important;
+        opacity: 1 !important;
+        padding-left: $spacing-xs !important;
+        // El placeholder de ng-select-multiple es `position: static` (a
+        // diferencia del single-select que lo pone absolute), así que top
+        // no aplica y el alineamiento lo da el flex padre.
+        top: auto !important;
+        transform: none !important;
+      }
     }
   }
 

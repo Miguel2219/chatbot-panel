@@ -16,6 +16,49 @@
     }
   }
 
+  .modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  .input-row {
+    display: flex;
+    gap: $spacing-md;
+
+    .input-group { flex: 1; min-width: 0; }
+
+    @media (max-width: 576px) {
+      flex-direction: column;
+    }
+  }
+
+  .readonly-label {
+    font-size: $font-size-sm;
+    font-weight: 500;
+    color: $text-secondary;
+  }
+
+  .readonly-field {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    height: 44px;
+    padding: 0 $spacing-md;
+    background: $bg-elevated;
+    border: 1px solid $border-color-light;
+    border-radius: $border-radius-sm;
+    color: $text-primary;
+    font-size: $font-size-base;
+
+    .readonly-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      color: $text-muted;
+    }
+  }
+
   .drop-zone {
     border: 2px dashed $border-color-light;
     border-radius: $border-radius;

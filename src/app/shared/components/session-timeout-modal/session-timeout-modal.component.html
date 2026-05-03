@@ -1,0 +1,20 @@
+<div class="wrapper-session-timeout">
+
+  <div class="modal-header">
+    <h3 class="modal-title">Tu sesión está por cerrarse</h3>
+  </div>
+
+  <div class="modal-body">
+    <p class="modal-description">
+      Por seguridad, cerraremos tu sesión por inactividad en:
+    </p>
+    <div class="countdown">{{ countdownDisplay }}</div>
+    <p class="modal-hint">¿Deseas seguir trabajando?</p>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="onLogout()">Cerrar sesión</button>
+    <button class="btn btn-primary" (click)="onContinue()">Continuar sesión</button>
+  </div>
+
+</div>

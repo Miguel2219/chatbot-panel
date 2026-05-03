@@ -24,7 +24,7 @@
           <div class="nav-icon">
             <mat-icon>{{ item.icon }}</mat-icon>
           </div>
-          <span class="nav-label">{{ item.name }}</span>
+          <span class="nav-label">{{ displayLabel(item) }}</span>
         </a>
       }
     </nav>
@@ -43,6 +43,20 @@
         <mat-icon>logout</mat-icon>
         Cerrar sesión
       </button>
+
+      <!-- TODO(MVP): "Cerrar sesión en todos los dispositivos" — pendiente
+           de reactivar junto con el endpoint backend.
+      <button
+        type="button"
+        class="logout-all-btn"
+        (click)="logoutAllDevices()"
+        [disabled]="logoutAllInFlight"
+        title="Revoca todos los refresh tokens del servidor — útil si perdiste un dispositivo."
+      >
+        <mat-icon>devices</mat-icon>
+        Cerrar sesión en todos los dispositivos
+      </button>
+      -->
     </div>
   </aside>
 

@@ -10,6 +10,7 @@ export interface TableActions {
   edit: boolean;
   delete: boolean;
   search: boolean;
+  customize?: boolean;
 }
 
 export const DEFAULT_ACTIONS: TableActions = {

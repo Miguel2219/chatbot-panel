@@ -2,14 +2,31 @@
 
   <div class="module-header">
     <div class="module-title-group">
-      <h3 class="title-page">Bots</h3>
-      <p class="subtitle-page">Gestiona los chatbots de tu organización</p>
+      <h3 class="title-page">Asistentes</h3>
+      <p class="subtitle-page">Gestiona los asistentes de tu organización</p>
     </div>
+
+    @if (isAdmin) {
+      <div class="module-actions">
+        <div class="bots-tenant-filter">
+          <ng-select
+            class="ng-select-module"
+            [items]="tenants"
+            bindValue="value"
+            bindLabel="label"
+            [ngModel]="tenantFilterId"
+            (ngModelChange)="onTenantFilterChange($event)"
+            [clearable]="true"
+            placeholder="Filtrar por empresa">
+          </ng-select>
+        </div>
+      </div>
+    }
   </div>
 
   <app-table
-    titleTable="Lista de Bots"
-    addActionName="Nuevo Bot"
+    titleTable="Lista de asistentes"
+    addActionName="Nuevo asistente"
     [tableColumns]="tableColumns"
     [tableData]="bots"
     [totalElements]="totalElements"
@@ -19,6 +36,8 @@
     [isLoading]="isLoading"
     [actions]="actions"
     (add)="openCreateBot()"
+    (edit)="openEditBot($event)"
+    (customize)="openCustomizeBot($event)"
     (delete)="deleteBot($event)"
     (filter)="getBots($event)">
   </app-table>

@@ -1,0 +1,225 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-04-30T00:00:00Z",
+  "title": "Design System: Zolvion Chatbot Panel",
+  "extensions": {
+    "colorMeta": {
+      "ember-orange": {
+        "role": "primary",
+        "displayName": "Ember Orange",
+        "canonical": "oklch(67% 0.21 45)",
+        "tonalRamp": ["#1F0A00", "#3D1500", "#5C1F00", "#85300A", "#B84500", "#FF6B00", "#FF8A33", "#FFE6D4"]
+      },
+      "night-floor": {
+        "role": "neutral",
+        "displayName": "Night Floor",
+        "canonical": "oklch(8% 0.02 280)",
+        "tonalRamp": ["#05060D", "#0A0A1A", "#0F1024", "#141528", "#1A1C33", "#2A2D4A", "#454872", "#6B6F9C"]
+      },
+      "night-surface": {
+        "role": "neutral",
+        "displayName": "Night Surface",
+        "canonical": "oklch(11% 0.025 280)",
+        "tonalRamp": ["#05060D", "#0A0A1A", "#0F1024", "#141528", "#1A1C33", "#2A2D4A", "#454872", "#6B6F9C"]
+      },
+      "night-elevated": {
+        "role": "neutral",
+        "displayName": "Night Elevated",
+        "canonical": "oklch(14% 0.03 280)",
+        "tonalRamp": ["#05060D", "#0A0A1A", "#0F1024", "#141528", "#1A1C33", "#2A2D4A", "#454872", "#6B6F9C"]
+      },
+      "night-hover": {
+        "role": "neutral",
+        "displayName": "Night Hover",
+        "canonical": "oklch(17% 0.035 280)",
+        "tonalRamp": ["#05060D", "#0A0A1A", "#0F1024", "#141528", "#1A1C33", "#2A2D4A", "#454872", "#6B6F9C"]
+      },
+      "sidebar-recess": {
+        "role": "neutral",
+        "displayName": "Sidebar Recess",
+        "canonical": "oklch(5% 0.015 280)",
+        "tonalRamp": ["#03040A", "#05060D", "#0A0A1A", "#0F1024", "#141528", "#1A1C33", "#2A2D4A", "#454872"]
+      },
+      "paper-foreground": {
+        "role": "neutral",
+        "displayName": "Paper Foreground",
+        "canonical": "oklch(96% 0.01 280)",
+        "tonalRamp": ["#1A1C33", "#2A2D4A", "#454872", "#6B6F9C", "#8A8DB0", "#A0A3B8", "#D4D6E6", "#F4F5FB"]
+      },
+      "smoke-foreground": {
+        "role": "neutral",
+        "displayName": "Smoke Foreground",
+        "canonical": "oklch(72% 0.02 270)",
+        "tonalRamp": ["#1A1C33", "#2A2D4A", "#454872", "#6B6F9C", "#8A8DB0", "#A0A3B8", "#D4D6E6", "#F4F5FB"]
+      },
+      "iron-foreground": {
+        "role": "neutral",
+        "displayName": "Iron Foreground",
+        "canonical": "oklch(45% 0.03 250)",
+        "tonalRamp": ["#1A1C33", "#2A2D4A", "#475569", "#64748B", "#94A3B8", "#CBD5E1", "#E2E8F0", "#F1F5F9"]
+      },
+      "iron-border": {
+        "role": "neutral",
+        "displayName": "Iron Border",
+        "canonical": "rgba(255, 255, 255, 0.08)",
+        "tonalRamp": ["#FFFFFF0A", "#FFFFFF14", "#FFFFFF1F", "#FFFFFF24", "#FFFFFF33", "#FFFFFF52", "#FFFFFF85", "#FFFFFFC2"]
+      },
+      "signal-success": {
+        "role": "tertiary",
+        "displayName": "Signal Success",
+        "canonical": "oklch(72% 0.18 145)",
+        "tonalRamp": ["#0A2912", "#14401E", "#1F5C2E", "#2E8042", "#22C55E", "#4ADE80", "#86EFAC", "#DCFCE7"]
+      },
+      "signal-warning": {
+        "role": "tertiary",
+        "displayName": "Signal Warning",
+        "canonical": "oklch(76% 0.17 75)",
+        "tonalRamp": ["#2B1A03", "#3F2806", "#5C390A", "#854F0F", "#B86F14", "#F59E0B", "#FBBF24", "#FEF3C7"]
+      },
+      "signal-danger": {
+        "role": "tertiary",
+        "displayName": "Signal Danger",
+        "canonical": "oklch(64% 0.22 27)",
+        "tonalRamp": ["#2B0808", "#451010", "#6B1A1A", "#962626", "#D63838", "#EF4444", "#F87171", "#FEE2E2"]
+      },
+      "signal-info": {
+        "role": "tertiary",
+        "displayName": "Signal Info",
+        "canonical": "oklch(73% 0.13 230)",
+        "tonalRamp": ["#0A2235", "#0F3450", "#185074", "#2476A8", "#38BDF8", "#7DD3FC", "#BAE6FD", "#E0F2FE"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Headlines de página principal. Raro: típicamente solo el dashboard o pantalla de bienvenida." },
+      "headline": { "displayName": "Headline", "purpose": "Títulos de página (h2, .customize-title), encabezados grandes de sección." },
+      "title": { "displayName": "Title", "purpose": "h3, modal-title, títulos de cards (.title-page, .modal-title)." },
+      "body": { "displayName": "Body", "purpose": "Texto general, copy, contenido de inputs. Acotar a 75ch para texto técnico." },
+      "label": { "displayName": "Label", "purpose": "Labels de input, badges, eyebrows estilo uppercase con letter-spacing." },
+      "caption": { "displayName": "Caption", "purpose": "Contadores, hints, metadata de tablas. Numbers usan tabular-nums." },
+      "mono": { "displayName": "Mono", "purpose": "Bloques de snippet (<pre>), label HTML del snippet header, identifiers en hints." }
+    },
+    "shadows": [
+      { "name": "ambient-low",    "value": "0 1px 3px rgba(0, 0, 0, 0.4)",    "purpose": "Popovers chicos, tooltips." },
+      { "name": "ambient-medium", "value": "0 4px 12px rgba(0, 0, 0, 0.5)",   "purpose": "Modales internos, dialogs medianos." },
+      { "name": "ambient-high",   "value": "0 8px 24px rgba(0, 0, 0, 0.6)",   "purpose": "Dropdowns ng-select, Angular Material dialogs." },
+      { "name": "ember-glow",     "value": "0 0 20px rgba(255, 107, 0, 0.35)", "purpose": "Spark puntual. The Glow-Is-A-Spark Rule: nunca decoración ambiental." }
+    ],
+    "motion": [
+      { "name": "transition-fast", "value": "0.15s ease", "purpose": "Hover, focus, color/border transitions. Default state-change easing." },
+      { "name": "transition-base", "value": "0.25s ease", "purpose": "Cambios algo más visibles (drawer slide, accordion)." },
+      { "name": "transition-slow", "value": "0.4s ease",  "purpose": "Solo donde la lentitud es semánticamente útil. Casi nunca." }
+    ],
+    "breakpoints": [
+      { "name": "form-row", "value": "576px" },
+      { "name": "sm",       "value": "640px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "CTA principal. Naranja Ember sobre superficie oscura. Único uso del color de marca como background.",
+      "html": "<button class=\"ds-btn-primary\">Guardar cambios</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 24px; border-radius: 8px; background: #FF6B00; color: #FFFFFF; font-family: Inter, sans-serif; font-size: 14px; font-weight: 500; line-height: 1; border: none; cursor: pointer; transition: background 0.15s ease, transform 0.15s ease; } .ds-btn-primary:hover { background: #FF8A33; } .ds-btn-primary:active { transform: scale(0.98); } .ds-btn-primary:focus-visible { outline: 2px solid rgba(255, 107, 0, 0.5); outline-offset: 2px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Acción secundaria (Cancelar, alternativas). Background Night Elevated con borde sutil.",
+      "html": "<button class=\"ds-btn-secondary\">Cancelar</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 24px; border-radius: 8px; background: #141528; color: #F4F5FB; border: 1px solid rgba(255, 255, 255, 0.14); font-family: Inter, sans-serif; font-size: 14px; font-weight: 500; line-height: 1; cursor: pointer; transition: background 0.15s ease, border-color 0.15s ease; } .ds-btn-secondary:hover { background: #1A1C33; border-color: rgba(255, 255, 255, 0.2); } .ds-btn-secondary:focus-visible { outline: 2px solid rgba(255, 107, 0, 0.5); outline-offset: 2px; }"
+    },
+    {
+      "name": "Icon Button",
+      "kind": "button",
+      "refersTo": "button-icon",
+      "description": "Botón circular para acciones de ícono solo (cerrar modal, editar fila). 36×36px, hover sutil.",
+      "html": "<button class=\"ds-btn-icon\" aria-label=\"Cerrar\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><line x1=\"18\" y1=\"6\" x2=\"6\" y2=\"18\"/><line x1=\"6\" y1=\"6\" x2=\"18\" y2=\"18\"/></svg></button>",
+      "css": ".ds-btn-icon { width: 36px; height: 36px; padding: 0; border-radius: 50%; background: #141528; border: 1px solid rgba(255, 255, 255, 0.08); color: #A0A3B8; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease; } .ds-btn-icon:hover { background: #1A1C33; border-color: rgba(255, 255, 255, 0.14); color: #F4F5FB; } .ds-btn-icon:focus-visible { outline: 2px solid rgba(255, 107, 0, 0.5); outline-offset: 2px; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input-default",
+      "description": "Input estándar. 44px alto, focus con halo naranja al 12%.",
+      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"Nombre del bot\" />",
+      "css": ".ds-input { background: #141528; border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 8px; color: #F4F5FB; font-family: Inter, sans-serif; font-size: 14px; padding: 0 16px; height: 44px; width: 100%; outline: none; transition: border-color 0.15s ease, box-shadow 0.15s ease; } .ds-input::placeholder { color: #475569; } .ds-input:focus { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.12); } .ds-input:disabled { opacity: 0.5; cursor: not-allowed; }"
+    },
+    {
+      "name": "Badge Primary",
+      "kind": "chip",
+      "refersTo": "badge-primary",
+      "description": "Pill compacto con punto indicador. Naranja Ember para entidades de tipo bot.",
+      "html": "<span class=\"ds-badge-primary\">Bot</span>",
+      "css": ".ds-badge-primary { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; background: rgba(255, 107, 0, 0.12); color: #FF6B00; font-family: Inter, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.4px; white-space: nowrap; } .ds-badge-primary::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }"
+    },
+    {
+      "name": "Tab Item",
+      "kind": "nav",
+      "refersTo": "tab-active",
+      "description": "Tab con underline naranja en estado activo. Patrón ARIA Authoring Practices.",
+      "html": "<div role=\"tablist\" class=\"ds-tablist\"><button role=\"tab\" aria-selected=\"true\" class=\"ds-tab\">Personalización</button><button role=\"tab\" aria-selected=\"false\" class=\"ds-tab\">Instalación</button></div>",
+      "css": ".ds-tablist { display: flex; gap: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); } .ds-tab { background: transparent; border: none; padding: 8px 0; margin-right: 8px; margin-bottom: -1px; font-family: Inter, sans-serif; font-size: 12px; font-weight: 500; color: #A0A3B8; cursor: pointer; border-bottom: 2px solid transparent; transition: color 0.15s ease, border-color 0.15s ease; } .ds-tab:hover { color: #F4F5FB; } .ds-tab[aria-selected='true'] { color: #F4F5FB; border-bottom-color: #FF6B00; } .ds-tab:focus-visible { outline: 2px solid rgba(255, 107, 0, 0.5); outline-offset: 4px; border-radius: 8px; }"
+    },
+    {
+      "name": "Snippet Block",
+      "kind": "card",
+      "refersTo": null,
+      "description": "Bloque de código copiable. Header con label HTML mono + botón Copiar; pre body con scroll horizontal limpio. Signature component del panel.",
+      "html": "<div class=\"ds-snippet\"><div class=\"ds-snippet-header\"><span class=\"ds-snippet-label\">HTML</span><button class=\"ds-snippet-copy\" type=\"button\" aria-label=\"Copiar código\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><rect x=\"9\" y=\"9\" width=\"13\" height=\"13\" rx=\"2\"/><path d=\"M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1\"/></svg><span>Copiar</span></button></div><pre class=\"ds-snippet-code\"><code>&lt;script\n  src=\"https://widget.zolvion.com/widget.js\"\n  data-bot-id=\"bot_abc123\"&gt;\n&lt;/script&gt;</code></pre></div>",
+      "css": ".ds-snippet { background: #141528; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; max-width: 75ch; } .ds-snippet-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: #0F1024; } .ds-snippet-label { font-family: ui-monospace, JetBrains Mono, Consolas, monospace; font-size: 11px; color: #A0A3B8; letter-spacing: 0.05em; text-transform: uppercase; } .ds-snippet-copy { display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; background: #141528; color: #F4F5FB; border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 8px; font-family: Inter, sans-serif; font-size: 11px; font-weight: 500; cursor: pointer; transition: background 0.15s ease; } .ds-snippet-copy:hover { background: #1A1C33; } .ds-snippet-code { margin: 0; padding: 16px; font-family: ui-monospace, JetBrains Mono, Consolas, monospace; font-size: 12px; line-height: 1.7; color: #F4F5FB; white-space: pre; overflow-x: auto; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Night Workshop",
+    "overview": "Un taller nocturno: el power user trabaja iluminado por una sola fuente (el naranja Zolvion) sobre una superficie oscura calibrada en cuatro pasos de gris-violeta. Densidad sobre espectáculo. La interfaz es un instrumento, no una vidriera. Los asesores pasan ocho horas frente a este panel, los TENANT_OWNER vienen a configurar su bot y volver a su sitio web; ninguno necesita ser entretenido, todos necesitan que la herramienta desaparezca en la tarea.\n\nEl sistema rechaza explícitamente la estética SaaS genérica (HubSpot, Salesforce, hero metric grids), el glassmorphism decorativo, los gradientes púrpura tipo Stripe, los gradient text con background-clip, los side-stripe borders coloreados, los modales como contenedor universal y los clichés visuales del rubro chatbot (neón cyan, mascots, burbujas decorativas). Lo que queda después de quitar todo eso es una superficie oscura comprometida (no toggle), tipografía Inter tight, jerarquías construidas con peso y escala (no con color decorativo), y un único acento naranja que aparece sólo donde cumple función semántica.",
+    "keyCharacteristics": [
+      "Densidad sobre aire. Aire calculado, no whitespace por defecto.",
+      "Compromiso con la oscuridad. Cuatro escalones de night-* tintados hacia el azul-violeta de marca; nunca #000 ni #fff.",
+      "Naranja como punto de fuego. Ember Orange aparece en CTA primarios, tab activa, focus ring, badge primary. Nada más.",
+      "Tipografía Inter, una sola familia. Todas las jerarquías derivan de la misma escala 11→32px.",
+      "Bordes 1px sutiles. El sistema no grita; se delimita."
+    ],
+    "rules": [
+      { "name": "The Single-Spark Rule",     "section": "colors",     "body": "El naranja Ember se usa donde comunica acción o estado: CTA primario, tab activa, focus ring, badge-primary. Nunca como decoración: nunca en el nombre de una entidad dentro de un heading, nunca en gradient text, nunca en side-stripe borders, nunca como background ambiental." },
+      { "name": "The Tinted-Neutral Rule",   "section": "colors",     "body": "Ningún hex puro. Los neutros tienen tinte hacia el azul-violeta de marca (chroma ~0.005-0.01). #000 y #fff están prohibidos por contrato." },
+      { "name": "The Recessed-Sidebar Rule", "section": "colors",     "body": "El sidebar va más oscuro que el fondo (Sidebar Recess, no Night Surface). En este sistema la jerarquía no se construye levantando elementos hacia adelante, se construye hundiendo el chrome hacia atrás." },
+      { "name": "The Single-Family Rule",    "section": "typography", "body": "Inter carga todo. No hay display + body pairing; la variación viene de peso y escala. Si una jerarquía nueva no se puede construir con la escala existente, el problema no se resuelve agregando otra familia: se resuelve replanteando la jerarquía." },
+      { "name": "The Tabular-Numbers Rule",  "section": "typography", "body": "Cualquier número que cambie en tiempo real (contadores, métricas, timestamps en tablas) usa font-variant-numeric: tabular-nums. Los dígitos no saltan; el ojo no se distrae." },
+      { "name": "The 75ch Rule",             "section": "typography", "body": "Texto técnico (system prompts, snippets, descriptions de bots) se acota a max-width: 75ch. Páginas más anchas (960px+) son válidas si el contenido editable adentro respeta este límite." },
+      { "name": "The Float-Means-Float Rule", "section": "elevation", "body": "Si el elemento no flota literalmente sobre el documento (dropdown, modal, toast), no lleva sombra. Las cards, los table-wrappers y los inputs son flat por construcción." },
+      { "name": "The Glow-Is-A-Spark Rule",  "section": "elevation",  "body": "El shadow-glow naranja es un evento, no un estado. No se usa para destacar un botón importante; solo aparece en momentos donde el spark es semánticamente correcto. Si está activado en más de un elemento por pantalla, hay un bug." },
+      { "name": "The 1px-Border Rule",       "section": "components", "body": "Bordes son siempre 1px. El único border más grueso autorizado es el border-bottom: 2px de la tab activa. Cualquier border-left/right > 1px es side-stripe = prohibido por contrato." },
+      { "name": "The 44px Touch Rule",       "section": "components", "body": "Inputs, dropdowns y botones primarios tienen al menos 44px de alto en mobile (@media max-width: 640px). Las tabs en mobile suben a padding: 16px vertical." }
+    ],
+    "dos": [
+      "Do usar la escala night-floor / surface / elevated / hover como elevación primaria; las sombras solo aparecen en lo que realmente flota.",
+      "Do reservar Ember Orange para los cuatro lugares donde cumple función: CTA primario, tab activa, focus ring, badge primary. En cualquier otro lugar, usar peso o tamaño.",
+      "Do acotar texto técnico (system prompts, snippets, descriptions) a max-width: 75ch. La página puede ser ancha; el contenido editable se acota.",
+      "Do componer páginas full-width con padding generoso ($spacing-lg $spacing-xl) que llenen el área del admin shell. Lo editable se acota internamente.",
+      "Do construir tabs con el patrón ARIA tablist completo (role, aria-selected, roving tabindex, flechas) y, si son navegación real, usar <a routerLink>.",
+      "Do poner labels visibles siempre. Los placeholders son una pista, no un sustituto de la etiqueta.",
+      "Do usar font-variant-numeric: tabular-nums en cualquier contador en tiempo real.",
+      "Do preferir páginas dedicadas sobre modales para flujos de configuración densos. La página customize-bot reemplazó al modal por exactamente esta razón."
+    ],
+    "donts": [
+      "Don't usar #000 ni #fff puros. Todos los neutros van tintados hacia el azul-violeta de marca.",
+      "Don't pintar nombres de entidad en <strong> con color de marca dentro de headings. El color naranja es acento puntual, nunca decoración.",
+      "Don't usar border-left o border-right > 1px como acento coloreado en cards, list items, callouts o alerts. Es la trampa SaaS clásica.",
+      "Don't usar gradient text (background-clip: text con gradiente). Ni en headings, ni en CTAs, ni en métricas.",
+      "Don't usar glassmorphism decorativo. Si aparece blur, debe tener función.",
+      "Don't componer hero metric grids — número gigante + label chico + sparkline en cuadrillas idénticas. Cliché SaaS.",
+      "Don't usar gradientes púrpura tipo Stripe. El sistema tiene naranja, no morado.",
+      "Don't abrir un modal antes de evaluar inline / drawer / página dedicada. Modal es último recurso.",
+      "Don't usar clichés visuales del rubro chatbot: neón cyan, robots, burbujas decorativas, mascots.",
+      "Don't componer páginas con max-width chico (< 1000px) centradas con margin: 0 auto en pantallas wide. Lee como producto inacabado.",
+      "Don't usar word-break: break-all en snippets de código. Destroza identificadores y URLs. Usar overflow-x: auto en <pre>.",
+      "Don't usar sticky footer con linear-gradient para botones de form. Patrón sobreingeniería; los botones van en flujo normal alineados a la derecha del input que sirven.",
+      "Don't anidar cards. Cards dentro de cards = wrong. Si necesitás separación dentro de un card, usá un divider 1px Iron Border.",
+      "Don't usar em dashes en copy. Usar comas, dos puntos, punto y coma, paréntesis o punto.",
+      "Don't usar exclamaciones en feedback de UI (¡Copiado! → Copiado). La voz es directa y técnica, no efusiva."
+    ]
+  }
+}

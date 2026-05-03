@@ -13,10 +13,12 @@
         <p class="roles-page-header__subtitle">Gestiona los roles y configura sus permisos por módulo</p>
       </div>
     </div>
-    <button class="btn btn-primary" (click)="openCreateRole()">
-      <mat-icon>add</mat-icon>
-      Nuevo Rol
-    </button>
+    @if (canCreate) {
+      <button class="btn btn-primary" (click)="openCreateRole()">
+        <mat-icon>add</mat-icon>
+        Nuevo Rol
+      </button>
+    }
   </div>
 
   <!-- ══════════════════════════════════════════
@@ -51,7 +53,9 @@
           <div class="roles-empty">
             <mat-icon>shield_lock</mat-icon>
             <p>Sin roles configurados</p>
-            <button class="btn btn-primary btn-sm" (click)="openCreateRole()">Crear primero</button>
+            @if (canCreate) {
+              <button class="btn btn-primary btn-sm" (click)="openCreateRole()">Crear primero</button>
+            }
           </div>
         } @else {
           @for (role of roles; track role.role_id) {
@@ -68,17 +72,21 @@
               </div>
 
               <div class="role-card__info">
-                <span class="role-card__name">{{ role.name }}</span>
+                <span class="role-card__name">{{ (role.name | roleLabel) }}</span>
                 <span class="role-card__desc">{{ role.description || 'Sin descripción' }}</span>
               </div>
 
               <div class="role-card__actions">
-                <button class="role-action-btn" (click)="openEditRole(role, $event)" title="Editar">
-                  <mat-icon>edit</mat-icon>
-                </button>
-                <button class="role-action-btn role-action-btn--danger" (click)="deleteRole(role, $event)" title="Eliminar">
-                  <mat-icon>delete_outline</mat-icon>
-                </button>
+                @if (canEdit) {
+                  <button class="role-action-btn" (click)="openEditRole(role, $event)" title="Editar">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                }
+                @if (canDelete) {
+                  <button class="role-action-btn role-action-btn--danger" (click)="deleteRole(role, $event)" title="Eliminar">
+                    <mat-icon>delete_outline</mat-icon>
+                  </button>
+                }
               </div>
 
               @if (selectedRole?.role_id === role.role_id) {
@@ -138,19 +146,21 @@
               </div>
             </div>
 
-            <button
-              class="btn btn-primary"
-              [disabled]="isSaving || isLoadingPermissions"
-              (click)="savePermissions()"
-            >
-              @if (isSaving) {
-                <mat-icon class="spin-icon">sync</mat-icon>
-                Guardando...
-              } @else {
-                <mat-icon>save</mat-icon>
-                Guardar cambios
-              }
-            </button>
+            @if (canEdit) {
+              <button
+                class="btn btn-primary"
+                [disabled]="isSaving || isLoadingPermissions"
+                (click)="savePermissions()"
+              >
+                @if (isSaving) {
+                  <mat-icon class="spin-icon">sync</mat-icon>
+                  Guardando...
+                } @else {
+                  <mat-icon>save</mat-icon>
+                  Guardar cambios
+                }
+              </button>
+            }
           </div>
 
           <!-- Matrix -->

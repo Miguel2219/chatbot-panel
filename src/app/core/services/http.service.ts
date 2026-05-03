@@ -1,9 +1,9 @@
-import { Inject, Injectable } from '@angular/core';
-import { HttpClient, HttpContext, HttpHeaders, HttpParams } from '@angular/common/http';
-import { DOCUMENT } from '@angular/common';
-import { Observable } from 'rxjs';
-import { HttpOptions } from '../interfaces/http-options.interface';
-import { CLEAR_AUTHORIZATION } from '../interceptors/auth-interceptor/auth.interceptor';
+import {Inject, Injectable} from '@angular/core';
+import {HttpClient, HttpContext, HttpHeaders, HttpParams} from '@angular/common/http';
+import {DOCUMENT} from '@angular/common';
+import {Observable} from 'rxjs';
+import {HttpOptions} from '../interfaces/http-options.interface';
+import {CLEAR_AUTHORIZATION} from '../interceptors/auth-interceptor/auth.interceptor';
 
 @Injectable({
   providedIn: 'root'
@@ -66,11 +66,14 @@ export class HttpService {
   }
 
   private defaultHeaders(): HttpHeaders {
+    // CORS se controla EXCLUSIVAMENTE desde el backend (CorsConfig.java).
+    // Los headers `Access-Control-*` NO se mandan desde el cliente — son
+    // response headers del server al browser durante el preflight.
+    // Mandarlos desde el front dispara un preflight innecesario y, si el
+    // server tiene una whitelist explícita de allowed-headers (como la
+    // nuestra), el browser cancela la request real.
     return new HttpHeaders({
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': this.document.location.origin,
-      'Access-Control-Allow-Headers': 'Content-Type',
-      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
     });
   }
 

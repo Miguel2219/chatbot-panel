@@ -320,6 +320,33 @@
     flex-direction: column;
     gap: 2px;
   }
+
+  .module-actions {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    flex-shrink: 0;
+  }
+}
+
+.btn-filter {
+  position: relative;
+
+  .filter-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    margin-left: $spacing-xs;
+    border-radius: 999px;
+    background: $primary;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+  }
 }
 
 // ─── Mobile ──────────────────────────────────────────────────

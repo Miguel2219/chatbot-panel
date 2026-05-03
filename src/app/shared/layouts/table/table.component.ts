@@ -1,22 +1,15 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  ViewChild,
-} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { HttpParams } from '@angular/common/http';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatPaginator, MatPaginatorIntl, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
-import { MatIconModule } from '@angular/material/icon';
-import { BreakpointObserver } from '@angular/cdk/layout';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild,} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import {HttpParams} from '@angular/common/http';
+import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import {MatPaginator, MatPaginatorIntl, MatPaginatorModule, PageEvent} from '@angular/material/paginator';
+import {MatSort, MatSortModule, Sort} from '@angular/material/sort';
+import {MatIconModule} from '@angular/material/icon';
+import {BreakpointObserver} from '@angular/cdk/layout';
 
-import { TableActions, TableColumn, DEFAULT_ACTIONS } from '../../../core/interfaces/table.interface';
-import { DataTypeTablePipe } from '../../pipes/data-type-table.pipe';
+import {DEFAULT_ACTIONS, TableActions, TableColumn} from '../../../core/interfaces/table.interface';
+import {DataTypeTablePipe} from '../../pipes/data-type-table.pipe';
 
 function createSpanishPaginator(): MatPaginatorIntl {
   const paginatorIntl = new MatPaginatorIntl();
@@ -71,10 +64,11 @@ export class TableComponent implements OnInit {
   @Input() isLoading: boolean = false;
 
   // ─── Outputs ──────────────────────────────────────────────
-  @Output() add    = new EventEmitter<void>();
-  @Output() edit   = new EventEmitter<any>();
-  @Output() delete = new EventEmitter<any>();
-  @Output() filter = new EventEmitter<HttpParams>();
+  @Output() add       = new EventEmitter<void>();
+  @Output() edit      = new EventEmitter<any>();
+  @Output() delete    = new EventEmitter<any>();
+  @Output() customize = new EventEmitter<any>();
+  @Output() filter    = new EventEmitter<HttpParams>();
 
   // ─── Internal state ───────────────────────────────────────
   dataSource = new MatTableDataSource<any>([]);
@@ -98,7 +92,7 @@ export class TableComponent implements OnInit {
 
   private buildDisplayedColumns(): void {
     this.displayedColumns = this.tableColumns.map(c => c.name);
-    if (this.actions.edit || this.actions.delete) {
+    if (this.actions.edit || this.actions.delete || this.actions.customize) {
       this.displayedColumns.push('actions');
     }
   }
@@ -127,7 +121,7 @@ export class TableComponent implements OnInit {
       'PENDING': 'Pendiente',
       'CONTACTED': 'Contactado',
       'CLOSED': 'Cerrado',
-      'BOT_ACTIVE': 'Bot activo',
+      'BOT_ACTIVE': 'Asistente activo',
       'HUMAN_ACTIVE': 'Agente activo',
       'PENDING_HUMAN': 'Esperando agente',
     };

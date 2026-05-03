@@ -1,0 +1,78 @@
+<div class="wrapper-quotas">
+
+  <!-- ─── Page Header ──────────────────────────────────────── -->
+  <div class="module-header">
+    <div class="module-title-group">
+      <h3 class="title-page">Cuotas</h3>
+      <p class="subtitle-page">Uso del ciclo vigente por tenant</p>
+    </div>
+  </div>
+
+  <!-- ─── Summary (4 cards compactas) ──────────────────────── -->
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="summary-icon icon-primary">
+        <mat-icon>apartment</mat-icon>
+      </div>
+      <div class="summary-body">
+        <span class="summary-label">Tenants activos</span>
+        <span class="summary-value">{{ summary.tenantsActive | number:'1.0-0' }}</span>
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-icon icon-warning">
+        <mat-icon>warning_amber</mat-icon>
+      </div>
+      <div class="summary-body">
+        <span class="summary-label">En alerta ({{ '≥' }}80%)</span>
+        <span class="summary-value">{{ summary.tenantsOnAlert | number:'1.0-0' }}</span>
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-icon icon-danger">
+        <mat-icon>trending_up</mat-icon>
+      </div>
+      <div class="summary-body">
+        <span class="summary-label">Exceso total</span>
+        <span class="summary-value">{{ summary.totalExcess | number:'1.0-0' }}</span>
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-icon icon-success">
+        <mat-icon>paid</mat-icon>
+      </div>
+      <div class="summary-body">
+        <span class="summary-label">A cobrar este mes</span>
+        <span class="summary-value">
+          {{ summary.totalEstimatedCostCop | currency:'COP':'symbol':'1.0-0':'es-CO' }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Error state ──────────────────────────────────────── -->
+  @if (hasError && !isLoading) {
+    <div class="quotas-error">
+      <mat-icon>error_outline</mat-icon>
+      <span>No pudimos cargar las cuotas. Intenta de nuevo.</span>
+      <button class="btn btn-secondary btn-sm" (click)="retry()">Reintentar</button>
+    </div>
+  }
+
+  <!-- ─── Tabla ────────────────────────────────────────────── -->
+  @if (!hasError) {
+    <app-table
+      [titleTable]="'Consumo por tenant'"
+      [tableColumns]="tableColumns"
+      [tableData]="items"
+      [totalElements]="totalElements"
+      [isPageable]="isPageable"
+      [isLoading]="isLoading"
+      [actions]="actions">
+    </app-table>
+  }
+
+</div>

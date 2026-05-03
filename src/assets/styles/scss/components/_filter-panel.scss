@@ -1,0 +1,67 @@
+.filter-panel-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: $z-modal;
+  animation: filter-panel-fade $transition-base;
+}
+
+.filter-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 320px;
+  height: 100vh;
+  background: $bg-surface;
+  border-left: 1px solid $border-color;
+  box-shadow: $shadow-lg;
+  z-index: $z-modal;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform $transition-base;
+
+  &.is-open {
+    transform: translateX(0);
+  }
+
+  .filter-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $spacing-lg;
+    border-bottom: 1px solid $border-color;
+
+    .filter-panel-title {
+      margin: 0;
+      font-size: $font-size-lg;
+      font-weight: 700;
+      color: $text-primary;
+    }
+  }
+
+  .filter-panel-body {
+    flex: 1;
+    padding: $spacing-lg;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    overflow-y: auto;
+  }
+
+  .filter-panel-footer {
+    padding: $spacing-lg;
+    border-top: 1px solid $border-color;
+    display: flex;
+    gap: $spacing-sm;
+
+    .btn {
+      flex: 1;
+    }
+  }
+}
+
+@keyframes filter-panel-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}

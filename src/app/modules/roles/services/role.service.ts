@@ -1,13 +1,14 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HttpService } from '../../../core/services/http.service';
-import { EndPoints } from '../../../core/utils/endpoints';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {HttpService} from '../../../core/services/http.service';
+import {EndPoints} from '../../../core/utils/endpoints';
 import {
-  RoleResponse,
   CreateRoleRequest,
   ModulePermissionsRole,
+  RoleResponse,
   UpdateRolePermissionsRequest,
 } from '../interfaces/role.interface';
+import {Select} from '../../../core/interfaces/select.interface';
 
 @Injectable({ providedIn: 'root' })
 export class RoleService {
@@ -15,6 +16,17 @@ export class RoleService {
 
   getAllRoles(): Observable<RoleResponse[]> {
     return this._http.get<RoleResponse[]>(EndPoints.ROLES);
+  }
+
+  getRolesSelect(): Observable<Select[]> {
+    return new Observable<Select[]>((observer) => {
+      this.getAllRoles().subscribe({
+        next: (roles) => {
+          observer.next(roles.map((r): Select => ({ label: r.name, value: r.role_id })));
+          observer.complete();
+        },
+      });
+    });
   }
 
   createRole(request: CreateRoleRequest): Observable<RoleResponse> {

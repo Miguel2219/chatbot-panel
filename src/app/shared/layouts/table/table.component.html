@@ -42,7 +42,7 @@
             @for (col of tableColumns; track col.key) {
               <div class="skeleton-cell"></div>
             }
-            @if (actions.edit || actions.delete) {
+            @if (actions.edit || actions.delete || actions.customize) {
               <div class="skeleton-cell skeleton-cell--action"></div>
             }
           </div>
@@ -54,9 +54,13 @@
         <!-- Dynamic Columns -->
         @for (col of tableColumns; track col.key) {
           <ng-container [matColumnDef]="col.name">
-            <th mat-header-cell *matHeaderCellDef [mat-sort-header]="col.isSortable ? col.key : ''">
+            <th mat-header-cell *matHeaderCellDef>
               {{ col.name }}
             </th>
+<!--            Todo -> arreglar lo de is sortable para despues de produccion-->
+<!--            <th mat-header-cell *matHeaderCellDef [mat-sort-header]="col.isSortable ? col.key : ''">-->
+<!--              {{ col.name }}-->
+<!--            </th>-->
             <td mat-cell *matCellDef="let row">
               @if (col.dataType === 'status' || col.dataType === 'badge') {
                 <span [class]="getStatusClass(getCellValue(row, col.key))">
@@ -74,7 +78,7 @@
         }
 
         <!-- Actions Column -->
-        @if (actions.edit || actions.delete) {
+        @if (actions.edit || actions.delete || actions.customize) {
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let row">
@@ -87,6 +91,11 @@
                 @if (actions.delete) {
                   <button class="btn-icon btn-icon-danger" (click)="delete.emit(row)" title="Eliminar">
                     <mat-icon style="font-size:17px;width:17px;height:17px;">delete_outline</mat-icon>
+                  </button>
+                }
+                @if (actions.customize) {
+                  <button class="btn-icon btn-icon-primary" (click)="customize.emit(row)" title="Personalizar">
+                    <mat-icon style="font-size:17px;width:17px;height:17px;">tune</mat-icon>
                   </button>
                 }
               </div>

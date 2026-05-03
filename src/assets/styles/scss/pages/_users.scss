@@ -3,4 +3,12 @@
   flex-direction: column;
   gap: $spacing-lg;
   height: 100%;
+
+  .users-tenant-filter {
+    width: 260px;
+
+    @media (max-width: 576px) {
+      width: 100%;
+    }
+  }
 }

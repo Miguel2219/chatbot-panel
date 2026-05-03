@@ -1,23 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators, FormsModule } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDialog } from '@angular/material/dialog';
-import { NgSelectModule } from '@ng-select/ng-select';
+import {Component, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {MatIconModule} from '@angular/material/icon';
+import {MatDialog} from '@angular/material/dialog';
+import {NgSelectModule} from '@ng-select/ng-select';
 
-import { WhatsappConfigService } from '../../services/whatsapp-config.service';
-import { BotService } from '../../../bots/services/bot.service';
-import { LoadingService } from '../../../../core/services/loading.service';
-import { DeleteConfirmComponent } from '../../../../shared/layouts/delete-confirm/delete-confirm.component';
-import { WhatsappConfigResponseDto } from '../../interfaces/whatsapp-config.interface';
-import { Select } from '../../../../core/interfaces/select.interface';
-import { ToastrService } from 'ngx-toastr';
+import {WhatsappConfigService} from '../../services/whatsapp-config.service';
+import {BotService} from '../../../bots/services/bot.service';
+import {LoadingService} from '../../../../core/services/loading.service';
+import {DeleteConfirmComponent} from '../../../../shared/layouts/delete-confirm/delete-confirm.component';
+import {WhatsappConfigResponseDto} from '../../interfaces/whatsapp-config.interface';
+import {Select} from '../../../../core/interfaces/select.interface';
+import {ToastrService} from 'ngx-toastr';
 import {AuthService} from '../../../../core/services/auth.service';
+import {InputLabelComponent} from '../../../../shared/components/input-label/input-label.component';
 
 @Component({
   selector: 'app-whatsapp-config',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, MatIconModule, NgSelectModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, MatIconModule, NgSelectModule, InputLabelComponent],
   templateUrl: './whatsapp-config.component.html',
 })
 export class WhatsappConfigComponent implements OnInit {
@@ -30,8 +31,12 @@ export class WhatsappConfigComponent implements OnInit {
 
   form = new FormGroup({
     phone_number_id: new FormControl('', [Validators.required]),
-    api_key:         new FormControl('', [Validators.required]),
+    access_token:    new FormControl('', [Validators.required]),
   });
+
+  get canCreate(): boolean { return this._auth.hasPermission('whatsapp-config', 'create'); }
+  get canEdit(): boolean   { return this._auth.hasPermission('whatsapp-config', 'edit'); }
+  get canDelete(): boolean { return this._auth.hasPermission('whatsapp-config', 'delete'); }
 
   constructor(
     private _whatsappService: WhatsappConfigService,
@@ -98,7 +103,7 @@ export class WhatsappConfigComponent implements OnInit {
     this._loader.show();
     const payload = {
       phone_number_id: this.form.value.phone_number_id!,
-      api_key: this.form.value.api_key!,
+      access_token: this.form.value.access_token!,
     };
 
     const request$ = this.config
@@ -111,6 +116,7 @@ export class WhatsappConfigComponent implements OnInit {
         this.config = cfg;
         this.isEditing = false;
         this.form.reset();
+        this.loadConfig();
         this._toastr.success(this.config ? 'Configuración actualizada' : 'Configuración guardada');
       },
       error: () => this._loader.hide(),
@@ -123,7 +129,7 @@ export class WhatsappConfigComponent implements OnInit {
       width: '440px',
       data: {
         legend: '¿Deseas eliminar la configuración de WhatsApp?',
-        message: 'El bot dejará de recibir mensajes de WhatsApp.',
+        message: 'El asistente dejará de recibir mensajes de WhatsApp.',
       },
     });
     ref.afterClosed().subscribe(confirmed => {

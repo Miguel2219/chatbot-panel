@@ -1,0 +1,30 @@
+<section
+  class="customize-tabpanel"
+  role="tabpanel"
+  id="panel-install"
+  aria-labelledby="tab-install"
+  tabindex="0">
+
+  <p class="customize-helptext">
+    Pegá este código antes de <code>&lt;/body&gt;</code> en tu sitio web.
+    El widget aparece en la esquina inferior derecha.
+  </p>
+
+  <div class="snippet-block">
+    <div class="snippet-header">
+      <span class="snippet-label">HTML</span>
+      <button
+        type="button"
+        class="btn btn-secondary snippet-copy-btn"
+        [attr.aria-label]="copied ? 'Código copiado al portapapeles' : 'Copiar código al portapapeles'"
+        (click)="copySnippet()">
+        <mat-icon class="icon-sm" aria-hidden="true">
+          {{ copied ? 'check' : 'content_copy' }}
+        </mat-icon>
+        <span aria-live="polite">{{ copied ? 'Copiado' : 'Copiar' }}</span>
+      </button>
+    </div>
+    <pre class="snippet-code"><code>{{ installSnippet }}</code></pre>
+  </div>
+
+</section>
