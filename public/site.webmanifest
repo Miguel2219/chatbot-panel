@@ -1,0 +1,21 @@
+{
+  "name": "Chatbot Panel | Zolvion",
+  "short_name": "Chatbot Panel",
+  "icons": [
+    {
+      "src": "/web-app-manifest-192x192.png?v=20260503",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/web-app-manifest-512x512.png?v=20260503",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "theme_color": "#FF6B00",
+  "background_color": "#FF6B00",
+  "display": "standalone"
+}
