@@ -1,0 +1,90 @@
+<div class="wrapper-edit-tenant">
+
+  <div class="modal-header">
+    <h3 class="modal-title">Editar Tenant</h3>
+    <button class="btn-icon" (click)="close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <form class="modal-body" [formGroup]="form" (ngSubmit)="submit()" autocomplete="off">
+
+    <h4 class="modal-section-title">Datos de la empresa</h4>
+
+    <div class="input-group">
+      <app-input-label label="Nombre" [required]="true" [control]="ctrl('tenant_name')" />
+      <input type="text" formControlName="tenant_name" />
+    </div>
+
+    <div class="input-group">
+      <app-input-label label="Email" [required]="true" [control]="ctrl('tenant_email')" />
+      <input type="email" formControlName="tenant_email" />
+    </div>
+
+    <div class="input-group">
+      <app-input-label label="Tipo de implementación" [required]="true" [control]="ctrl('implementation_type')" />
+      <ng-select
+        class="ng-select-modal"
+        [items]="implementationTypes"
+        bindValue="value"
+        bindLabel="label"
+        formControlName="implementation_type"
+        [clearable]="false">
+      </ng-select>
+    </div>
+
+    <h4 class="modal-section-title">Administrador de empresa</h4>
+
+    <div class="input-group">
+      <app-input-label label="Administrador" [required]="true" [control]="ctrl('owner_user_id')" />
+      <ng-select
+        class="ng-select-modal"
+        [items]="ownerOptions"
+        bindValue="user_id"
+        bindLabel="full_name"
+        formControlName="owner_user_id"
+        [loading]="isLoadingUsers"
+        placeholder="Selecciona un usuario del tenant">
+        <ng-template ng-label-tmp let-item="item">
+          {{ item.full_name }} — {{ item.email }}
+        </ng-template>
+        <ng-template ng-option-tmp let-item="item">
+          <div style="display:flex;justify-content:space-between;gap:8px;align-items:center;">
+            <span>{{ item.full_name }} — {{ item.email }}</span>
+            @if (item.is_current_owner) {
+              <span class="badge-info">Actual</span>
+            }
+          </div>
+        </ng-template>
+      </ng-select>
+    </div>
+
+    @if (showOwnerNotificationChannel) {
+      <div class="input-group">
+        <app-input-label label="Canal de notificaciones del administrador" [required]="true" [control]="ctrl('owner_notification_channel')" />
+        <ng-select
+          class="ng-select-modal"
+          [items]="notificationChannels"
+          bindValue="value"
+          bindLabel="label"
+          formControlName="owner_notification_channel"
+          [clearable]="false"
+          placeholder="Selecciona un canal">
+        </ng-select>
+        <span class="input-hint">
+          El nuevo tipo de implementación requiere un canal de notificaciones y
+          este administrador aún no tiene uno definido.
+        </span>
+      </div>
+    }
+
+  </form>
+
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="close()">Cancelar</button>
+    <button class="btn btn-primary" [disabled]="isLoading" (click)="submit()">
+      @if (isLoading) { Guardando... } @else { Guardar cambios }
+    </button>
+  </div>
+
+</div>

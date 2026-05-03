@@ -1,0 +1,48 @@
+@if (isOpen) {
+  <div class="filter-panel-overlay" (click)="close()"></div>
+}
+
+<aside class="filter-panel" [class.is-open]="isOpen" aria-label="Filtros">
+  <header class="filter-panel-header">
+    <h4 class="filter-panel-title">Filtros</h4>
+    <button type="button" class="btn-icon" (click)="close()" aria-label="Cerrar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </header>
+
+  <div class="filter-panel-body">
+    @if (isAdmin) {
+      <div class="input-group">
+        <label class="input-label">Tenant</label>
+        <ng-select
+          class="ng-select-modal"
+          [items]="tenants"
+          bindValue="value"
+          bindLabel="label"
+          [(ngModel)]="selectedTenantId"
+          (change)="onTenantChange()"
+          placeholder="Selecciona un tenant">
+        </ng-select>
+      </div>
+    }
+
+    <div class="input-group">
+      <label class="input-label">Asistente</label>
+      <ng-select
+        class="ng-select-modal"
+        [items]="bots"
+        bindValue="value"
+        bindLabel="label"
+        [(ngModel)]="selectedBotId"
+        [disabled]="isBotSelectDisabled"
+        [loading]="isLoadingBots"
+        placeholder="Selecciona un asistente">
+      </ng-select>
+    </div>
+  </div>
+
+  <footer class="filter-panel-footer">
+    <button type="button" class="btn btn-secondary" (click)="clear()">Limpiar</button>
+    <button type="button" class="btn btn-primary" (click)="apply()">Aplicar</button>
+  </footer>
+</aside>

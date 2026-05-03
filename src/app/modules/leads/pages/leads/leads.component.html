@@ -2,8 +2,17 @@
 
   <div class="module-header">
     <div class="module-title-group">
-      <h3 class="title-page">Leads</h3>
-      <p class="subtitle-page">Contactos capturados por tus chatbots</p>
+      <h3 class="title-page">Contactos</h3>
+      <p class="subtitle-page">Contactos capturados por tus asistentes</p>
+    </div>
+    <div class="module-actions">
+      <button type="button" class="btn btn-secondary btn-filter" (click)="openFilterPanel()">
+        <mat-icon>filter_list</mat-icon>
+        Filtros
+        @if (hasActiveFilters()) {
+          <span class="filter-badge">{{ activeFilterCount() }}</span>
+        }
+      </button>
     </div>
   </div>
 
@@ -12,39 +21,31 @@
       <div class="loader-ring"></div>
     </div>
   } @else {
-    <div class="leads-filter">
-      <div class="filter-item">
-        <label class="select-label">Selecciona un bot</label>
-        <ng-select
-          class="ng-select-module"
-          [items]="bots"
-          bindValue="value"
-          bindLabel="label"
-          [(ngModel)]="selectedBotId"
-          (change)="onBotChange()"
-          [clearable]="false"
-          placeholder="Selecciona un bot">
-        </ng-select>
-      </div>
-    </div>
-
-    @if (bots.length === 0) {
-      <div class="empty-state">
-        <mat-icon class="empty-icon">person_search</mat-icon>
-        <div class="empty-title">No hay bots disponibles</div>
-        <div class="empty-subtitle">Crea un bot primero para ver sus leads</div>
-      </div>
-    } @else {
-      <app-table
-        titleTable="Leads capturados"
-        [tableColumns]="tableColumns"
-        [tableData]="leads"
-        [totalElements]="leads.length"
-        [isLoading]="isLoading"
-        [actions]="actions"
-        (edit)="openUpdateStatus($event)">
-      </app-table>
-    }
+    <app-table
+      titleTable="Contactos capturados"
+      [tableColumns]="tableColumns"
+      [tableData]="leads"
+      [totalElements]="totalElements"
+      [isPageable]="isPageable"
+      [pageIndex]="pageIndex"
+      [pageSize]="size"
+      [isLoading]="isLoading"
+      [actions]="actions"
+      (filter)="loadLeads($event)"
+      (edit)="openUpdateStatus($event)">
+    </app-table>
   }
 
 </div>
+
+<app-filter-panel
+  [isOpen]="isFilterPanelOpen"
+  [isAdmin]="isAdmin"
+  [tenants]="tenants"
+  [bots]="filterBots"
+  [isLoadingBots]="isLoadingFilterBots"
+  (closed)="closeFilterPanel()"
+  (tenantSelected)="onTenantSelected($event)"
+  (filtersApplied)="onFiltersApplied($event)"
+  (filtersCleared)="onFiltersCleared()">
+</app-filter-panel>

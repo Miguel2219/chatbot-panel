@@ -9,7 +9,7 @@
 
   <app-table
     titleTable="Lista de negocios"
-    addActionName="Nuevo tenant"
+    addActionName="Nuevo empresa"
     [tableColumns]="tableColumns"
     [tableData]="tenants"
     [totalElements]="totalElements"
@@ -18,7 +18,9 @@
     [pageSize]="size"
     [isLoading]="isLoading"
     [actions]="actions"
-    (filter)="getTenants($event)">
+    (filter)="getTenants($event)"
+    (add)="openCreateTenant()"
+    (edit)="openEditTenant($event)">
   </app-table>
 
 </div>

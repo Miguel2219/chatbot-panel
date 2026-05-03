@@ -4,115 +4,136 @@
   <div class="module-header">
     <div class="module-title-group">
       <h3 class="title-page">Dashboard</h3>
-      <p class="subtitle-page">Resumen general de tu plataforma de chatbots</p>
+      <p class="subtitle-page">Resumen del uso y actividad del tenant</p>
     </div>
+
+    <!-- Selector de tenant solo para ADMIN -->
+    @if (isAdmin) {
+      <div class="tenant-picker">
+        <ng-select
+          class="ng-select-module"
+          [items]="tenants"
+          bindValue="value"
+          bindLabel="label"
+          [(ngModel)]="selectedTenantId"
+          (change)="onTenantChange()"
+          [clearable]="false"
+          [loading]="isLoadingTenants"
+          placeholder="Selecciona un tenant">
+        </ng-select>
+      </div>
+    }
   </div>
+
+  <!-- ─── Error state ──────────────────────────────────────── -->
+  @if (hasError && !isLoading) {
+    <div class="dashboard-error">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ errorMsg }}</span>
+      <button class="btn btn-secondary btn-sm" (click)="retry()">Reintentar</button>
+    </div>
+  }
 
   <!-- ─── Stats Grid ───────────────────────────────────────── -->
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-header">
-        <span class="stat-label">Total Bots</span>
-        <div class="stat-icon icon-primary">
-          <mat-icon>smart_toy</mat-icon>
-        </div>
-      </div>
-      <div class="stat-value">{{ totalBots }}</div>
-      <div class="stat-footer">Bots configurados</div>
-    </div>
+  @if (!hasError) {
+    <div class="stats-grid">
 
-    <div class="stat-card">
-      <div class="stat-header">
-        <span class="stat-label">Total Leads</span>
-        <div class="stat-icon icon-success">
-          <mat-icon>person_search</mat-icon>
-        </div>
-      </div>
-      <div class="stat-value">{{ totalLeads }}</div>
-      <div class="stat-footer">Leads capturados</div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-header">
-        <span class="stat-label">Leads Pendientes</span>
-        <div class="stat-icon icon-warning">
-          <mat-icon>pending_actions</mat-icon>
-        </div>
-      </div>
-      <div class="stat-value">{{ pendingLeads }}</div>
-      <div class="stat-footer">Sin atender</div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-header">
-        <span class="stat-label">Bots Activos</span>
-        <div class="stat-icon icon-info">
-          <mat-icon>check_circle_outline</mat-icon>
-        </div>
-      </div>
-      <div class="stat-value">{{ recentBots.length }}</div>
-      <div class="stat-footer">En operación</div>
-    </div>
-  </div>
-
-  <!-- ─── Bottom sections ──────────────────────────────────── -->
-  <div class="dashboard-bottom">
-
-    <!-- Recent Bots -->
-    <div class="recent-section">
-      <div class="section-header">
-        <span class="section-title">Bots recientes</span>
-        <a routerLink="/administration/bots">Ver todos</a>
-      </div>
-      <div class="recent-list">
-        @if (recentBots.length === 0) {
-          <div style="padding: 24px; text-align: center; color: #475569; font-size: 14px;">
-            Sin bots creados aún
+      <!-- 1. Conversaciones mes (con barra de progreso) -->
+      <div class="stat-card">
+        @if (isLoading || !summary) {
+          <div class="skeleton skeleton-title"></div>
+          <div class="skeleton skeleton-value"></div>
+          <div class="skeleton skeleton-bar"></div>
+          <div class="skeleton skeleton-line"></div>
+        } @else {
+          <div class="stat-header">
+            <span class="stat-label">Conversaciones del mes</span>
+            <div class="stat-icon icon-primary">
+              <mat-icon>forum</mat-icon>
+            </div>
           </div>
-        }
-        @for (bot of recentBots; track bot.bot_id) {
-          <div class="recent-item">
-            <div class="item-avatar">
-              <mat-icon>smart_toy</mat-icon>
+
+          <div class="stat-value">
+            <span class="value-used">{{ summary.conversations_month.used | number:'1.0-0' }}</span>
+            <span class="value-sep">/</span>
+            <span class="value-limit">{{ summary.conversations_month.limit | number:'1.0-0' }}</span>
+          </div>
+
+          <div class="progress-wrapper">
+            <div class="progress-track">
+              <div
+                class="progress-fill"
+                [class]="progressLevelClass"
+                [style.width.%]="progressWidth">
+              </div>
             </div>
-            <div class="item-info">
-              <div class="item-title">{{ bot.name }}</div>
-              <div class="item-subtitle">{{ bot.description }}</div>
+            <div class="progress-meta">
+              <span [class]="'progress-percent ' + progressLevelClass">
+                {{ summary.conversations_month.percent_used | number:'1.0-1' }}%
+              </span>
+              <span class="progress-cycle">
+                Ciclo {{ summary.conversations_month.cycle_start }} → {{ summary.conversations_month.cycle_end }}
+              </span>
             </div>
-            <span [class]="bot.is_active ? 'badge badge-success' : 'badge badge-danger'">
-              {{ bot.is_active ? 'Activo' : 'Inactivo' }}
-            </span>
           </div>
         }
       </div>
-    </div>
 
-    <!-- Recent Leads -->
-    <div class="recent-section">
-      <div class="section-header">
-        <span class="section-title">Leads recientes</span>
-        <a routerLink="/administration/leads">Ver todos</a>
-      </div>
-      <div class="recent-list">
-        @if (recentLeads.length === 0) {
-          <div style="padding: 24px; text-align: center; color: #475569; font-size: 14px;">
-            Sin leads capturados aún
-          </div>
-        }
-        @for (lead of recentLeads; track lead.leadId) {
-          <div class="recent-item">
-            <div class="item-avatar">
-              <mat-icon>person</mat-icon>
+      <!-- 2. Conversaciones hoy -->
+      <div class="stat-card">
+        @if (isLoading || !summary) {
+          <div class="skeleton skeleton-title"></div>
+          <div class="skeleton skeleton-value"></div>
+          <div class="skeleton skeleton-line"></div>
+        } @else {
+          <div class="stat-header">
+            <span class="stat-label">Conversaciones hoy</span>
+            <div class="stat-icon icon-info">
+              <mat-icon>today</mat-icon>
             </div>
-            <div class="item-info">
-              <div class="item-title">{{ lead.name }}</div>
-              <div class="item-subtitle">{{ lead.email || lead.phone || 'Sin contacto' }}</div>
-            </div>
-            <span class="badge badge-pending">{{ lead.status }}</span>
           </div>
+          <div class="stat-value">{{ summary.conversations_today | number:'1.0-0' }}</div>
+          <div class="stat-footer">Sesiones únicas del día</div>
         }
       </div>
-    </div>
 
-  </div>
+      <!-- 3. Contactos totales -->
+      <div class="stat-card">
+        @if (isLoading || !summary) {
+          <div class="skeleton skeleton-title"></div>
+          <div class="skeleton skeleton-value"></div>
+          <div class="skeleton skeleton-line"></div>
+        } @else {
+          <div class="stat-header">
+            <span class="stat-label">Contactos totales</span>
+            <div class="stat-icon icon-success">
+              <mat-icon>groups</mat-icon>
+            </div>
+          </div>
+          <div class="stat-value">{{ summary.leads_total | number:'1.0-0' }}</div>
+          <div class="stat-footer">Capturados históricamente</div>
+        }
+      </div>
+
+      <!-- 4. Contactos pendientes -->
+      <div class="stat-card">
+        @if (isLoading || !summary) {
+          <div class="skeleton skeleton-title"></div>
+          <div class="skeleton skeleton-value"></div>
+          <div class="skeleton skeleton-line"></div>
+        } @else {
+          <div class="stat-header">
+            <span class="stat-label">Contactos pendientes</span>
+            <div class="stat-icon icon-warning">
+              <mat-icon>pending_actions</mat-icon>
+            </div>
+          </div>
+          <div class="stat-value">{{ summary.leads_pending | number:'1.0-0' }}</div>
+          <div class="stat-footer">Sin atender</div>
+        }
+      </div>
+
+    </div>
+  }
+
 </div>

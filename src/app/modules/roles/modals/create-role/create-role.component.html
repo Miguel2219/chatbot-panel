@@ -15,18 +15,12 @@
   <form class="modal-body" [formGroup]="form" (ngSubmit)="submit()" autocomplete="off">
 
     <div class="input-group">
-      <label class="input-label">Nombre del rol *</label>
+      <app-input-label label="Nombre del rol" [required]="true" [control]="nameCtrl" />
       <input type="text" formControlName="name" placeholder="Ej: Supervisor" />
-      @if (nameCtrl.invalid && nameCtrl.touched) {
-        <span class="input-error">
-          @if (nameCtrl.errors?.['required']) { El nombre es requerido }
-          @else if (nameCtrl.errors?.['minlength']) { Mínimo 2 caracteres }
-        </span>
-      }
     </div>
 
     <div class="input-group">
-      <label class="input-label">Descripción</label>
+      <app-input-label label="Descripción" [control]="descCtrl" />
       <textarea formControlName="description" placeholder="¿Qué puede hacer este rol?"></textarea>
     </div>
 

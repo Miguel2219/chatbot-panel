@@ -1,0 +1,50 @@
+<div class="wrapper-customize">
+
+  <header class="customize-header">
+    <a class="back-link" routerLink="/administration/bots">
+      <mat-icon class="icon-sm" aria-hidden="true">arrow_back</mat-icon>
+      <span>Asistentes</span>
+    </a>
+    <h1 class="customize-title">
+      @if (isLoading) {
+        <span class="customize-title-skeleton">Cargando…</span>
+      } @else {
+        {{ bot?.name }}
+      }
+    </h1>
+  </header>
+
+  @if (!isLoading && bot) {
+    <nav class="tabs-nav" role="tablist" aria-label="Secciones de personalización">
+      <a
+        role="tab"
+        id="tab-prompt"
+        class="tab-item"
+        routerLink="prompt"
+        routerLinkActive
+        #promptLink="routerLinkActive"
+        [attr.aria-selected]="promptLink.isActive"
+        [attr.tabindex]="promptLink.isActive ? 0 : -1"
+        (keydown)="onTabKey($event, 'prompt')">
+        Personalización
+      </a>
+      @if (showInstallTab) {
+        <a
+          role="tab"
+          id="tab-install"
+          class="tab-item"
+          routerLink="install"
+          routerLinkActive
+          #installLink="routerLinkActive"
+          [attr.aria-selected]="installLink.isActive"
+          [attr.tabindex]="installLink.isActive ? 0 : -1"
+          (keydown)="onTabKey($event, 'install')">
+          Instalación
+        </a>
+      }
+    </nav>
+
+    <router-outlet></router-outlet>
+  }
+
+</div>

@@ -33,28 +33,82 @@
 }
 
 // ─── Paginator page-size selector (mat-select) ───────────────
+// Angular Material 18 renderiza un `mat-form-field` con outline MDC completo
+// (notched-outline + subscript + line-ripple). Aquí lo aplanamos a un "chip"
+// limpio alineado con el dark theme: solo trigger con borde sutil, sin
+// wrappers colgando debajo.
 .mat-mdc-paginator-page-size-select {
-  .mat-mdc-select-trigger {
+  margin: 0 $spacing-sm !important;
+
+  // Aplanar el contenedor de mat-form-field
+  &.mat-mdc-form-field {
+    // Quitar el espacio reservado para errores/hints debajo del select
+    .mat-mdc-form-field-subscript-wrapper {
+      display: none !important;
+    }
+
+    // Neutralizar el outline notched nativo (las 3 cajas left/notch/right)
+    .mdc-notched-outline,
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border: none !important;
+      display: none !important;
+    }
+
+    // Neutralizar el underline animado
+    .mdc-line-ripple {
+      display: none !important;
+    }
+
+    // El wrapper interior: sin padding/background propio — el "chip" lo dibuja el trigger.
+    .mat-mdc-text-field-wrapper,
+    .mat-mdc-form-field-flex {
+      background: transparent !important;
+      padding: 0 !important;
+      min-height: 0 !important;
+    }
+
+    .mat-mdc-form-field-infix {
+      padding: 0 !important;
+      min-height: 0 !important;
+      width: auto !important;
+    }
+  }
+
+  // El trigger visible (el "chip" con el número + flecha)
+  .mat-mdc-select {
     background: $bg-elevated;
     border: 1px solid $border-color-light;
     border-radius: $border-radius-sm;
     padding: 0 $spacing-sm;
     height: 32px;
     min-width: 64px;
-    font-size: $font-size-sm !important;
-    color: $text-primary !important;
-    font-family: $font-family;
-    transition: border-color $transition-fast;
+    display: inline-flex;
+    align-items: center;
+    transition: border-color $transition-fast, background $transition-fast;
 
     &:hover {
       border-color: rgba(255, 255, 255, 0.2);
+      background: $bg-hover;
     }
+  }
+
+  .mat-mdc-select-trigger {
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-xs;
+    font-size: $font-size-sm !important;
+    color: $text-primary !important;
+    font-family: $font-family;
   }
 
   .mat-mdc-select-value {
     color: $text-primary !important;
     font-size: $font-size-sm !important;
     padding-right: 4px;
+    line-height: 1;
   }
 
   .mat-mdc-select-arrow {

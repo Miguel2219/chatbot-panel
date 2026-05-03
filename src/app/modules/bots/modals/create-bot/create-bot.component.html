@@ -1,7 +1,7 @@
 <div class="wrapper-create-bot">
 
   <div class="modal-header">
-    <h3 class="modal-title">Nuevo Bot</h3>
+    <h3 class="modal-title">{{ modalTitle }}</h3>
     <button class="btn-icon" (click)="close()">
       <mat-icon>close</mat-icon>
     </button>
@@ -10,18 +10,12 @@
   <form class="modal-body" [formGroup]="form" (ngSubmit)="submit()" autocomplete="off">
 
     <div class="input-group">
-      <label class="input-label">Nombre del bot *</label>
-      <input type="text" formControlName="bot_name" placeholder="Ej: Bot de ventas" />
-      @if (nameCtrl.invalid && nameCtrl.touched) {
-        <span class="input-error">
-          @if (nameCtrl.errors?.['required']) { El nombre es requerido }
-          @else if (nameCtrl.errors?.['minlength']) { Mínimo 3 caracteres }
-        </span>
-      }
+      <app-input-label label="Nombre del asistente" [required]="true" [control]="nameCtrl" />
+      <input type="text" formControlName="bot_name" placeholder="Ej: Asistente de ventas" />
     </div>
 
     <div class="input-group" *ngIf="isAdmin">
-      <label class="input-label">Nuevo estado</label>
+      <app-input-label label="Empresa" [control]="form.get('tenant_id')" />
       <ng-select
         class="ng-select-modal"
         [items]="tenants"
@@ -29,27 +23,41 @@
         bindLabel="label"
         formControlName="tenant_id"
         [clearable]="false"
-        placeholder="Selecciona un tenant">
+        [placeholder]="isEdit ? 'Empresa asignada al asistente' : 'Selecciona una empresa'">
       </ng-select>
+      @if (isEdit) {
+        <small class="input-hint">La empresa de un asistente no se puede cambiar.</small>
+      }
     </div>
 
     <div class="input-group">
-      <label class="input-label">Descripción *</label>
-      <textarea formControlName="bot_description" placeholder="Describe el propósito de este bot..."></textarea>
-      @if (descCtrl.invalid && descCtrl.touched) {
-        <span class="input-error">
-          @if (descCtrl.errors?.['required']) { La descripción es requerida }
-          @else if (descCtrl.errors?.['minlength']) { Mínimo 5 caracteres }
-        </span>
-      }
+      <app-input-label label="Descripción" [required]="true" [control]="descCtrl" />
+      <textarea formControlName="bot_description" placeholder="Describe el propósito de este asistente..."></textarea>
     </div>
+
+    @if (showAssigneesSelector) {
+      <div class="input-group">
+        <app-input-label label="Responsables" [required]="true" [control]="assigneesCtrl" />
+        <ng-select
+          class="ng-select-modal"
+          [items]="assignees"
+          bindValue="value"
+          bindLabel="label"
+          [multiple]="true"
+          formControlName="lead_assignee_user_ids"
+          [loading]="isLoadingAssignees"
+          placeholder="Selecciona los usuarios que atenderán los contactos">
+        </ng-select>
+        <small class="input-hint">Los contactos del asistente se asignarán a estos usuarios por round-robin.</small>
+      </div>
+    }
 
   </form>
 
   <div class="modal-footer">
     <button class="btn btn-secondary" (click)="close()">Cancelar</button>
     <button class="btn btn-primary" [disabled]="isLoading" (click)="submit()">
-      @if (isLoading) { Creando... } @else { Crear Bot }
+      {{ submitLabel }}
     </button>
   </div>
 

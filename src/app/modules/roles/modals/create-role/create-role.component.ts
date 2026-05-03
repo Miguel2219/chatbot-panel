@@ -1,18 +1,20 @@
-import { Component, Inject } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
-import { ToastrService } from 'ngx-toastr';
+import {Component, Inject} from '@angular/core';
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MatIconModule} from '@angular/material/icon';
+import {ToastrService} from 'ngx-toastr';
 
-import { RoleService } from '../../services/role.service';
-import { LoadingService } from '../../../../core/services/loading.service';
-import { RoleResponse } from '../../interfaces/role.interface';
+import {RoleService} from '../../services/role.service';
+import {LoadingService} from '../../../../core/services/loading.service';
+import {RoleResponse} from '../../interfaces/role.interface';
+import {InputLabelComponent} from '../../../../shared/components/input-label/input-label.component';
+import {RoleLabelPipe} from '../../../../shared/pipes/role-label.pipe';
 
 @Component({
   selector: 'app-create-role',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatIconModule],
+  imports: [CommonModule, ReactiveFormsModule, MatIconModule, InputLabelComponent],
   templateUrl: './create-role.component.html',
 })
 export class CreateRoleComponent {
@@ -37,7 +39,10 @@ export class CreateRoleComponent {
   ) {
     if (data?.role_id) {
       this.isEdit = true;
-      this.form.patchValue({ name: data.name, description: data.description });
+      this.form.patchValue({
+        name: RoleLabelPipe.label(data.name),
+        description: data.description
+      });
     }
   }
 

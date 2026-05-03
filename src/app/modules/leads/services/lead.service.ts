@@ -1,15 +1,18 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HttpService } from '../../../core/services/http.service';
-import { EndPoints } from '../../../core/utils/endpoints';
-import { LeadResponseDto, LeadStatus } from '../interfaces/lead.interface';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {HttpParams} from '@angular/common/http';
+import {HttpService} from '../../../core/services/http.service';
+import {EndPoints} from '../../../core/utils/endpoints';
+import {LeadResponseDto, LeadStatus} from '../interfaces/lead.interface';
+import {Page} from '../../../core/interfaces/page.interface';
 
 @Injectable({ providedIn: 'root' })
 export class LeadService {
   constructor(private _http: HttpService) {}
 
-  getLeadsByBot(botId: string): Observable<LeadResponseDto[]> {
-    return this._http.get<LeadResponseDto[]>(EndPoints.LEADS_BY_BOT + botId);
+  getLeads(params: HttpParams): Observable<Page<LeadResponseDto>> {
+    const options = this._http.addParams(params);
+    return this._http.get<Page<LeadResponseDto>>(EndPoints.LEADS, false, options);
   }
 
   updateLeadStatus(leadId: string, status: LeadStatus): Observable<void> {

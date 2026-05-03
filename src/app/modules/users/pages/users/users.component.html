@@ -3,8 +3,26 @@
   <div class="module-header">
     <div class="module-title-group">
       <h3 class="title-page">Usuarios</h3>
-      <p class="subtitle-page">Gestiona los asesores y usuarios de tu organización</p>
+      <p class="subtitle-page">{{ subtitle }}</p>
     </div>
+
+
+    @if (isAdmin) {
+      <div class="module-actions">
+        <div class="users-tenant-filter">
+          <ng-select
+            class="ng-select-module"
+            [items]="tenants"
+            bindValue="value"
+            bindLabel="label"
+            [ngModel]="tenantFilterId"
+            (ngModelChange)="onTenantFilterChange($event)"
+            [clearable]="true"
+            placeholder="Filtrar por empresa">
+          </ng-select>
+        </div>
+      </div>
+    }
   </div>
 
   <app-table
@@ -15,6 +33,7 @@
     [totalElements]="users.length"
     [actions]="actions"
     (add)="openCreateUser()"
+    (edit)="openEditUser($event)"
     (delete)="deleteUser($event)">
   </app-table>
 

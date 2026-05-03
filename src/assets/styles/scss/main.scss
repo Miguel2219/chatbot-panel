@@ -12,6 +12,7 @@
 @import 'components/buttons';
 @import 'components/badges';
 @import 'components/cards';
+@import 'components/filter-panel';
 
 // ─── 5. Layout ───────────────────────────────────────────────────────────────
 @import 'layout/forms';
@@ -22,12 +23,14 @@
 @import 'pages/main';
 @import 'pages/dashboard';
 @import 'pages/bots';
+@import 'pages/customize';
 @import 'pages/conversations';
 @import 'pages/leads';
 @import 'pages/documents';
 @import 'pages/users';
 @import 'pages/whatsapp-config';
 @import 'pages/roles';
+@import 'pages/quotas';
 
 // ─── 7. Modals ───────────────────────────────────────────────────────────────
 @import 'modals/create-bot';
@@ -35,3 +38,5 @@
 @import 'modals/create-user';
 @import 'modals/delete-confirm';
 @import 'modals/create-role';
+@import 'modals/tenant-modals';
+@import 'modals/change-password';

@@ -1,0 +1,102 @@
+// ============================================================
+// Cuotas — vista ADMIN (/administration/quotas)
+// 4 summary cards compactas + tabla reusando TableComponent.
+// ============================================================
+
+.wrapper-quotas {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+  height: 100%; // que la tabla ocupe el espacio vertical restante, igual que leads/bots/users
+
+  // ─── Summary grid ────────────────────────────────────────
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: $spacing-md;
+
+    @media (max-width: 1200px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 576px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .summary-card {
+    background: $bg-surface;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    padding: $spacing-md $spacing-lg;
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    min-height: 84px;
+
+    .summary-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: $border-radius-sm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+
+      mat-icon {
+        font-size: 22px;
+        width: 22px;
+        height: 22px;
+      }
+
+      &.icon-primary { background: $primary-light; color: $primary; }
+      &.icon-warning { background: $warning-light; color: $warning; }
+      &.icon-danger  { background: $danger-light;  color: $danger; }
+      &.icon-success { background: $success-light; color: $success; }
+    }
+
+    .summary-body {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+      flex: 1;
+
+      .summary-label {
+        font-size: $font-size-xs;
+        color: $text-secondary;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .summary-value {
+        font-size: $font-size-xl;
+        font-weight: 700;
+        color: $text-primary;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+
+  // ─── Error state ─────────────────────────────────────────
+  .quotas-error {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    padding: $spacing-md $spacing-lg;
+    background: $danger-light;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: $border-radius;
+    color: $text-primary;
+    font-size: $font-size-sm;
+
+    mat-icon {
+      color: $danger;
+      flex-shrink: 0;
+    }
+
+    span { flex: 1; }
+  }
+}

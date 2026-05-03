@@ -1,6 +1,6 @@
 export interface CreateWhatsappConfigRequest {
   phone_number_id: string;
-  api_key: string;
+  access_token: string;
 }
 
 export interface WhatsappConfigResponseDto {

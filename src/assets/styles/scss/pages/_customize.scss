@@ -1,0 +1,229 @@
+// Página /administration/bots/:bot_id/customize
+//
+// Layout: full-width inside the admin content area. No centered max-width
+// wrapper that leaves the surface flotando — the page fills its parent and
+// constrains *content* (textarea, snippet, hint) to ~75ch for legibility.
+//
+// Header is a single line: a discreet "← Bots" backlink above the bot name
+// as h1. No breadcrumb chip, no orange decoration on the title; the bot
+// name reads in $text-primary like any heading. The orange acts only on the
+// active tab indicator and the primary CTA — accent puntual, not background.
+
+.wrapper-customize {
+  padding: $spacing-lg $spacing-xl;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+
+  // ── Header ──────────────────────────────────────────────────────────────
+  .customize-header {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: $spacing-xs;
+      align-self: flex-start;
+      padding: 4px 8px 4px 0;            // left-flush, small click area
+      font-size: $font-size-sm;
+      color: $text-secondary;
+      text-decoration: none;
+      border-radius: $border-radius-sm;
+      transition: color $transition-fast;
+
+      &:hover { color: $text-primary; }
+
+      &:focus-visible {
+        outline: 2px solid $border-color-focus;
+        outline-offset: 2px;
+      }
+
+      .icon-sm {
+        font-size: $font-size-md;
+        width: $font-size-md;
+        height: $font-size-md;
+      }
+    }
+
+    .customize-title {
+      margin: 0;
+      font-size: $font-size-2xl;
+      font-weight: 600;
+      color: $text-primary;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+
+    .customize-title-skeleton { color: $text-secondary; font-weight: 500; }
+  }
+
+  // ── Tabs nav ────────────────────────────────────────────────────────────
+  .tabs-nav {
+    display: flex;
+    gap: $spacing-md;
+    border-bottom: 1px solid $border-color;
+
+    .tab-item {
+      background: transparent;
+      border: none;
+      padding: $spacing-sm 0;             // no horizontal padding — flush left
+      margin-right: $spacing-sm;
+      font-size: $font-size-sm;
+      font-weight: 500;
+      color: $text-secondary;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;                // overlap parent border
+      transition: color $transition-fast, border-color $transition-fast;
+      text-decoration: none;
+
+      &:hover { color: $text-primary; }
+
+      &[aria-selected='true'] {
+        color: $text-primary;
+        border-bottom-color: $primary;
+      }
+
+      &:focus-visible {
+        outline: 2px solid $border-color-focus;
+        outline-offset: 4px;
+        border-radius: $border-radius-sm;
+      }
+    }
+  }
+
+  // ── Tab panels ──────────────────────────────────────────────────────────
+  .customize-tabpanel {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+
+    &:focus-visible { outline: none; }    // panel focus is programmatic
+  }
+
+  .customize-helptext {
+    margin: 0;
+    color: $text-secondary;
+    font-size: $font-size-sm;
+    line-height: 1.6;
+    max-width: 75ch;
+
+    code {
+      font-family: $font-family-mono;
+      font-size: 0.92em;
+      padding: 1px 6px;
+      background: $bg-elevated;
+      border: 1px solid $border-color;
+      border-radius: $border-radius-sm;
+      color: $text-primary;
+    }
+  }
+
+  // ── Form: System prompt ─────────────────────────────────────────────────
+  .prompt-form {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+
+    .input-group { max-width: 75ch; }
+
+    textarea {
+      min-height: 320px;
+      resize: vertical;
+      font-family: inherit;
+      line-height: 1.55;
+    }
+
+    .input-hint {
+      display: block;
+      margin-top: $spacing-xs;
+      color: $text-muted;
+      font-size: $font-size-xs;
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+      max-width: 75ch;
+
+      &.is-warning { color: $warning; }
+      &.is-danger  { color: $danger; font-weight: 600; }
+    }
+  }
+
+  // ── Actions row (in flow, not sticky) ───────────────────────────────────
+  .customize-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: $spacing-sm;
+    max-width: 75ch;
+  }
+
+  // ── Snippet (tab Instalación) ───────────────────────────────────────────
+  .snippet-block {
+    background: $bg-elevated;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    overflow: hidden;
+    max-width: 75ch;
+
+    .snippet-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: $spacing-sm;
+      padding: $spacing-sm $spacing-md;
+      border-bottom: 1px solid $border-color;
+      background: $bg-surface;
+
+      .snippet-label {
+        font-family: $font-family-mono;
+        font-size: $font-size-xs;
+        color: $text-secondary;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+
+      .snippet-copy-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: $spacing-xs;
+        padding: $spacing-xs $spacing-sm;
+        font-size: $font-size-xs;
+
+        .icon-sm {
+          font-size: $font-size-md;
+          width: $font-size-md;
+          height: $font-size-md;
+        }
+      }
+    }
+
+    .snippet-code {
+      margin: 0;
+      padding: $spacing-md;
+      font-family: $font-family-mono;
+      font-size: $font-size-xs;
+      line-height: 1.7;
+      color: $text-primary;
+      white-space: pre;
+      overflow-x: auto;
+    }
+  }
+
+  // ── Mobile ──────────────────────────────────────────────────────────────
+  @media (max-width: 640px) {
+    padding: $spacing-md;
+    gap: $spacing-md;
+
+    .customize-header .customize-title { font-size: $font-size-xl; }
+
+    .tabs-nav .tab-item {
+      padding: $spacing-md 0;             // ≥44px touch target
+      font-size: $font-size-base;
+    }
+
+    .prompt-form textarea { min-height: 240px; }
+
+    .customize-actions { flex-direction: column-reverse; }
+  }
+}

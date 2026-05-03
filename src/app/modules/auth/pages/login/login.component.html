@@ -7,7 +7,7 @@
         <mat-icon>smart_toy</mat-icon>
       </div>
       <h1>Chatbot Panel</h1>
-      <p>Gestiona tus chatbots, leads y conversaciones desde un solo lugar.</p>
+      <p>Gestiona tus asistentes, contactos y conversaciones desde un solo lugar.</p>
     </div>
 
     <div class="branding-features">
@@ -17,7 +17,7 @@
         </div>
         <div class="feature-text">
           <div class="feature-title">Conversaciones en tiempo real</div>
-          <div class="feature-desc">Monitorea todas las interacciones de tus bots</div>
+          <div class="feature-desc">Monitorea todas las interacciones de tus asistentes</div>
         </div>
       </div>
 
@@ -26,7 +26,7 @@
           <mat-icon>people</mat-icon>
         </div>
         <div class="feature-text">
-          <div class="feature-title">Gestión de leads</div>
+          <div class="feature-title">Gestión de contactos</div>
           <div class="feature-desc">Captura y administra contactos automáticamente</div>
         </div>
       </div>
@@ -37,7 +37,7 @@
         </div>
         <div class="feature-text">
           <div class="feature-title">Base de conocimiento</div>
-          <div class="feature-desc">Sube documentos para entrenar a tus bots</div>
+          <div class="feature-desc">Sube documentos para entrenar a tus asistentes</div>
         </div>
       </div>
     </div>
@@ -53,24 +53,18 @@
 
         <!-- Email -->
         <div class="input-group">
-          <label class="input-label">Correo electrónico</label>
+          <app-input-label label="Correo electrónico" [required]="true" [control]="emailControl" />
           <input
             type="email"
             formControlName="email"
             placeholder="correo@empresa.com"
             autocomplete="email"
           />
-          @if (emailControl.invalid && emailControl.touched) {
-            <span class="input-error">
-              @if (emailControl.errors?.['required']) { El correo es requerido }
-              @else if (emailControl.errors?.['email']) { Ingresa un correo válido }
-            </span>
-          }
         </div>
 
         <!-- Password -->
         <div class="input-group">
-          <label class="input-label">Contraseña</label>
+          <app-input-label label="Contraseña" [required]="true" [control]="passwordControl" />
           <div style="position: relative;">
             <input
               [type]="showPassword ? 'text' : 'password'"
@@ -89,12 +83,6 @@
               </mat-icon>
             </button>
           </div>
-          @if (passwordControl.invalid && passwordControl.touched) {
-            <span class="input-error">
-              @if (passwordControl.errors?.['required']) { La contraseña es requerida }
-              @else if (passwordControl.errors?.['minlength']) { Mínimo 6 caracteres }
-            </span>
-          }
         </div>
 
         <!-- Error message -->
@@ -111,6 +99,10 @@
             Iniciar sesión
           }
         </button>
+
+        <div class="login-extra">
+          <a routerLink="/forgot-password" class="forgot-link">¿Olvidaste tu contraseña?</a>
+        </div>
 
       </form>
     </div>

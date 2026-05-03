@@ -1,10 +1,8 @@
-import { Injectable } from '@angular/core';
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
-import { LoadingService } from '../../services/loading.service';
-import { AuthService } from '../../services/auth.service';
-import { MatDialog } from '@angular/material/dialog';
+import {Injectable} from '@angular/core';
+import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import {catchError, Observable, throwError} from 'rxjs';
+import {ToastrService} from 'ngx-toastr';
+import {LoadingService} from '../../services/loading.service';
 
 @Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {
@@ -12,8 +10,6 @@ export class HttpErrorInterceptor implements HttpInterceptor {
   constructor(
     private _loader: LoadingService,
     private _toastr: ToastrService,
-    private _auth: AuthService,
-    private _dialog: MatDialog,
   ) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
@@ -22,22 +18,22 @@ export class HttpErrorInterceptor implements HttpInterceptor {
         this._loader.hide();
         this._loader.hideLoaderTable();
 
+        // El 401 lo maneja el AuthInterceptor (refresh silencioso o
+        // logout 'expired'). Si aún llega acá, significa que el
+        // refresh falló o era un login con credenciales malas: en
+        // ambos casos el AuthInterceptor/LoginComponent ya muestran
+        // su propio feedback, acá solo dejamos pasar sin toast extra
+        // para no solapar mensajes.
+        if (error.status === 401) {
+          return throwError(() => error);
+        }
+
         switch (error.status) {
           case 400:
             this._toastr.error(
               error.error?.message ?? 'Datos inválidos. Verifica la información.',
               'Error'
             );
-            break;
-
-          case 401:
-            if (this._auth.isLoggedIn()) {
-              this._auth.logout();
-              this._dialog.closeAll();
-              this._toastr.warning('Sesión expirada. Inicia sesión nuevamente.', 'Sesión');
-            } else {
-              this._toastr.warning(error.error?.message ?? 'Credenciales incorrectas.', 'Acceso');
-            }
             break;
 
           case 403:

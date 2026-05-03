@@ -3,7 +3,16 @@
   <div class="module-header">
     <div class="module-title-group">
       <h3 class="title-page">Documentos</h3>
-      <p class="subtitle-page">Base de conocimiento de tus chatbots</p>
+      <p class="subtitle-page">Base de conocimiento de tus asistentes</p>
+    </div>
+    <div class="module-actions">
+      <button type="button" class="btn btn-secondary btn-filter" (click)="openFilterPanel()">
+        <mat-icon>filter_list</mat-icon>
+        Filtros
+        @if (hasActiveFilters()) {
+          <span class="filter-badge">{{ activeFilterCount() }}</span>
+        }
+      </button>
     </div>
   </div>
 
@@ -12,45 +21,33 @@
       <div class="loader-ring"></div>
     </div>
   } @else {
-    <div class="documents-filter">
-      <div class="filter-item">
-        <label class="select-label">Selecciona un bot</label>
-        <ng-select
-          class="ng-select-module"
-          [items]="bots"
-          bindValue="value"
-          bindLabel="label"
-          [(ngModel)]="selectedBotId"
-          (change)="onBotChange()"
-          [clearable]="false"
-          placeholder="Selecciona un bot">
-        </ng-select>
-      </div>
-    </div>
-
-    @if (bots.length === 0) {
-      <div class="empty-state">
-        <mat-icon class="empty-icon">description</mat-icon>
-        <div class="empty-title">No hay bots disponibles</div>
-        <div class="empty-subtitle">Crea un bot primero para subir documentos</div>
-      </div>
-    } @else {
-      <app-table
-        titleTable="Documentos"
-        addActionName="Subir documento"
-        [tableColumns]="tableColumns"
-        [tableData]="documents"
-        [totalElements]="documents.length"
-        [isLoading]="isLoading"
-        [actions]="actions"
-        [isPageable]="isPageable"
-        [pageIndex]="pageIndex"
-        [pageSize]="size"
-        (filter)="loadDocuments($event)"
-        (add)="openUpload()"
-        (delete)="deleteDocument($event)">
-      </app-table>
-    }
+    <app-table
+      titleTable="Documentos"
+      addActionName="Subir documento"
+      [tableColumns]="tableColumns"
+      [tableData]="documents"
+      [totalElements]="totalElements"
+      [isPageable]="isPageable"
+      [pageIndex]="pageIndex"
+      [pageSize]="size"
+      [isLoading]="isLoading"
+      [actions]="actions"
+      (filter)="loadDocuments($event)"
+      (add)="openUpload()"
+      (delete)="deleteDocument($event)">
+    </app-table>
   }
 
 </div>
+
+<app-filter-panel
+  [isOpen]="isFilterPanelOpen"
+  [isAdmin]="isAdmin"
+  [tenants]="tenants"
+  [bots]="filterBots"
+  [isLoadingBots]="isLoadingFilterBots"
+  (closed)="closeFilterPanel()"
+  (tenantSelected)="onTenantSelected($event)"
+  (filtersApplied)="onFiltersApplied($event)"
+  (filtersCleared)="onFiltersCleared()">
+</app-filter-panel>

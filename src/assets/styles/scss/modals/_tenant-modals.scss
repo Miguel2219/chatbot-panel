@@ -1,0 +1,118 @@
+// Estilos compartidos para las modales de tenants (crear y editar).
+// Los dos wrappers tienen la misma estructura visual (header + body con
+// secciones + footer), por eso aplicamos el mismo bloque a ambos — así no
+// duplicamos reglas y cualquier ajuste de layout se mantiene sincronizado.
+.wrapper-create-tenant,
+.wrapper-edit-tenant {
+  padding: $spacing-lg;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+  height: 560px;
+  max-height: 90vh;
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+
+    .modal-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .modal-title {
+      font-size: $font-size-lg;
+      font-weight: 700;
+      color: $text-primary;
+    }
+
+    .modal-step-indicator {
+      font-size: $font-size-xs;
+      color: $text-muted;
+    }
+  }
+
+  .modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding-right: $spacing-xs;
+  }
+
+  .modal-section-title {
+    font-size: $font-size-sm;
+    font-weight: 600;
+    color: $text-primary;
+    margin: 0 0 $spacing-xs 0;
+    padding-bottom: $spacing-xs;
+    border-bottom: 1px solid $border-color;
+  }
+
+  .input-row {
+    display: flex;
+    gap: $spacing-md;
+
+    .input-group { flex: 1; }
+
+    @media (max-width: 576px) {
+      flex-direction: column;
+    }
+  }
+
+  .radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
+
+  .radio-option {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-sm $spacing-md;
+    border: 1px solid $border-color-light;
+    border-radius: $border-radius-sm;
+    cursor: pointer;
+    transition: border-color $transition-fast, background $transition-fast;
+
+    &:hover { border-color: $primary; }
+
+    input[type="radio"] {
+      accent-color: $primary;
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    span {
+      font-size: $font-size-sm;
+      color: $text-primary;
+    }
+
+    &:has(input:checked) {
+      border-color: $primary;
+      background: $primary-light;
+    }
+  }
+
+  .modal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: $spacing-sm;
+    padding-top: $spacing-md;
+    border-top: 1px solid $border-color;
+    flex-shrink: 0;
+
+    .footer-group {
+      display: flex;
+      gap: $spacing-sm;
+    }
+  }
+}

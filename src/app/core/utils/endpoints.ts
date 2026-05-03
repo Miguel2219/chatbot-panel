@@ -2,10 +2,19 @@ export const enum EndPoints {
   // ─── Auth ───────────────────────────────────────────────────
   LOGIN    = '/api/auth/login',
   REGISTER = '/api/auth/register',
+  CHANGE_PASSWORD = '/api/auth/change_password',
+  REFRESH  = '/api/auth/refresh',
+  LOGOUT   = '/api/auth/logout',
+  FORGOT_PASSWORD      = '/api/auth/forgot-password',
+  RESET_PASSWORD       = '/api/auth/reset-password',
+  VALIDATE_RESET_TOKEN = '/api/auth/reset-password/validate',
 
   // ─── Tenant ────────────────────────────────────────────────────
- TENANTS = '/api/tenants/get_tenants',
+  TENANTS = '/api/tenants/get_tenants',
   TENANTS_SELECT = '/api/tenants/get_tenants_select',
+  TENANT_CREATE = '/api/tenants',
+  TENANT_UPDATE = '/api/tenants/',
+  TENANT_USERS  = '/api/tenants/',
 
   // ─── Bot ────────────────────────────────────────────────────
   BOT              = '/api/bot/',
@@ -17,21 +26,20 @@ export const enum EndPoints {
 
   // ─── Conversations ──────────────────────────────────────────
   CONVERSATIONS         = '/api/conversations',
-  CONVERSATIONS_BOT     = '/api/conversations/bot/',
   CONVERSATIONS_SESSION = '/api/conversations/session/',
 
   // ─── Documents ──────────────────────────────────────────────
-  DOCUMENTS = '/api/documents/',
+  DOCUMENTS        = '/api/documents',
+  DOCUMENT_UPLOAD  = '/api/documents/',
+  DOCUMENT_DELETE  = '/api/documents/',
 
   // ─── Leads ──────────────────────────────────────────────────
-  LEADS_BY_BOT = '/api/lead/get_leads_by_bot/',
+  LEADS        = '/api/lead',
   LEAD_STATUS  = '/api/lead/update_status/',
 
-  // ─── Users / Advisers ────────────────────────────────────────
-  ADVISER_CREATE      = '/api/adviser/adviser/',
-  ADVISERS_BY_TENANT  = '/api/adviser/get_advisers_by_tenant/',
-  ADVISER_DELETE      = '/api/adviser/',
+  // ─── Users ──────────────────────────────────────────────────
   USERS = '/api/users',
+  USERS_WITHOUT_TENANT = '/api/users/without_tenant',
 
   // ─── WhatsApp Config ────────────────────────────────────────
   WHATSAPP_CONFIG = '/api/whatsapp-config/',
@@ -39,4 +47,10 @@ export const enum EndPoints {
   // ─── Roles & Permissions ─────────────────────────────────────
   ROLES            = '/api/roles',
   ROLE_PERMISSIONS = '/api/role-permissions/',
+
+  // ─── Dashboard ──────────────────────────────────────────────
+  DASHBOARD_SUMMARY = '/api/dashboard/summary',
+
+  // ─── Quotas (ADMIN) ─────────────────────────────────────────
+  QUOTA_ADMIN_ALL = '/api/quota/admin/all',
 }

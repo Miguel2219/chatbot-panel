@@ -1,14 +1,14 @@
-import { Component, Inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
-import { NgSelectModule } from '@ng-select/ng-select';
+import {Component, Inject} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MatIconModule} from '@angular/material/icon';
+import {NgSelectModule} from '@ng-select/ng-select';
 
-import { LeadService } from '../../services/lead.service';
-import { LoadingService } from '../../../../core/services/loading.service';
-import { LeadResponseDto, LeadStatus } from '../../interfaces/lead.interface';
-import { ToastrService } from 'ngx-toastr';
+import {LeadService} from '../../services/lead.service';
+import {LoadingService} from '../../../../core/services/loading.service';
+import {LeadResponseDto, LeadStatus} from '../../interfaces/lead.interface';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-update-lead-status',
@@ -40,7 +40,7 @@ export class UpdateLeadStatusComponent {
   submit(): void {
     this.isLoading = true;
     this._loader.show();
-    this._leadService.updateLeadStatus(this.data.lead.leadId, this.selectedStatus).subscribe({
+    this._leadService.updateLeadStatus(this.data.lead.id, this.selectedStatus).subscribe({
       next: () => {
         this._loader.hide();
         this._toastr.success('Estado actualizado correctamente');

@@ -1,19 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
-import { ToastrService } from 'ngx-toastr';
+import {Component, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {MatDialog} from '@angular/material/dialog';
+import {MatIconModule} from '@angular/material/icon';
+import {ToastrService} from 'ngx-toastr';
 
-import { RoleService } from '../../services/role.service';
-import { LoadingService } from '../../../../core/services/loading.service';
-import { DeleteConfirmComponent } from '../../../../shared/layouts/delete-confirm/delete-confirm.component';
-import { CreateRoleComponent } from '../../modals/create-role/create-role.component';
-import { RoleResponse, ModulePermissionsRole, PermissionCheck } from '../../interfaces/role.interface';
+import {RoleService} from '../../services/role.service';
+import {AuthService} from '../../../../core/services/auth.service';
+import {LoadingService} from '../../../../core/services/loading.service';
+import {DeleteConfirmComponent} from '../../../../shared/layouts/delete-confirm/delete-confirm.component';
+import {CreateRoleComponent} from '../../modals/create-role/create-role.component';
+import {ModulePermissionsRole, PermissionCheck, RoleResponse} from '../../interfaces/role.interface';
+import {RoleLabelPipe} from '../../../../shared/pipes/role-label.pipe';
 
 @Component({
   selector: 'app-roles',
   standalone: true,
-  imports: [CommonModule, MatIconModule],
+  imports: [CommonModule, MatIconModule, RoleLabelPipe],
   templateUrl: './roles.component.html',
 })
 export class RolesComponent implements OnInit {
@@ -30,11 +32,11 @@ export class RolesComponent implements OnInit {
 
   private readonly MODULE_LABELS: Record<string, string> = {
     dashboard:       'Dashboard',
-    bots:            'Bots',
-    leads:           'Leads',
+    bots:            'Asistentes',
+    leads:           'Contactos',
     conversations:   'Conversaciones',
     documents:       'Documentos',
-    advisers:        'Asesores',
+    users:           'Usuarios',
     'whatsapp-config': 'WhatsApp Config',
     tenants:         'Tenants',
     roles:           'Roles',
@@ -46,7 +48,7 @@ export class RolesComponent implements OnInit {
     leads:           'contacts',
     conversations:   'forum',
     documents:       'description',
-    advisers:        'support_agent',
+    users:           'group',
     'whatsapp-config': 'whatsapp',
     tenants:         'business',
     roles:           'shield',
@@ -58,10 +60,15 @@ export class RolesComponent implements OnInit {
 
   constructor(
     private _roleService: RoleService,
+    private _auth: AuthService,
     private _loader: LoadingService,
     private _dialog: MatDialog,
     private _toastr: ToastrService,
   ) {}
+
+  get canCreate(): boolean { return this._auth.hasPermission('roles', 'create'); }
+  get canEdit(): boolean   { return this._auth.hasPermission('roles', 'edit'); }
+  get canDelete(): boolean { return this._auth.hasPermission('roles', 'delete'); }
 
   ngOnInit(): void {
     this.loadRoles();
@@ -115,7 +122,6 @@ export class RolesComponent implements OnInit {
 
     this.isSaving = true;
     this._loader.show();
-    console.log(grantedIds);
     this._roleService.updateRolePermissions(this.selectedRole.role_id, { permission_ids: grantedIds }).subscribe({
       next: () => {
         this._loader.hide();

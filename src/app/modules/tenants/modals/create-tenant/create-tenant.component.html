@@ -1,0 +1,92 @@
+<div class="wrapper-create-tenant">
+
+  <div class="modal-header">
+    <h3 class="modal-title">Nueva Empresa</h3>
+    <button class="btn-icon" (click)="close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <form class="modal-body" [formGroup]="form" (ngSubmit)="submit()" autocomplete="off">
+
+    <h4 class="modal-section-title">Datos de la empresa</h4>
+
+    <div class="input-group">
+      <app-input-label label="Nombre" [required]="true" [control]="ctrl('tenant_name')" />
+      <input type="text" formControlName="tenant_name" placeholder="Ej: Acme S.A." />
+    </div>
+
+    <div class="input-group">
+      <app-input-label label="Email de la empresa" [required]="true" [control]="ctrl('tenant_email')" />
+      <input type="email" formControlName="tenant_email" placeholder="contacto@acme.com" />
+      <span class="input-hint">Se usará para notificaciones de cuota y facturación.</span>
+    </div>
+
+    <div class="input-group">
+      <app-input-label label="Tipo de implementación" [required]="true" [control]="ctrl('implementation_type')" />
+      <ng-select
+        class="ng-select-modal"
+        [items]="implementationTypes"
+        bindValue="value"
+        bindLabel="label"
+        formControlName="implementation_type"
+        [clearable]="false"
+        placeholder="Selecciona un tipo">
+      </ng-select>
+    </div>
+
+    <h4 class="modal-section-title">Datos del administrador</h4>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="input-group">
+        <app-input-label label="Nombre" [required]="true" [control]="ctrl('owner_name')" />
+        <input type="text" formControlName="owner_name" placeholder="Juan" />
+      </div>
+      <div class="input-group">
+        <app-input-label label="Apellido" [required]="true" [control]="ctrl('owner_lastname')" />
+        <input type="text" formControlName="owner_lastname" placeholder="Pérez" />
+      </div>
+    </div>
+
+    <div class="input-group">
+      <app-input-label label="Email del administrador" [required]="true" [control]="ctrl('owner_email')" />
+      <input type="email" formControlName="owner_email" placeholder="admin@acme.com" />
+      <span class="input-hint">Será su usuario para ingresar al panel. Recibirá las credenciales por correo.</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="input-group">
+        <app-input-label label="Teléfono" [control]="ctrl('owner_phone')" />
+        <input type="tel" formControlName="owner_phone" placeholder="+57 300 000 0000" />
+      </div>
+      <div class="input-group">
+        <app-input-label label="Documento" [control]="ctrl('owner_number_document')" />
+        <input type="text" formControlName="owner_number_document" placeholder="1234567890" />
+      </div>
+    </div>
+
+    @if (showNotificationChannel) {
+      <div class="input-group">
+        <app-input-label label="Canal de notificaciones" [required]="true" [control]="ctrl('owner_notification_channel')" />
+        <ng-select
+          class="ng-select-modal"
+          [items]="notificationChannels"
+          bindValue="value"
+          bindLabel="label"
+          formControlName="owner_notification_channel"
+          [clearable]="false"
+          placeholder="Selecciona un canal">
+        </ng-select>
+      </div>
+    }
+
+  </form>
+
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="close()">Cancelar</button>
+    <button class="btn btn-primary" [disabled]="isLoading" (click)="submit()">
+      @if (isLoading) { Creando... } @else { Crear Tenant }
+    </button>
+  </div>
+
+</div>
