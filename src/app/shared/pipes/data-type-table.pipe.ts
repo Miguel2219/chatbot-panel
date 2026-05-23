@@ -1,4 +1,20 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import {Pipe, PipeTransform} from '@angular/core';
+
+/**
+ * Labels en español para badges del modulo de conversaciones (ConversationChannel
+ * y ConversationStatus del backend). Si un valor no esta en este map, el pipe
+ * lo devuelve crudo.
+ */
+const BADGE_LABELS: Record<string, string> = {
+  // ConversationChannel
+  WIDGET: 'Widget',
+  WHATSAPP: 'WhatsApp',
+  // ConversationStatus
+  BOT_ACTIVE: 'Bot activo',
+  PENDING_HUMAN: 'Esperando asesor',
+  HUMAN_ACTIVE: 'Atendido por humano',
+  RESOLVED: 'Resuelto',
+};
 
 @Pipe({
   name: 'dataTypeTable',
@@ -24,7 +40,7 @@ export class DataTypeTablePipe implements PipeTransform {
 
       case 'status':
       case 'badge':
-        return value;
+        return BADGE_LABELS[String(value)] ?? value;
 
       case 'text':
       default:
@@ -73,5 +89,3 @@ export class DataTypeTablePipe implements PipeTransform {
   }
 
 }
-
-

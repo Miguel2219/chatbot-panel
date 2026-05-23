@@ -25,8 +25,13 @@ export const enum EndPoints {
   CHAT = '/api/chat',
 
   // ─── Conversations ──────────────────────────────────────────
-  CONVERSATIONS         = '/api/conversations',
-  CONVERSATIONS_SESSION = '/api/conversations/session/',
+  CONVERSATIONS = '/api/conversations',
+
+  // ─── Inbox (Human Handoff) ──────────────────────────────────
+  INBOX_BASE    = '/api/inbox',
+  INBOX_PENDING = '/api/inbox/pending',
+  INBOX_MINE    = '/api/inbox/mine',
+  INBOX_STREAM  = '/api/inbox/stream',
 
   // ─── Documents ──────────────────────────────────────────────
   DOCUMENTS        = '/api/documents',
@@ -35,7 +40,6 @@ export const enum EndPoints {
 
   // ─── Leads ──────────────────────────────────────────────────
   LEADS        = '/api/lead',
-  LEAD_STATUS  = '/api/lead/update_status/',
 
   // ─── Users ──────────────────────────────────────────────────
   USERS = '/api/users',

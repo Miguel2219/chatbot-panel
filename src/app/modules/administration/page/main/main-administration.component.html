@@ -25,6 +25,13 @@
             <mat-icon>{{ item.icon }}</mat-icon>
           </div>
           <span class="nav-label">{{ displayLabel(item) }}</span>
+          @if (item.route === 'inbox') {
+            @if ((pendingCount$ | async); as count) {
+              @if (count > 0) {
+                <span class="filter-badge filter-badge-inbox">{{ count }}</span>
+              }
+            }
+          }
         </a>
       }
     </nav>

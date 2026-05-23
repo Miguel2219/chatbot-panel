@@ -20,6 +20,8 @@ export class FilterPanelComponent {
   @Input() tenants: Select[] = [];
   @Input() bots: Select[] = [];
   @Input() isLoadingBots = false;
+  /** Mostrar el filtro de bot. Default true para conversations/documents; leads lo pasa en false. */
+  @Input() showBotFilter = true;
 
   @Output() closed = new EventEmitter<void>();
   @Output() filtersApplied = new EventEmitter<FilterParams>();

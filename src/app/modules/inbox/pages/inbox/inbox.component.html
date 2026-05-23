@@ -1,0 +1,178 @@
+<div class="wrapper-inbox">
+
+  <div class="module-header">
+    <div class="module-title-group">
+      <h3 class="title-page">Inbox</h3>
+      <p class="subtitle-page">Conversaciones que requieren atención humana</p>
+    </div>
+  </div>
+
+  <div class="tabs-nav" role="tablist">
+    <button
+      type="button"
+      class="tab-item"
+      [class.active]="tab === 'pending'"
+      (click)="setTab('pending')"
+      role="tab">
+      Pendientes
+      @if (pendingCount > 0) {
+        <span class="filter-badge">{{ pendingCount }}</span>
+      }
+    </button>
+    <button
+      type="button"
+      class="tab-item"
+      [class.active]="tab === 'mine'"
+      (click)="setTab('mine')"
+      role="tab">
+      Mías
+      @if (mineCount > 0) {
+        <span class="filter-badge">{{ mineCount }}</span>
+      }
+    </button>
+  </div>
+
+  <div class="inbox-layout">
+
+    <aside class="inbox-list">
+      @if (isLoadingList) {
+        <div class="inbox-loader"><div class="loader-ring"></div></div>
+      } @else if (currentList.length === 0) {
+        <div class="inbox-empty">
+          <mat-icon>inbox</mat-icon>
+          <p>
+            @if (tab === 'pending') {
+              No hay conversaciones pendientes.
+            } @else {
+              No tienes conversaciones tomadas.
+            }
+          </p>
+        </div>
+      } @else {
+        @for (item of currentList; track trackById($index, item)) {
+          <button
+            type="button"
+            class="inbox-card"
+            [class.active]="selectedId === item.conversation_id"
+            (click)="select(item)">
+            <div class="inbox-card-row">
+              <span class="inbox-card-name">{{ item.customer_name || item.session_id }}</span>
+              <span class="badge" [ngClass]="{
+                'badge-warning':  item.status === 'PENDING_HUMAN',
+                'badge-info':     item.status === 'HUMAN_ACTIVE',
+                'badge-success':  item.status === 'RESOLVED',
+                'badge-pending':  item.status === 'BOT_ACTIVE'
+              }">{{ item.status }}</span>
+            </div>
+            <div class="inbox-card-meta">
+              <span>{{ item.channel }}</span>
+              <span>{{ item.last_customer_message_at | date:'short' }}</span>
+              @if ((item.unread_count ?? 0) > 0) {
+                <span class="unread-badge"
+                      [attr.aria-label]="item.unread_count + ' mensajes sin leer'">
+                  {{ item.unread_count }}
+                </span>
+              }
+            </div>
+          </button>
+        }
+      }
+    </aside>
+
+    <section class="inbox-detail">
+      @if (!selectedId) {
+        <div class="inbox-empty">
+          <mat-icon>chat_bubble_outline</mat-icon>
+          <p>Selecciona una conversación para verla.</p>
+        </div>
+      } @else if (isLoadingDetail || !selectedThread) {
+        <div class="inbox-loader"><div class="loader-ring"></div></div>
+      } @else {
+        <header class="detail-header">
+          <div>
+            <h4>{{ selectedThread.customer_name || selectedThread.session_id }}</h4>
+            <small>
+              {{ selectedThread.channel }} · {{ selectedThread.status }}
+              @if (selectedThread.assigned_adviser_name) {
+                · asignada a {{ selectedThread.assigned_adviser_name }}
+              }
+            </small>
+          </div>
+          <div class="detail-actions">
+            @if (canClaim) {
+              <button type="button" class="btn btn-primary"
+                [disabled]="isClaiming"
+                (click)="claim()">
+                {{ isClaiming ? 'Tomando…' : 'Tomar' }}
+              </button>
+            }
+            @if (canResolve) {
+              <button type="button" class="btn btn-secondary"
+                [disabled]="isResolving"
+                (click)="resolve()">
+                {{ isResolving ? 'Resolviendo…' : 'Resolver' }}
+              </button>
+            }
+          </div>
+        </header>
+
+        @if (selectedThread.request_detail) {
+          <div class="detail-context">
+            <strong>Solicitud:</strong> {{ selectedThread.request_detail }}
+          </div>
+        }
+
+        <div class="detail-timeline" #timelineRef (scroll)="onTimelineScroll()">
+          @if (selectedMessages.length === 0) {
+            <div class="inbox-empty">
+              <p>Sin mensajes todavía.</p>
+            </div>
+          } @else {
+            @for (msg of selectedMessages; track msg.message_id) {
+              <div class="message-bubble"
+                [ngClass]="{
+                  'message-user':      msg.role === 'USER',
+                  'message-assistant': msg.role === 'ASSISTANT'
+                }">
+                <span class="message-meta">
+                  {{ msg.role === 'USER' ? 'Cliente' : 'Asesor / Bot' }} · {{ msg.created_at | date:'short' }}
+                </span>
+                <p>{{ msg.message }}</p>
+              </div>
+            }
+          }
+        </div>
+
+        @if (!isAtBottom) {
+          <button type="button"
+                  class="scroll-to-bottom-btn"
+                  aria-label="Ir al final de la conversación"
+                  (click)="scrollToBottom()">
+            <mat-icon>keyboard_arrow_down</mat-icon>
+            @if (unreadInView > 0) {
+              <span class="scroll-badge">{{ unreadInView }}</span>
+            }
+          </button>
+        }
+
+        @if (canReply) {
+          <footer class="detail-reply">
+            <textarea
+              class="input-text"
+              maxlength="4096"
+              rows="2"
+              placeholder="Escribe tu respuesta…"
+              [(ngModel)]="replyText"
+              [disabled]="isSendingReply">
+            </textarea>
+            <button type="button" class="btn btn-primary"
+              [disabled]="isSendingReply || !replyText.trim()"
+              (click)="sendReply()">
+              {{ isSendingReply ? 'Enviando…' : 'Enviar' }}
+            </button>
+          </footer>
+        }
+      }
+    </section>
+  </div>
+</div>

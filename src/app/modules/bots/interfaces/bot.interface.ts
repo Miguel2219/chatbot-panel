@@ -2,12 +2,6 @@ export interface RegisterBotDto {
   bot_name: string;
   bot_description: string;
   tenant_id: string;
-  lead_assignee_user_ids?: string[];
-}
-
-export interface BotAssigneeDto {
-  user_id: string;
-  full_name: string;
 }
 
 export interface ResponseBotDto {
@@ -19,7 +13,6 @@ export interface ResponseBotDto {
   tenant_id?: string;
   tenant_name?: string;
   implementation_type?: string;
-  lead_assignees?: BotAssigneeDto[];
 }
 
 
@@ -31,7 +24,6 @@ export interface ResponseBotSelectDto {
 export interface UpdateBotDto {
   bot_name?: string;
   bot_description?: string;
-  lead_assignee_user_ids?: string[];
 }
 
 export interface SystemPromptDto {

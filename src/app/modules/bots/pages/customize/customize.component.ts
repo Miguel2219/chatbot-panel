@@ -5,7 +5,7 @@ import {MatIconModule} from '@angular/material/icon';
 
 import {BotService} from '../../services/bot.service';
 import {ResponseBotDto} from '../../interfaces/bot.interface';
-import {tenantUsesLeadAssignees} from '../../../../core/utils/implementation';
+import {tenantUsesWidget} from '../../../../core/utils/implementation';
 
 @Component({
   selector: 'app-customize-bot-page',
@@ -47,7 +47,7 @@ export class CustomizeBotPageComponent implements OnInit {
   }
 
   get showInstallTab(): boolean {
-    return tenantUsesLeadAssignees(this.bot?.implementation_type);
+    return tenantUsesWidget(this.bot?.implementation_type);
   }
 
   // Patrón ARIA tablist con navegación por flechas. Las tabs son <a>

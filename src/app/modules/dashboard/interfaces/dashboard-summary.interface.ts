@@ -2,7 +2,6 @@ export interface DashboardSummaryDto {
   conversations_month: ConversationsMonthDto;
   conversations_today: number;
   leads_total: number;
-  leads_pending: number;
 }
 
 export interface ConversationsMonthDto {

@@ -35,23 +35,6 @@
       <textarea formControlName="bot_description" placeholder="Describe el propósito de este asistente..."></textarea>
     </div>
 
-    @if (showAssigneesSelector) {
-      <div class="input-group">
-        <app-input-label label="Responsables" [required]="true" [control]="assigneesCtrl" />
-        <ng-select
-          class="ng-select-modal"
-          [items]="assignees"
-          bindValue="value"
-          bindLabel="label"
-          [multiple]="true"
-          formControlName="lead_assignee_user_ids"
-          [loading]="isLoadingAssignees"
-          placeholder="Selecciona los usuarios que atenderán los contactos">
-        </ng-select>
-        <small class="input-hint">Los contactos del asistente se asignarán a estos usuarios por round-robin.</small>
-      </div>
-    }
-
   </form>
 
   <div class="modal-footer">

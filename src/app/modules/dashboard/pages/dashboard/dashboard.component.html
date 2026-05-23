@@ -115,24 +115,6 @@
         }
       </div>
 
-      <!-- 4. Contactos pendientes -->
-      <div class="stat-card">
-        @if (isLoading || !summary) {
-          <div class="skeleton skeleton-title"></div>
-          <div class="skeleton skeleton-value"></div>
-          <div class="skeleton skeleton-line"></div>
-        } @else {
-          <div class="stat-header">
-            <span class="stat-label">Contactos pendientes</span>
-            <div class="stat-icon icon-warning">
-              <mat-icon>pending_actions</mat-icon>
-            </div>
-          </div>
-          <div class="stat-value">{{ summary.leads_pending | number:'1.0-0' }}</div>
-          <div class="stat-footer">Sin atender</div>
-        }
-      </div>
-
     </div>
   }
 

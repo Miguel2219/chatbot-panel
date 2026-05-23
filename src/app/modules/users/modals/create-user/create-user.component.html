@@ -80,22 +80,6 @@
       </div>
     }
 
-    @if (showBotsSelector) {
-      <div class="input-group">
-        <app-input-label label="Asistentes en los que recibirá contactos" [control]="ctrl('lead_assignee_bot_ids')" />
-        <ng-select
-          class="ng-select-modal"
-          [items]="bots"
-          bindValue="value"
-          bindLabel="label"
-          [multiple]="true"
-          formControlName="lead_assignee_bot_ids"
-          [loading]="isLoadingBots"
-          placeholder="Selecciona asistentes (opcional)">
-        </ng-select>
-      </div>
-    }
-
   </form>
 
   <div class="modal-footer">

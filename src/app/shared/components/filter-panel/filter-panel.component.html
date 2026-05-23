@@ -26,19 +26,21 @@
       </div>
     }
 
-    <div class="input-group">
-      <label class="input-label">Asistente</label>
-      <ng-select
-        class="ng-select-modal"
-        [items]="bots"
-        bindValue="value"
-        bindLabel="label"
-        [(ngModel)]="selectedBotId"
-        [disabled]="isBotSelectDisabled"
-        [loading]="isLoadingBots"
-        placeholder="Selecciona un asistente">
-      </ng-select>
-    </div>
+    @if (showBotFilter) {
+      <div class="input-group">
+        <label class="input-label">Asistente</label>
+        <ng-select
+          class="ng-select-modal"
+          [items]="bots"
+          bindValue="value"
+          bindLabel="label"
+          [(ngModel)]="selectedBotId"
+          [disabled]="isBotSelectDisabled"
+          [loading]="isLoadingBots"
+          placeholder="Selecciona un asistente">
+        </ng-select>
+      </div>
+    }
   </div>
 
   <footer class="filter-panel-footer">

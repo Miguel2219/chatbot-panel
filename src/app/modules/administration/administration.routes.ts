@@ -28,6 +28,12 @@ export const routes: Routes = [
         loadChildren: () => import('../conversations/conversations.routes').then(r => r.routes),
       },
       {
+        path: 'inbox',
+        canActivate: [PermissionGuard],
+        data: { module: 'inbox', permission: 'view' },
+        loadChildren: () => import('../inbox/inbox.routes').then(r => r.routes),
+      },
+      {
         path: 'leads',
         canActivate: [PermissionGuard],
         data: { module: 'leads', permission: 'view' },

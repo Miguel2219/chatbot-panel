@@ -9,7 +9,7 @@ import {TenantsService} from '../../../tenants/services/tenants.service';
 import {AuthService} from '../../../../core/services/auth.service';
 import {TableComponent} from '../../../../shared/layouts/table/table.component';
 import {FilterPanelComponent} from '../../../../shared/components/filter-panel/filter-panel.component';
-import {ConversationResponseDto} from '../../interfaces/conversation.interface';
+import {ConversationThreadSummaryDto} from '../../interfaces/conversation.interface';
 import {TableActions, TableColumn} from '../../../../core/interfaces/table.interface';
 import {Select} from '../../../../core/interfaces/select.interface';
 import {FilterParams} from '../../../../shared/interfaces/filter-params.interface';
@@ -23,15 +23,16 @@ import {FilterParams} from '../../../../shared/interfaces/filter-params.interfac
 export class ConversationsComponent implements OnInit {
 
   tableColumns: TableColumn[] = [
-    { name: 'Sesión',  key: 'session_id',  isSortable: false, dataType: 'text'  },
-    { name: 'Rol',     key: 'role',                          dataType: 'badge' },
-    { name: 'Mensaje', key: 'message',                       dataType: 'text'  },
-    { name: 'Fecha',   key: 'created_at',  isSortable: false, dataType: 'date'  },
+    { name: 'Cliente',          key: 'customer_name',            isSortable: false, dataType: 'text'     },
+    { name: 'Canal',            key: 'channel',                  isSortable: false, dataType: 'badge'    },
+    { name: 'Estado',           key: 'status',                   isSortable: false, dataType: 'badge'    },
+    { name: 'Asesor',           key: 'assigned_adviser_name',    isSortable: false, dataType: 'text'     },
+    { name: 'Última actividad', key: 'last_customer_message_at',                    dataType: 'dateTime' },
   ];
 
   actions: TableActions = { add: false, edit: false, delete: false, search: true };
 
-  conversations: ConversationResponseDto[] = [];
+  conversations: ConversationThreadSummaryDto[] = [];
   isInitializing = true;
   isLoading = false;
   totalElements = 0;

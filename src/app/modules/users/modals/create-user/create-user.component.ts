@@ -13,7 +13,6 @@ import {LoadingService} from '../../../../core/services/loading.service';
 import {AuthService} from '../../../../core/services/auth.service';
 import {RoleService} from '../../../roles/services/role.service';
 import {TenantsService} from '../../../tenants/services/tenants.service';
-import {BotService} from '../../../bots/services/bot.service';
 import {CreateUserRequest, UpdateUserRequest, UserResponse} from '../../interfaces/user.interface';
 import {Select} from '../../../../core/interfaces/select.interface';
 import {RoleLabelPipe} from '../../../../shared/pipes/role-label.pipe';
@@ -49,18 +48,15 @@ export class CreateUserComponent implements OnInit, OnDestroy {
     number_document:       new FormControl<string | null>('', [Validators.maxLength(30)]),
     role_ids:              new FormControl<string[] | null>(null),
     tenant_id:             new FormControl<string | null>(null),
-    lead_assignee_bot_ids: new FormControl<string[] | null>(null),
   });
 
   isLoading = false;
   isLoadingRoles = false;
   isLoadingTenants = false;
-  isLoadingBots = false;
   showNotificationChannel = false;
 
   roles: Select[] = [];
   tenants: Select[] = [];
-  bots: Select[] = [];
 
   notificationChannels = NOTIFICATION_CHANNEL_OPTIONS;
 
@@ -78,7 +74,7 @@ export class CreateUserComponent implements OnInit, OnDestroy {
   /**
    * Snapshot del valor inicial en modo edit. Sirve para el diff al enviar: el
    * PUT solo incluye los campos que realmente cambiaron y para selectores
-   * multi (roles/bots) comparamos sets ignorando orden.
+   * multi (roles) comparamos sets ignorando orden.
    */
   private initialValue: {
     name?: string;
@@ -87,7 +83,6 @@ export class CreateUserComponent implements OnInit, OnDestroy {
     number_document?: string;
     notification_channel?: NotificationChannel | null;
     role_ids?: string[];
-    lead_assignee_bot_ids?: string[];
   } = {};
 
   constructor(
@@ -98,7 +93,6 @@ export class CreateUserComponent implements OnInit, OnDestroy {
     private _toastr: ToastrService,
     private _roleService: RoleService,
     private _tenantService: TenantsService,
-    private _botService: BotService,
     @Inject(MAT_DIALOG_DATA) public data: CreateUserData,
   ) {}
 
@@ -118,7 +112,8 @@ export class CreateUserComponent implements OnInit, OnDestroy {
       this.form.controls.tenant_id.updateValueAndValidity();
       this.loadRoles();
       this.loadTenants();
-      // Para ADMIN: la regla se evalúa cuando cambia el tenant seleccionado.
+      // Para ADMIN: la regla del notification_channel se evalúa cuando cambia
+      // el tenant seleccionado.
       this.form.controls.tenant_id.valueChanges
         .pipe(takeUntil(this.destroy$))
         .subscribe(tid => this.onTenantChange(tid));
@@ -128,24 +123,13 @@ export class CreateUserComponent implements OnInit, OnDestroy {
       // visibilidad una sola vez al iniciar.
       const implType = this._auth.getImplementationType();
       this.syncNotificationChannelControl(implType);
-      if (this.tenantAllowsBots(implType)) {
-        this.loadBotsForCurrentTenant();
-      }
     }
   }
 
   /**
    * Precarga el formulario con los datos del user objetivo, deshabilita los
    * campos que no son editables (email y tenant) y dispara la carga de roles
-   * (solo ADMIN) y de bots (si el tenant del user usa widget/both).
-   *
-   * Importa seguir este orden:
-   *   1. patchValue de los datos conocidos
-   *   2. syncNotificationChannelControl(implType) → agrega el control si aplica
-   *   3. re-patchValue del notification_channel (porque el control recién
-   *      existe tras el paso 2)
-   *   4. loadRoles / loadBotsByTenant → precargan las listas del multi-select
-   *   5. snapshot del `initialValue` para el diff del submit
+   * (solo ADMIN).
    */
   private initEdit(): void {
     const user = this.data?.user;
@@ -170,9 +154,7 @@ export class CreateUserComponent implements OnInit, OnDestroy {
       }
       this.form.controls.tenant_id.disable({ emitEvent: false });
 
-      // Roles son editables solo para ADMIN. Se precarga con los role_ids
-      // actuales (si el backend los expone); el multi-select luego los matchea
-      // contra la lista completa al terminar loadRoles.
+      // Roles son editables solo para ADMIN.
       const currentRoleIds = user.role_ids ?? [];
       this.form.controls.role_ids.setValue(currentRoleIds.length ? currentRoleIds : null);
       this.form.controls.role_ids.setValidators([Validators.required]);
@@ -180,8 +162,8 @@ export class CreateUserComponent implements OnInit, OnDestroy {
       this.loadRoles();
     }
 
-    // Visibilidad de notification_channel + bots: depende del
-    // implementation_type del tenant del user.
+    // Visibilidad de notification_channel: depende del implementation_type
+    // del tenant del user.
     const implType = this.resolveImplTypeForUser(user);
     this.syncNotificationChannelControl(implType);
     if (this.showNotificationChannel && user.notification_channel) {
@@ -191,26 +173,7 @@ export class CreateUserComponent implements OnInit, OnDestroy {
       );
     }
 
-    const currentBotIds = (user.lead_assignee_bots ?? []).map(b => b.bot_id);
-    if (this.tenantAllowsBots(implType)) {
-      // Precarga optimista con los bots actuales — así el ng-select muestra
-      // las etiquetas correctas aunque la lista full del tenant aún no haya
-      // terminado de cargarse.
-      this.bots = (user.lead_assignee_bots ?? [])
-        .map(b => ({ label: b.name, value: b.bot_id }));
-      this.form.controls.lead_assignee_bot_ids.setValue(
-        currentBotIds.length ? currentBotIds : null,
-        { emitEvent: false },
-      );
-      if (tenantId) {
-        this.loadBotsByTenantPreservingSelection(tenantId, currentBotIds);
-      } else {
-        this.loadBotsForCurrentTenant();
-      }
-    }
-
-    // Snapshot para diff. Clonamos primitivos y arrays para evitar referencias
-    // a los datos vivos del user.
+    // Snapshot para diff.
     this.initialValue = {
       name: user.name,
       lastname: user.lastname,
@@ -218,36 +181,16 @@ export class CreateUserComponent implements OnInit, OnDestroy {
       number_document: user.number_document ?? '',
       notification_channel: (user.notification_channel ?? null) as NotificationChannel | null,
       role_ids: [...(user.role_ids ?? [])],
-      lead_assignee_bot_ids: [...currentBotIds],
     };
   }
 
-  private loadBotsByTenantPreservingSelection(tenantId: string, selected: string[]): void {
-    this.isLoadingBots = true;
-    this._botService.getBotsByTenantId(tenantId).subscribe({
-      next: (bots) => {
-        this.bots = bots;
-        // Re-aplica la selección (en caso de que el control haya perdido
-        // coincidencias durante el intervalo sin la lista completa).
-        if (selected.length) {
-          this.form.controls.lead_assignee_bot_ids.setValue(selected, { emitEvent: false });
-        }
-        this.isLoadingBots = false;
-      },
-      error: () => { this.isLoadingBots = false; },
-    });
-  }
-
   private resolveImplTypeForUser(user: UserResponse): string | null {
-    // ADMIN: el implementation_type lo inferimos del tenant del user objetivo.
-    // Pero como en edit no cargamos la lista completa de tenants, no tenemos
-    // el map populado. Solución pragmática: si el tenant trae implementation_type
-    // en otra parte, se usa; caso contrario inferimos desde la presencia de
-    // `notification_channel` — si el user ya tiene uno, el tenant
-    // necesariamente es WIDGET/BOTH (backend solo asigna canal en ese caso).
+    // ADMIN: como en edit no cargamos la lista completa de tenants, no tenemos
+    // el map populado. Si el user trae notification_channel inferimos que el
+    // tenant es WIDGET/BOTH (backend sólo asigna canal en ese caso). Fallback
+    // conservador: no mostrar selector si no sabemos.
     if (!this.isAdmin) return this._auth.getImplementationType();
     if (user.notification_channel) return 'WIDGET';
-    // Fallback conservador: si no sabemos el tipo, no mostrar selector de bots.
     return null;
   }
 
@@ -281,31 +224,9 @@ export class CreateUserComponent implements OnInit, OnDestroy {
     });
   }
 
-  private loadBotsForCurrentTenant(): void {
-    this.isLoadingBots = true;
-    this._botService.getBotsByTenantSelect().subscribe({
-      next: (bots) => { this.bots = bots; this.isLoadingBots = false; },
-      error: () => { this.isLoadingBots = false; },
-    });
-  }
-
-  private loadBotsByTenant(tenantId: string): void {
-    this.isLoadingBots = true;
-    this._botService.getBotsByTenantId(tenantId).subscribe({
-      next: (bots) => { this.bots = bots; this.isLoadingBots = false; },
-      error: () => { this.isLoadingBots = false; },
-    });
-  }
-
   private onTenantChange(tenantId: string | null): void {
-    this.bots = [];
-    this.form.controls.lead_assignee_bot_ids.setValue(null);
     const implType = tenantId ? (this.implementationByTenant.get(tenantId) ?? null) : null;
     this.syncNotificationChannelControl(implType);
-    if (!tenantId) return;
-    if (this.tenantAllowsBots(implType)) {
-      this.loadBotsByTenant(tenantId);
-    }
   }
 
   // Misma idea que en create/edit-tenant: el control se agrega/quita por
@@ -325,25 +246,6 @@ export class CreateUserComponent implements OnInit, OnDestroy {
       this.notificationChannelCtrl.reset(null, { emitEvent: false });
       this.showNotificationChannel = false;
     }
-  }
-
-  private tenantAllowsBots(implType: string | null | undefined): boolean {
-    return implType === 'WIDGET' || implType === 'BOTH';
-  }
-
-  get showBotsSelector(): boolean {
-    if (this.isEdit) {
-      // En edit decidimos con el implType resuelto del user objetivo al abrir
-      // el modal. Reutilizamos `showNotificationChannel` como proxy — ambos
-      // siguen la misma regla (WIDGET/BOTH).
-      return this.showNotificationChannel;
-    }
-    if (this.isAdmin) {
-      const tid = this.form.controls.tenant_id.value;
-      if (!tid) return false;
-      return this.tenantAllowsBots(this.implementationByTenant.get(tid));
-    }
-    return this.tenantAllowsBots(this._auth.getImplementationType());
   }
 
   submit(): void {
@@ -376,9 +278,6 @@ export class CreateUserComponent implements OnInit, OnDestroy {
     if (this.isAdmin) {
       payload.role_ids = v.role_ids ?? [];
       payload.tenant_id = v.tenant_id!;
-    }
-    if (this.showBotsSelector && v.lead_assignee_bot_ids?.length) {
-      payload.lead_assignee_bot_ids = v.lead_assignee_bot_ids;
     }
 
     this.isLoading = true;
@@ -419,13 +318,6 @@ export class CreateUserComponent implements OnInit, OnDestroy {
     if (this.isAdmin) {
       const rolesChanged = !sameIdSet(v.role_ids ?? [], this.initialValue.role_ids ?? []);
       if (rolesChanged) payload.role_ids = v.role_ids ?? [];
-    }
-    if (this.showBotsSelector) {
-      const botsChanged = !sameIdSet(
-        v.lead_assignee_bot_ids ?? [],
-        this.initialValue.lead_assignee_bot_ids ?? [],
-      );
-      if (botsChanged) payload.lead_assignee_bot_ids = v.lead_assignee_bot_ids ?? [];
     }
 
     if (Object.keys(payload).length === 0) {

@@ -4,11 +4,12 @@ import {Router, RouterModule, RouterOutlet} from '@angular/router';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {BreakpointObserver} from '@angular/cdk/layout';
-import {Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {AuthService} from '../../../../core/services/auth.service';
 import {StorageService} from '../../../../core/services/storage.service';
 import {InactivityService} from '../../../../core/services/inactivity.service';
+import {InboxBusService} from '../../../../core/services/inbox-bus.service';
 import {LoadingOverlayComponent} from '../../../../shared/layouts/loading-overlay/loading-overlay.component';
 import {
   SessionTimeoutModalComponent,
@@ -46,6 +47,9 @@ export class MainAdministrationComponent implements OnInit, OnDestroy {
   userInitials = '';
   userEmail = '';
 
+  /** Contador en vivo de pendientes — empujado por InboxBusService via SSE. */
+  pendingCount$: Observable<number>;
+
   private destroy$ = new Subject<void>();
   private timeoutDialogRef: MatDialogRef<SessionTimeoutModalComponent, SessionTimeoutResult> | null = null;
   /**
@@ -62,15 +66,25 @@ export class MainAdministrationComponent implements OnInit, OnDestroy {
     private _storage: StorageService,
     private _router: Router,
     private _inactivity: InactivityService,
+    private _inboxBus: InboxBusService,
     private _dialog: MatDialog,
     // TODO(MVP): reinyectar ToastrService cuando vuelva logoutAllDevices().
     // private _toastr: ToastrService,
     private breakpointObserver: BreakpointObserver,
-  ) {}
+  ) {
+    this.pendingCount$ = this._inboxBus.pendingCount$.asObservable();
+  }
 
   ngOnInit(): void {
     this.getModules();
     this.loadUserInfo();
+    // El backend ya filtra el modulo Inbox para admin via
+    // PermissionService.getModulesForUser. Si llego en navItems es porque el
+    // usuario corresponde a un rol con inbox.view asignado — arrancamos el
+    // bus SSE para tener el contador en vivo del badge.
+    if (this.navItems.some(m => m.route === 'inbox')) {
+      this._inboxBus.start();
+    }
     this.breakpointObserver.observe(['(max-width: 768px)']).subscribe(result => {
       this.isSmallScreen = result.matches;
       if (!result.matches) this.sidebarOpen = false;
@@ -106,6 +120,7 @@ export class MainAdministrationComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this._inactivity.stop();
+    this._inboxBus.stop();
     this.timeoutDialogRef?.close();
     this.destroy$.next();
     this.destroy$.complete();

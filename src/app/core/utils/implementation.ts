@@ -51,11 +51,11 @@ export function requiresNotificationChannel(implType: string | null | undefined)
 
 /**
  * Misma regla que `requiresNotificationChannel` pero expresada con nombre
- * semántico distinto: indica si un bot de este tenant requiere que se le
- * asignen responsables (users que reciban leads por round-robin). Solo
- * aplica a WIDGET/BOTH — los leads de WhatsApp no pasan por round-robin.
+ * semántico distinto: indica si el tenant tiene canal web activo (WIDGET o
+ * BOTH). Útil para decidir si mostrar tabs/funcionalidades específicas del
+ * widget (p.ej. la tab "Instalar widget" en customize).
  *
  * Se expone como alias y no como función duplicada para no romper el
  * invariante "una única fuente de verdad" de la regla de implementación.
  */
-export const tenantUsesLeadAssignees = requiresNotificationChannel;
+export const tenantUsesWidget = requiresNotificationChannel;

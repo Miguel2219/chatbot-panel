@@ -28,11 +28,10 @@ import {HttpParams} from '@angular/common/http';
 export class BotsComponent implements OnInit {
 
   tableColumns: TableColumn[] = [
-    { name: 'Nombre',       key: 'name',                 isSortable: false, dataType: 'text' },
-    { name: 'Descripción',  key: 'description',                            dataType: 'text' },
-    { name: 'Estado',       key: 'is_active',                              dataType: 'boolean' },
-    { name: 'Responsables', key: 'responsables_display',                   dataType: 'text' },
-    { name: 'Creado',       key: 'created_at',           isSortable: false, dataType: 'date' },
+    { name: 'Nombre',       key: 'name',         isSortable: false, dataType: 'text' },
+    { name: 'Descripción',  key: 'description',                     dataType: 'text' },
+    { name: 'Estado',       key: 'is_active',                       dataType: 'boolean' },
+    { name: 'Creado',       key: 'created_at',   isSortable: false, dataType: 'date' },
   ];
 
   get actions(): TableActions {
@@ -45,7 +44,7 @@ export class BotsComponent implements OnInit {
     };
   }
 
-  bots: Array<ResponseBotDto & { responsables_display: string }> = [];
+  bots: ResponseBotDto[] = [];
   isLoading = true;
   lastParams: HttpParams = new HttpParams();
   totalElements: number = 0;
@@ -87,12 +86,7 @@ export class BotsComponent implements OnInit {
     }
     this._botService.getBotsByTenant(merged).subscribe({
       next: (data) => {
-        this.bots = data.content.map(b => ({
-          ...b,
-          responsables_display: (b.lead_assignees?.length)
-            ? b.lead_assignees.map(a => a.full_name).join(', ')
-            : 'No aplica',
-        }));
+        this.bots = data.content;
         this.totalElements = data.totalElements;
         this.size = data.size;
         this.pageIndex = data.number;

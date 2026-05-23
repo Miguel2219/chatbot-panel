@@ -5,15 +5,17 @@
       <h3 class="title-page">Contactos</h3>
       <p class="subtitle-page">Contactos capturados por tus asistentes</p>
     </div>
-    <div class="module-actions">
-      <button type="button" class="btn btn-secondary btn-filter" (click)="openFilterPanel()">
-        <mat-icon>filter_list</mat-icon>
-        Filtros
-        @if (hasActiveFilters()) {
-          <span class="filter-badge">{{ activeFilterCount() }}</span>
-        }
-      </button>
-    </div>
+    @if (isAdmin) {
+      <div class="module-actions">
+        <button type="button" class="btn btn-secondary btn-filter" (click)="openFilterPanel()">
+          <mat-icon>filter_list</mat-icon>
+          Filtros
+          @if (hasActiveFilters()) {
+            <span class="filter-badge">{{ activeFilterCount() }}</span>
+          }
+        </button>
+      </div>
+    }
   </div>
 
   @if (isInitializing) {
@@ -31,21 +33,20 @@
       [pageSize]="size"
       [isLoading]="isLoading"
       [actions]="actions"
-      (filter)="loadLeads($event)"
-      (edit)="openUpdateStatus($event)">
+      (filter)="loadLeads($event)">
     </app-table>
   }
 
 </div>
 
-<app-filter-panel
-  [isOpen]="isFilterPanelOpen"
-  [isAdmin]="isAdmin"
-  [tenants]="tenants"
-  [bots]="filterBots"
-  [isLoadingBots]="isLoadingFilterBots"
-  (closed)="closeFilterPanel()"
-  (tenantSelected)="onTenantSelected($event)"
-  (filtersApplied)="onFiltersApplied($event)"
-  (filtersCleared)="onFiltersCleared()">
-</app-filter-panel>
+@if (isAdmin) {
+  <app-filter-panel
+    [isOpen]="isFilterPanelOpen"
+    [isAdmin]="isAdmin"
+    [tenants]="tenants"
+    [showBotFilter]="false"
+    (closed)="closeFilterPanel()"
+    (filtersApplied)="onFiltersApplied($event)"
+    (filtersCleared)="onFiltersCleared()">
+  </app-filter-panel>
+}
